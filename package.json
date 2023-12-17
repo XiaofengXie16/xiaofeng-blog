@@ -10,7 +10,8 @@
     "dev": "vite dev",
     "lint": "oxlint .",
     "start": "remix-serve ./build/index.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@remix-run/node": "^2.4.0",
