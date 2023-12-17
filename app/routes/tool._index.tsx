@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 import Card from "~/components/Card";
-import { TOOLS } from "~/routes/tool.content";
+import { TOOLS } from "~/constants/tool";
 
 const Tool = () => {
   return (

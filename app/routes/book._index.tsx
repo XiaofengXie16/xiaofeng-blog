@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react";
-import { BOOKS } from "~/routes/book.content";
+import { BOOKS } from "~/constants/book";
 
 const Book = () => {
   return (

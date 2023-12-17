@@ -1,4 +1,3 @@
-import type { LinksFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -7,12 +6,9 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import stylesheet from "./tailwind.css";
 import { withSentry } from "@sentry/remix";
 
-export const links: LinksFunction = () => [
-    { rel: "stylesheet", href: stylesheet },
-];
+import "./tailwind.css";
 export const meta = () => {
     return [
         { title: "Xiaofeng's Blog" },
