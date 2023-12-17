@@ -3,6 +3,7 @@
   "private": true,
   "sideEffects": false,
   "type": "module",
+  "repository": "https://github.com/XiaofengXie16/xiaofeng-blog.git",
   "scripts": {
     "build": "remix build",
     "deploy": "fly deploy --remote-only",
