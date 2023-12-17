@@ -1,0 +1,12 @@
+<svg width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg" class="only-light-theme">
+    <g clip-path="url(#logo-full-dark_svg__a)">
+        <path fill-rule="evenodd" clip-rule="evenodd"
+              d="m28 14-1.46 1.46L21 9.92V7l7 7ZM14 0l-1.46 1.46 5.539 5.538H21L14 0Zm-3.134 3.14L9.406 4.6l2.404 2.404h2.922L10.866 3.14ZM21 13.274v2.921l2.406 2.404 1.46-1.46L21 13.275Zm-.836 5.432L21 17.87H10.136V7l-.836.838L7.732 6.27 6.266 7.732l1.568 1.566-.838.838v1.68L4.594 9.412l-1.462 1.461 3.864 3.866v3.334L1.462 12.54 0 14l14 14 1.462-1.46L9.923 21h3.347l3.866 3.866 1.462-1.462L16.193 21h1.68l.838-.836 1.567 1.568 1.461-1.462-1.575-1.564Z"
+              fill="#FF6363"></path>
+    </g>
+    <defs>
+        <clipPath id="logo-full-dark_svg__a">
+            <path fill="#fff" d="M0 0h108.059v28H0z"></path>
+        </clipPath>
+    </defs>
+</svg>

@@ -1,4 +1,3 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction } from "@remix-run/node";
 import {
   Links,
@@ -8,12 +7,20 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import stylesheet from "./tailwind.css";
+import { withSentry } from "@sentry/remix";
 
 export const links: LinksFunction = () => [
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+    { rel: "stylesheet", href: stylesheet },
 ];
-
-export default function App() {
+export const meta = () => {
+    return [
+        { title: "Xiaofeng's Blog" },
+        { charset: "utf-8" },
+        { viewport: "width=device-width,initial-scale=1" },
+    ];
+};
+function App() {
   return (
     <html lang="en">
       <head>
@@ -31,3 +38,4 @@ export default function App() {
     </html>
   );
 }
+export default withSentry(App);
