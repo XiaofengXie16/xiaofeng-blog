@@ -43,5 +43,10 @@
   },
   "lint-staged": {
     "*": "npm run lint"
+  },
+  "overrides": {
+    "vite": {
+      "rollup": "npm:@rollup/wasm-node"
+    }
   }
 }
