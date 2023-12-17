@@ -1,6 +1,4 @@
-import React from "react";
 import { CATEGORY } from "~/constants/name";
-import Balancer from "react-wrap-balancer";
 
 type CardParams = {
   icon: string;
@@ -39,7 +37,7 @@ const Card = ({ icon, name, description, category, link }: CardParams) => {
         <div className={"w-2/3"}>
           <h1 className={"text-2xl text-pink-200"}>{name}</h1>
           <h2 className={"text-white break-words"}>
-            <Balancer>{description}</Balancer>
+            {description}
           </h2>
         </div>
         <div className={"grow hidden sm:block"}>
