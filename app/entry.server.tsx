@@ -9,7 +9,7 @@ import { PassThrough } from "node:stream";
 import type { AppLoadContext, EntryContext } from "@remix-run/node";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
-import isbot from "isbot";
+import {isbot} from "isbot";
 import * as Sentry from "@sentry/remix";
 import { renderToPipeableStream } from "react-dom/server";
 import { SENTRY_DSN } from "./constants/sentry";
@@ -26,7 +26,7 @@ export default function handleRequest(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadContext: AppLoadContext,
 ) {
-  return isbot(request.headers.get("user-agent"))
+  return isbot(request.headers.get("user-agent")||"")
     ? handleBotRequest(
         request,
         responseStatusCode,
