@@ -23,7 +23,7 @@ export default function _index() {
         </section>
         <section className={"z-10 flex md:gap-20 gap-10 flex-fluid"}>
           <Link
-            to="https://www.linkedin.com/in/markxie/"
+            to="https://www.linkedin.com/in/xiaofengxie16/"
             className={"md:h-12 md:w-12 h-6 w-6"}
           >
             <img
