@@ -17,7 +17,7 @@
     "@remix-run/node": "^2.6.0",
     "@remix-run/react": "^2.6.0",
     "@remix-run/serve": "^2.6.0",
-    "@sentry/remix": "^7.99.0",
+    "@sentry/remix": "^7.100.1",
     "@tailwindcss/typography": "^0.5.10",
     "isbot": "^4.4.0",
     "react": "^18.2.0",
@@ -25,17 +25,17 @@
     "web-vitals": "^3.5.2"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "^0.5.0",
+    "@flydotio/dockerfile": "^0.5.1",
     "@remix-run/dev": "^2.6.0",
-    "@types/react": "^18.2.52",
-    "@types/react-dom": "^18.2.18",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
     "husky": "^9.0.10",
-    "lint-staged": "^15.2.1",
-    "oxlint": "^0.2.6",
-    "prettier": "^3.2.4",
+    "lint-staged": "^15.2.2",
+    "oxlint": "^0.2.8",
+    "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "typescript": "^5.3.3",
-    "vite": "^5.0.12",
+    "vite": "^5.1.1",
     "vite-tsconfig-paths": "^4.3.1"
   },
   "engines": {
