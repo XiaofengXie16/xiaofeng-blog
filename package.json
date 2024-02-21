@@ -6,8 +6,8 @@
   "repository": "https://github.com/XiaofengXie16/xiaofeng-blog.git",
   "scripts": {
     "deploy": "fly deploy --remote-only",
-    "build": "vite build && vite build --ssr",
-    "dev": "vite dev",
+    "build": "remix vite:build",
+    "dev": "remix vite:dev",
     "lint": "oxlint .",
     "start": "remix-serve ./build/server/index.js",
     "typecheck": "tsc",
@@ -43,10 +43,5 @@
   },
   "lint-staged": {
     "*": "npm run lint"
-  },
-  "overrides": {
-    "vite": {
-      "rollup": "npm:@rollup/wasm-node"
-    }
   }
 }
