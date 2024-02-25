@@ -18,6 +18,7 @@ const selectLabelColor = (category: string) => {
     [CATEGORY.TERMINAL_THEME]: "text-orange-200",
     [CATEGORY.CSS_FRAMEWORK]: "text-blue-200",
     [CATEGORY.DEVELOPMENT_TOOL]: "text-red-400",
+      [CATEGORY.PRODUCTIVITY_TOOL]: "text-green-400",
   };
   return colorMap[category];
 };

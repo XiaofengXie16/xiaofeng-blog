@@ -5,5 +5,6 @@ export const CATEGORY = {
   JAVASCRIPT_FRAMEWORK: "JavaScript framework",
   CSS_FRAMEWORK: "CSS framework",
   TEST_FRAMEWORK: "Test framework",
-  JAVASCRIPT_RUNTIME: "JavaScript Runtime",
+  JAVASCRIPT_RUNTIME: "JavaScript runtime",
+    PRODUCTIVITY_TOOL: "Productivity tool",
 };
