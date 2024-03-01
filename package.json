@@ -17,7 +17,7 @@
     "@remix-run/node": "^2.8.0",
     "@remix-run/react": "^2.8.0",
     "@remix-run/serve": "^2.8.0",
-    "@sentry/remix": "^7.103.0",
+    "@sentry/remix": "^7.104.0",
     "@tailwindcss/typography": "^0.5.10",
     "isbot": "^5.1.1",
     "react": "^18.2.0",
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.2",
     "@remix-run/dev": "^2.8.0",
-    "@types/react": "^18.2.60",
+    "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
