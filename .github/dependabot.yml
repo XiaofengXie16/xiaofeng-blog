@@ -5,8 +5,3 @@ updates:
     directory: "/"           # Specify the directory where your dependencies are located
     schedule:
       interval: "daily"     # Specify how often Dependabot should check for updates
-    # Define which types of updates to allow
-    allow:
-      - update-types: ["security", "dependencies"]
-        # Optionally, you can specify version requirements for allowed updates
-        versions: ["*"]
