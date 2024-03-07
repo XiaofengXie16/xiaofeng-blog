@@ -34,7 +34,7 @@
     "oxlint": "^0.2.13",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.2",
     "vite": "^5.1.5",
     "vite-tsconfig-paths": "^4.3.1"
   },
