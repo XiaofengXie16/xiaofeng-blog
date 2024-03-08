@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@remix-run/node": "^2.8.0",
-    "@remix-run/react": "^2.8.0",
+    "@remix-run/react": "^2.8.1",
     "@remix-run/serve": "^2.8.0",
     "@sentry/remix": "^7.105.0",
     "@tailwindcss/typography": "^0.5.10",
