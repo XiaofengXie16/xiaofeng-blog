@@ -31,7 +31,7 @@
     "@types/react-dom": "^18.2.22",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "oxlint": "^0.2.13",
+    "oxlint": "^0.2.14",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.12",
     "typescript": "^5.4.2",
