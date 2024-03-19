@@ -19,7 +19,7 @@
     "@remix-run/serve": "^2.8.1",
     "@sentry/remix": "^7.107.0",
     "@tailwindcss/typography": "^0.5.10",
-    "isbot": "^5.1.1",
+    "isbot": "^5.1.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "web-vitals": "^3.5.2"
@@ -27,11 +27,11 @@
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.3",
     "@remix-run/dev": "^2.8.1",
-    "@types/react": "^18.2.66",
+    "@types/react": "^18.2.67",
     "@types/react-dom": "^18.2.22",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
-    "oxlint": "^0.2.13",
+    "oxlint": "^0.2.14",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.12",
     "typescript": "^5.4.2",
