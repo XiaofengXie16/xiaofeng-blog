@@ -27,7 +27,7 @@
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.3",
     "@remix-run/dev": "^2.8.1",
-    "@types/react": "^18.2.69",
+    "@types/react": "^18.2.70",
     "@types/react-dom": "^18.2.22",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
@@ -35,7 +35,7 @@
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.12",
     "typescript": "^5.4.3",
-    "vite": "^5.2.4",
+    "vite": "^5.2.6",
     "vite-tsconfig-paths": "^4.3.2"
   },
   "engines": {
