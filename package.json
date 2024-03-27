@@ -25,9 +25,9 @@
     "web-vitals": "^3.5.2"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "^0.5.3",
+    "@flydotio/dockerfile": "^0.5.4",
     "@remix-run/dev": "^2.8.1",
-    "@types/react": "^18.2.71",
+    "@types/react": "^18.2.72",
     "@types/react-dom": "^18.2.22",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
