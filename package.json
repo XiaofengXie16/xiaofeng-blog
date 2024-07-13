@@ -25,13 +25,13 @@
     "web-vitals": "^4.2.1"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "^0.5.7",
+    "@flydotio/dockerfile": "^0.5.8",
     "@remix-run/dev": "^2.10.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.7",
-    "oxlint": "^0.5.3",
+    "oxlint": "^0.6.0",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "typescript": "^5.5.3",
