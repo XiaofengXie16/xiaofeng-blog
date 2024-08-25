@@ -8,6 +8,7 @@ import {
 import { withSentry } from "@sentry/remix";
 
 import "./tailwind.css";
+
 export const meta = () => {
     return [
         { title: "Xiaofeng's Blog" },
