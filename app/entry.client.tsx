@@ -17,14 +17,11 @@ Sentry.init({
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
   integrations: [
-    new Sentry.BrowserTracing({
-      routingInstrumentation: Sentry.remixRouterInstrumentation(
-        useEffect,
-        useLocation,
-        useMatches,
-      ),
+    Sentry.browserTracingIntegration({
+      useMatches,
+      useLocation,
+      useEffect,
     }),
-    new Sentry.Replay(),
   ],
 });
 startTransition(() => {
