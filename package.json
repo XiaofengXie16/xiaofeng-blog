@@ -28,7 +28,7 @@
     "@flydotio/dockerfile": "^0.5.8",
     "@remix-run/dev": "^2.12.0",
     "@sentry/types": "^8.30.0",
-    "@types/react": "^18.3.7",
+    "@types/react": "^18.3.8",
     "@types/react-dom": "^18.3.0",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
