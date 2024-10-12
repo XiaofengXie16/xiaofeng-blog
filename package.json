@@ -14,9 +14,9 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@remix-run/node": "^2.12.1",
-    "@remix-run/react": "^2.12.1",
-    "@remix-run/serve": "^2.12.1",
+    "@remix-run/node": "^2.13.1",
+    "@remix-run/react": "^2.13.1",
+    "@remix-run/serve": "^2.13.1",
     "@sentry/remix": "^8.34.0",
     "@tailwindcss/typography": "^0.5.15",
     "isbot": "^5.1.17",
@@ -26,10 +26,10 @@
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.5.9",
-    "@remix-run/dev": "^2.12.1",
+    "@remix-run/dev": "^2.13.1",
     "@sentry/types": "^8.34.0",
     "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.0",
+    "@types/react-dom": "^18.3.1",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "oxlint": "^0.9.10",
