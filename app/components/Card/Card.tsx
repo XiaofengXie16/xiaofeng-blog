@@ -18,7 +18,7 @@ const selectLabelColor = (category: string) => {
     [CATEGORY.TERMINAL_THEME]: "text-orange-200",
     [CATEGORY.CSS_FRAMEWORK]: "text-blue-200",
     [CATEGORY.DEVELOPMENT_TOOL]: "text-red-400",
-      [CATEGORY.PRODUCTIVITY_TOOL]: "text-green-400",
+    [CATEGORY.PRODUCTIVITY_TOOL]: "text-green-400",
   };
   return colorMap[category];
 };
@@ -37,9 +37,7 @@ const Card = ({ icon, name, description, category, link }: CardParams) => {
         </div>
         <div className={"w-2/3"}>
           <h1 className={"text-2xl text-pink-200"}>{name}</h1>
-          <h2 className={"text-white break-words"}>
-            {description}
-          </h2>
+          <h2 className={"text-white break-words"}>{description}</h2>
         </div>
         <div className={"grow hidden sm:block"}>
           <h6

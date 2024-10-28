@@ -4,7 +4,7 @@
  * and should modify this configuration to best suit your team's needs.
  */
 
-/** @type {import('eslint').Linter.Config} */
+/** @type {import("eslint").Linter.Config} */
 module.exports = {
   root: true,
   parserOptions: {
