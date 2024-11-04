@@ -19,7 +19,6 @@ export const loader: LoaderFunction = async ({ params }) => {
   const folderPath = BLOG_FOLDER_PATH;
   const filenames = await fs.readdir(folderPath);
 
-  console.log("1231231", slug);
   const matchingFile = filenames.find(
     (filename) => filename.endsWith(".md") && filename.includes(slug),
   );
