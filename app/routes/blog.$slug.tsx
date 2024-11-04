@@ -60,7 +60,7 @@ export default function BlogPost() {
               {title}
             </h1>
             <div
-              className="prose prose-invert max-w-none text-gray-300 text-lg"
+              className="prose prose-invert max-w-none text-gray-300 text-lg pb-20"
               dangerouslySetInnerHTML={{ __html: content }}
             />
           </article>

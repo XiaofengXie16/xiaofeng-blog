@@ -19,7 +19,7 @@ Then, there was the issue of navigation. Each app functioned like its own mini-s
 
 With these goals in mind, we explored several potential solutions.
 
-### iframe:
+### IFrame:
 
 **Pros:**
 - **Isolation**: Each app remains fully independent, so changes in one app don’t directly impact others.
@@ -30,7 +30,7 @@ With these goals in mind, we explored several potential solutions.
 - **Limited Communication**: While `postMessage` enables some cross-iframe communication, it’s clunky and difficult to scale for complex interactions.
 - **Styling and Responsiveness Challenges**: Maintaining a cohesive look and responsive design across embedded apps is tricky, often leading to inconsistent styles and user experiences.
 
-### web components:
+### Web Components:
 
 **Pros:**
 - **Reusable and Framework-Agnostic**: Web Components are encapsulated and can be used across frameworks, making them highly reusable.
@@ -41,7 +41,7 @@ With these goals in mind, we explored several potential solutions.
 - **Dependency Management Complexity**: Cross-app synchronization would require additional infrastructure for managing versions and dependencies, adding complexity.
 - **Limited Orchestration**: While Web Components are great for encapsulation, they don’t handle navigation or seamless transitions between apps—features we needed for a unified user experience.
 
-### webpack module federation:
+### Webpack Module Federation:
 
 **Pros:**
 - **Dynamic Loading**: Module Federation allows apps to fetch the latest shared components on demand, eliminating the need for constant npm updates and redeployments.
