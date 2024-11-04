@@ -1,7 +1,10 @@
 import MarkdownIt from "markdown-it";
 import matter from "gray-matter";
 
-const md = new MarkdownIt();
+const md = new MarkdownIt({
+  linkify: true,
+  typographer: true,
+});
 
 export const parseMarkdownWithPreview = (
   markdownText: string,

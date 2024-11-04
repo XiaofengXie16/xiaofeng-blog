@@ -71,6 +71,8 @@ Module Federation allowed us to tackle our challenges in a big way. Here’s how
 
   With these adjustments in place, Module Federation’s dynamic loading allowed us to stay agile without worrying about synchronization issues. Even if one team pushed multiple updates a day, other apps automatically pulled in the latest version without manual intervention. This kept users’ experiences consistent across apps and prevented the misalignment we had struggled with before.
 
+![shared_components](https://fly.storage.tigris.dev/wispy-rain-6357/assets/images/module_federation_shared_components.svg)
+
 - **Smooth, Seamless Navigation with an App Shell**:  
   To create a unified user experience, we used an app shell that acted as a central “wrapper” around each of the seven apps in the quoting flow. This shell did more than just house the apps; it controlled the flow, pre-loaded assets for the upcoming app when needed, and coordinated navigation, making transitions feel effortless. Instead of reloading a new “site” each time a user advanced to the next step, the app shell treated each app like a virtual page within a single experience.
 
@@ -81,5 +83,7 @@ Module Federation allowed us to tackle our challenges in a big way. Here’s how
 
     - **Seamless Integration with React Router**:  
       Surprisingly, integrating Module Federation with React Router worked out of the box! React Router managed transitions effortlessly within the app shell, treating each app as a virtual route and allowing users to navigate between apps seamlessly. This meant each app behaved like a natural extension of the last, making the entire quoting flow feel like one cohesive experience without custom routing configurations.
+  
+![navigation](https://fly.storage.tigris.dev/wispy-rain-6357/assets/images/module_federation_shared_components.svg)
 
 In the end, Module Federation proved to be the perfect solution for us. Instead of the constant back-and-forth of package updates, we could simply host shared components on one app, letting all other apps fetch the latest version directly. And with our app shell managing navigation and pre-loading, we achieved a seamless, unified experience across the entire quoting process. Module Federation allowed us to keep things fast, responsive, and refresh-free—transforming our multi-app architecture into a smooth, cohesive flow.
