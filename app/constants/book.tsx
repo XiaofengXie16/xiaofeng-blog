@@ -2,6 +2,7 @@ import EngineeringManagementForTheRestOfUs from "~/assets/images/engineering_man
 import TheStaffEngineerPath from "~/assets/images/the_staff_engineer_path.jpg";
 import APhilosophyOfSoftwareDesign from "~/assets/images/a_philosophy_of_software_design.jpg";
 import SimpliySaid from "~/assets/images/simply_said.png";
+import DesigningDataIntensiveApplications from "~/assets/images/designing_data_intensive_applications.png";
 
 export const BOOKS = [
   {
@@ -24,4 +25,9 @@ export const BOOKS = [
     icon: SimpliySaid,
     link: "https://www.exec-comm.com/product/simply-said/",
   },
+    {
+        name:"Designing Data-Intensive Applications",
+        icon: DesigningDataIntensiveApplications,
+        link:"https://dataintensive.net/"
+    }
 ];

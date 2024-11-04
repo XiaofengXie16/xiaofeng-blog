@@ -1,8 +1,9 @@
-import LinkedinLogo from "../assets/images/linkedin.svg";
-import GithubLogo from "../assets/images/github.svg";
-import TwitterLogo from "../assets/images/twitter.svg";
-import BookLogo from "../assets/images/book.svg";
-import ToolLogo from "../assets/images/tool.svg";
+import LinkedinIcon from "../assets/images/linkedin.svg";
+import GithubIcon from "../assets/images/github.svg";
+import TwitterIcon from "../assets/images/twitter.svg";
+import BookIcon from "../assets/images/book.svg";
+import BlogIcon from "../assets/images/blog.svg";
+import ToolIcon from "../assets/images/tool.svg";
 import { Link } from "@remix-run/react";
 
 export default function _index() {
@@ -27,7 +28,7 @@ export default function _index() {
             className={"md:h-12 md:w-12 h-6 w-6"}
           >
             <img
-              src={LinkedinLogo}
+              src={LinkedinIcon}
               className={"md:h-12 md:w-12 h-6 w-6"}
               alt={"linkedin"}
             />
@@ -37,7 +38,7 @@ export default function _index() {
             className={"md:h-12 md:w-12 h-6 w-6"}
           >
             <img
-              src={GithubLogo}
+              src={GithubIcon}
               className={"md:h-12 md:w-12 h-6 w-6"}
               alt={"github"}
             />
@@ -47,7 +48,7 @@ export default function _index() {
             className={"md:h-12 md:w-12 h-6 w-6"}
           >
             <img
-              src={TwitterLogo}
+              src={TwitterIcon}
               className={"md:h-12 md:w-12 h-6 w-6"}
               alt={"twitter"}
             />
@@ -58,22 +59,33 @@ export default function _index() {
             className={"md:h-12 md:w-12 h-6 w-6"}
           >
             <img
-              src={ToolLogo}
+              src={ToolIcon}
               className={"md:h-12 md:w-12 h-6 w-6"}
               alt={"blog"}
             />
           </Link>
           <Link
-            to={"./book"}
+            to={"./reading-list"}
             prefetch={"intent"}
             className={"md:h-12 md:w-12 h-6 w-6"}
           >
             <img
-              src={BookLogo}
+              src={BookIcon}
               className={"md:h-12 md:w-12 h-6 w-6"}
-              alt={"book"}
+              alt={"readingList"}
             />
           </Link>
+            <Link
+                to={"./blog"}
+                prefetch={"intent"}
+                className={"md:h-12 md:w-12 h-6 w-6"}
+            >
+                <img
+                    src={BlogIcon}
+                    className={"md:h-12 md:w-12 h-6 w-6"}
+                    alt={"blog"}
+                />
+            </Link>
         </section>
       </main>
     </div>

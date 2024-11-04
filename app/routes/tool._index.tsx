@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react";
-import Card from "~/components/Card";
+import { ToolCard } from "~/components/Card";
 import { TOOLS } from "~/constants/tool";
 
 const Tool = () => {
@@ -27,7 +27,7 @@ const Tool = () => {
         </h1>
         <ul className={"flex list-none flex-col items-start gap-5 pb-20"}>
           {TOOLS.map(({ description, icon, name, category, link }) => (
-            <Card
+            <ToolCard
               key={name}
               description={description}
               icon={icon}

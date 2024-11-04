@@ -5,6 +5,7 @@
     "**/*.tsx"
   ],
   "compilerOptions": {
+    "module": "ES2022",
     "lib": [
       "DOM",
       "DOM.Iterable",

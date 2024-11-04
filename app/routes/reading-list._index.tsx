@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 import { BOOKS } from "~/constants/book";
 
-const Book = () => {
+const ReadingList = () => {
   return (
     <main
       className={
@@ -22,7 +22,7 @@ const Book = () => {
             "mb-10 text-4xl font-extrabold text-pink-200 text-center sm:text-left"
           }
         >
-          Books
+          Reading List
         </h1>
         <ul
           className={
@@ -48,4 +48,4 @@ const Book = () => {
   );
 };
 
-export default Book;
+export default ReadingList;

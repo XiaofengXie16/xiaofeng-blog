@@ -1,4 +1,4 @@
-import { CATEGORY } from "~/constants/name";
+import {CATEGORY} from "~/constants/name";
 
 type CardParams = {
   icon: string;
@@ -8,21 +8,23 @@ type CardParams = {
   link: string;
 };
 
-const selectLabelColor = (category: string) => {
-  const colorMap = {
-    [CATEGORY.JAVASCRIPT_RUNTIME]: "text-teal-200",
-    [CATEGORY.TEST_FRAMEWORK]: "text-purple-200",
-    [CATEGORY.TEST_FRAMEWORK]: "text-yellow-200",
-    [CATEGORY.JAVASCRIPT_FRAMEWORK]: "text-red-200",
-    [CATEGORY.TERMINAL_UTILITY]: "text-green-200",
-    [CATEGORY.TERMINAL_THEME]: "text-orange-200",
-    [CATEGORY.CSS_FRAMEWORK]: "text-blue-200",
-    [CATEGORY.DEVELOPMENT_TOOL]: "text-red-400",
-    [CATEGORY.PRODUCTIVITY_TOOL]: "text-green-400",
-  };
-  return colorMap[category];
+ const selectLabelColor = (category: string) => {
+    const colorMap = {
+        [CATEGORY.JAVASCRIPT_RUNTIME]: "text-teal-200",
+        [CATEGORY.TEST_FRAMEWORK]: "text-purple-200",
+        [CATEGORY.TEST_FRAMEWORK]: "text-yellow-200",
+        [CATEGORY.JAVASCRIPT_FRAMEWORK]: "text-red-200",
+        [CATEGORY.TERMINAL_UTILITY]: "text-green-200",
+        [CATEGORY.TERMINAL_THEME]: "text-orange-200",
+        [CATEGORY.CSS_FRAMEWORK]: "text-blue-200",
+        [CATEGORY.DEVELOPMENT_TOOL]: "text-red-400",
+        [CATEGORY.PRODUCTIVITY_TOOL]: "text-green-400",
+    };
+    return colorMap[category];
 };
-const Card = ({ icon, name, description, category, link }: CardParams) => {
+
+
+export const ToolCard = ({ icon, name, description, category, link }: CardParams) => {
   return (
     <div className={"flex w-full flex-col gap-1 rounded-2xl hover:bg-gray-600"}>
       <a
@@ -53,4 +55,3 @@ const Card = ({ icon, name, description, category, link }: CardParams) => {
   );
 };
 
-export default Card;
