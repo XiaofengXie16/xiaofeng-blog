@@ -2,7 +2,7 @@ import { LoaderFunction } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import path from "path";
 import fs from "fs/promises";
-import { markdownPreview, parseMarkdown } from "~/utils/markdown";
+import { parseMarkdownWithPreview } from "~/utils/markdown";
 
 import { BlogCard } from "~/components/Card";
 import { BLOG_FOLDER_PATH } from "~/constants/blog";
@@ -16,12 +16,15 @@ export const loader: LoaderFunction = async () => {
       .map(async (filename) => {
         const filePath = path.join(BLOG_FOLDER_PATH, filename);
         const content = await fs.readFile(filePath, "utf-8");
-        const { frontMatter, html } = parseMarkdown(content);
+        const { frontMatter, html, preview } = parseMarkdownWithPreview(
+          content,
+          400,
+        );
         return {
           filename,
           title: frontMatter.title,
           slug: frontMatter.slug,
-          preview: markdownPreview(content, 400),
+          preview,
           html,
         };
       }),
