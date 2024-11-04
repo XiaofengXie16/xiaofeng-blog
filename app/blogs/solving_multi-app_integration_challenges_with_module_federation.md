@@ -65,7 +65,7 @@ Module Federation allowed us to tackle our challenges in a big way. Here’s how
 
     - **Cache Validation**: To ensure clients received the latest version of components, we had to manage caching carefully. Module Federation uses a `remoteEntry.js` file to communicate what’s being exposed by the host. We implemented cache-busting by adding a timestamp query string to each build, which forced the client to invalidate its cache and load the latest `remoteEntry.js` file with every new deployment.
 
-    - **CSS Conflicts**: With multiple apps sharing components, we ran into CSS override issues due to duplicate class names. This caused unexpected styling issues when components from different apps had identically named classes. To address this, we scoped our CSS properly, ensuring that each app’s styles remained isolated to avoid these collisions.
+    - **CSS Conflicts**: With multiple apps sharing components, we ran into CSS override issues due to duplicate class names (We were using SCSS back then). This caused unexpected styling issues when components from different apps had identically named classes. To address this, we either have to scope our CSS properly or make the class names unique across apps, ensuring that each app’s styles remained isolated to avoid these collisions. Nowadays, there is tailwind and other similar atomic css solution that can prevent this type of issue by default.
 
     - **Async Loading in Entry Points**: To give the Module Federation plugin time to register, we needed to asynchronously load the app at its entry point. This ensured that shared modules were registered correctly before the app loaded, preventing errors and making the dynamic imports work smoothly.
 

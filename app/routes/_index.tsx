@@ -9,7 +9,7 @@ import { Link } from "@remix-run/react";
 export default function _index() {
   return (
     <div
-      className={"h-screen w-screen bg-black overflow-auto overflow-x-hidden"}
+      className={"h-screen w-screen bg-gray-700 overflow-auto overflow-x-hidden"}
     >
       <main
         className={
