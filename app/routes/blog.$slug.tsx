@@ -4,6 +4,7 @@ import { Link, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { LoaderFunction } from "@remix-run/node";
 import { BLOG_FOLDER_PATH } from "~/constants/blog";
+import {parseMarkdownWithPreview} from "~/utils/markdown";
 
 type LoaderData = {
   title: string;
@@ -28,7 +29,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 
   const filePath = path.join(folderPath, matchingFile);
   const fileContent = await fs.readFile(filePath, "utf-8");
-  const { frontMatter, html } = parseMarkdown(fileContent);
+  const { frontMatter, html } = parseMarkdownWithPreview(fileContent,400);
 
   return {
     title: frontMatter.title || slug,
