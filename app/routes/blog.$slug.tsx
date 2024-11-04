@@ -2,7 +2,6 @@ import fs from "fs/promises";
 import path from "path";
 import { Link, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-import { parseMarkdown } from "~/utils/markdown";
 import { LoaderFunction } from "@remix-run/node";
 import { BLOG_FOLDER_PATH } from "~/constants/blog";
 

@@ -3,10 +3,10 @@ import matter from "gray-matter";
 
 const md = new MarkdownIt();
 
-export function parseMarkdownWithPreview(
+export const parseMarkdownWithPreview = (
   markdownText: string,
   previewLength = 200,
-) {
+) => {
   const { data, content } = matter(markdownText);
 
   const html = md.render(content);
@@ -21,4 +21,4 @@ export function parseMarkdownWithPreview(
     html,
     preview,
   };
-}
+};
