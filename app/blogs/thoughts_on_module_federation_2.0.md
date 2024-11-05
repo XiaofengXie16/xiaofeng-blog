@@ -73,11 +73,11 @@ Future Plans: What’s Next?
 
 Module Federation 2.0 has already set a new standard for module sharing and micro-frontends, but it looks like there’s more to come. Here are a few future features on the roadmap that I’m excited about:
 
-	•	Improved Developer Experience: Although we already have type hints and Chrome DevTools, there’s still room for more. Plans to add visualization for shared reuse in DevTools would make it even easier to understand how modules interact, improving collaboration and transparency.
-	•	High-Performance Solutions: Module Federation 2.0 plans to address the “request waterfall” issue that can impact performance in micro-frontends. Techniques like Server-Side Rendering (SSR) and data prefetching are on the horizon, which should reduce load times and optimize module loading.
-	•	Community and Compatibility: Currently, Module Federation 2.0 is fully compatible with Webpack and Rspack, and with the SDK, it’s primed for further expansion. As more build tools adopt this standard, I’m excited to see how the community will integrate Module Federation into their workflows and create best practices for micro-frontend architectures.
+* Improved Developer Experience: Although we already have type hints and Chrome DevTools, there’s still room for more. Plans to add visualization for shared reuse in DevTools would make it even easier to understand how modules interact, improving collaboration and transparency.
+* High-Performance Solutions: Module Federation 2.0 plans to address the “request waterfall” issue that can impact performance in micro-frontends. Techniques like Server-Side Rendering (SSR) and data prefetching are on the horizon, which should reduce load times and optimize module loading.
+* Community and Compatibility: Currently, Module Federation 2.0 is fully compatible with Webpack and Rspack, and with the SDK, it’s primed for further expansion. As more build tools adopt this standard, I’m excited to see how the community will integrate Module Federation into their workflows and create best practices for micro-frontend architectures.
 
-Final Thoughts
+### Final Thoughts
 
 Module Federation 2.0 feels like a leap forward for anyone working in a large-scale modular architecture. The enhancements in type safety, debugging, module loading, and deployment make it a powerful solution for scaling applications without being locked into a single build tool. For teams building micro-frontends or modular apps, it’s hard to imagine a better way to manage shared modules, dependencies, and development workflows.
 
