@@ -1,5 +1,5 @@
-import { LoaderFunction } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { LoaderFunction } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import path from "path";
 import fs from "fs/promises";
 import { parseMarkdownWithPreview } from "~/utils/markdown";

@@ -1,14 +1,11 @@
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useRouteError,
-} from "@remix-run/react";
-import { withSentry } from "@sentry/remix";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from "react-router";
+// import { withSentry } from "@sentry/remix";
 
-import "./tailwind.css";
+import stylesheet from "./tailwind.css?url";
+
+export const links = () => [
+    { rel: "stylesheet", href: stylesheet },
+];
 
 export const meta = () => {
   return [
@@ -79,4 +76,5 @@ function App() {
   );
 }
 
-export default withSentry(App);
+export default App;
+// export default withSentry(App);

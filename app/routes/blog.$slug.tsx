@@ -1,8 +1,8 @@
 import fs from "fs/promises";
 import path from "path";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
-import { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction } from "react-router";
 import { BLOG_FOLDER_PATH } from "~/constants/blog";
 import {parseMarkdownWithPreview} from "~/utils/markdown";
 

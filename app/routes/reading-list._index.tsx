@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 import { BOOKS } from "~/constants/book";
 
 const ReadingList = () => {

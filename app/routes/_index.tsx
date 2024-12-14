@@ -4,7 +4,7 @@ import TwitterIcon from "../assets/images/twitter.svg";
 import BookIcon from "../assets/images/book.svg";
 import BlogIcon from "../assets/images/blog.svg";
 import ToolIcon from "../assets/images/tool.svg";
-import { Link } from "@remix-run/react";
+import { Link } from "react-router";
 
 export default function _index() {
   return (
