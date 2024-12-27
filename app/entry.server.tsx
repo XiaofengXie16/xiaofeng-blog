@@ -53,7 +53,6 @@ function handleBotRequest(
       <ServerRouter
         context={reactRouterContext}
         url={request.url}
-        abortDelay={ABORT_DELAY}
       />,
       {
         onAllReady() {
@@ -103,7 +102,6 @@ function handleBrowserRequest(
       <ServerRouter
         context={reactRouterContext}
         url={request.url}
-        abortDelay={ABORT_DELAY}
       />,
       {
         onShellReady() {
