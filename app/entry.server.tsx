@@ -11,7 +11,7 @@ import { createReadableStreamFromReadable } from "@react-router/node";
 import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
 // import * as Sentry from "@sentry/remix";
-import { renderToPipeableStream } from "react-dom/server";
+import { renderToReadableStream } from "react-dom/server";
 // import { SENTRY_DSN } from "./constants/sentry";
 
 const ABORT_DELAY = 5_000;
@@ -49,7 +49,7 @@ function handleBotRequest(
 ) {
   return new Promise((resolve, reject) => {
     let shellRendered = false;
-    const { pipe, abort } = renderToPipeableStream(
+    const { pipe, abort } = renderToReadableStream(
       <ServerRouter
         context={reactRouterContext}
         url={request.url}
