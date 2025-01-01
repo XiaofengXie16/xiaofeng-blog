@@ -11,7 +11,8 @@ import { createReadableStreamFromReadable } from "@react-router/node";
 import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
 // import * as Sentry from "@sentry/remix";
-import { renderToPipeableStream } from "react-dom/server";
+  // @ts-expect-error
+  import { renderToReadableStream } from "react-dom/server.browser";
 // import { SENTRY_DSN } from "./constants/sentry";
 
 const ABORT_DELAY = 5_000;
