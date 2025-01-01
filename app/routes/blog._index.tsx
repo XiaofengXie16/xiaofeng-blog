@@ -7,6 +7,14 @@ import { parseMarkdownWithPreview } from "~/utils/markdown";
 import { BlogCard } from "~/components/Card";
 import { BLOG_FOLDER_PATH } from "~/constants/blog";
 
+type Post = {
+  filename: string;
+  title: string;
+  slug: string;
+  preview: string;
+  html: string;
+};
+
 export const loader: LoaderFunction = async () => {
   const filenames = await fs.readdir(BLOG_FOLDER_PATH);
 
@@ -33,7 +41,9 @@ export const loader: LoaderFunction = async () => {
 };
 
 export default function Posts() {
-  const { posts } = useLoaderData<typeof loader>();
+
+
+  const { posts } = useLoaderData<{ posts: Post[] }>();
 
   return (
     <main
@@ -57,7 +67,11 @@ export default function Posts() {
         >
           Blogs
         </h1>
-        <ul className={"flex list-none flex-col items-start gap-5 pb-20"}>
+        <ul
+          className={
+            "flex list-none flex-col items-start text-center sm:text-left pb-20"
+          }
+        >
           {posts.map(
             ({
               filename,

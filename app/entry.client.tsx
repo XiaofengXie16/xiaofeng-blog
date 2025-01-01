@@ -6,26 +6,9 @@
 
 import { HydratedRouter } from "react-router/dom";
 
-import { useLocation } from "react-router";
 import { startTransition, StrictMode, useEffect } from "react";
 import { hydrateRoot } from "react-dom/client";
-// import * as Sentry from "@sentry/remix";
-// import { SENTRY_DSN } from "./constants/sentry";
-import { useMatches } from "react-router";
-//
-// Sentry.init({
-//   dsn: SENTRY_DSN,
-//   tracesSampleRate: 1,
-//   replaysSessionSampleRate: 0.1,
-//   replaysOnErrorSampleRate: 1.0,
-//   integrations: [
-//     Sentry.browserTracingIntegration({
-//       useMatches,
-//       useLocation,
-//       useEffect,
-//     }),
-//   ],
-// });
+
 startTransition(() => {
   hydrateRoot(
     document,

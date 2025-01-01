@@ -10,11 +10,11 @@ export const BlogCard = ({  name, description, link }: CardParams) => {
       <a
         href={link}
         className={
-          "flex rounded gap-1 border-2 border-transparent hover:border-cyan-200 p-6"
+          "flex rounded gap-1 border-2 border-transparent hover:border-cyan-200 pr-6 pt-6 pb-6"
         }
         rel="prefetch"
       >
-        <div className={"w-2/3"}>
+        <div className={"sm:w-2/3 "}>
           <h1 className={"text-2xl text-pink-200 pb-2.5"}>{name}</h1>
           <h2 className={"text-white break-words"}>{description}</h2>
         </div>
