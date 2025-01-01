@@ -10,9 +10,10 @@ import type { AppLoadContext, EntryContext } from "react-router";
 import { createReadableStreamFromReadable } from "@react-router/node";
 import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
+// @ts-ignore
+  import { renderToPipeableStream } from "react-dom/server.browser";
+
 // import * as Sentry from "@sentry/remix";
-  // @ts-expect-error
-  import { renderToReadableStream } from "react-dom/server.browser";
 // import { SENTRY_DSN } from "./constants/sentry";
 
 const ABORT_DELAY = 5_000;
