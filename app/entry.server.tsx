@@ -49,7 +49,7 @@ function handleBotRequest(
 ) {
   return new Promise((resolve, reject) => {
     let shellRendered = false;
-    const { pipe, abort } = renderToReadableStream(
+    const { pipe, abort } = renderToPipeableStream(
       <ServerRouter
         context={reactRouterContext}
         url={request.url}
