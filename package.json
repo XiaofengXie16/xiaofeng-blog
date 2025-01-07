@@ -21,7 +21,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "@types/markdown-it": "^14.1.2",
     "gray-matter": "^4.0.3",
-    "isbot": "^5.1.19",
+    "isbot": "^5.1.20",
     "markdown-it": "^14.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -31,10 +31,10 @@
     "web-vitals": "^4.2.4"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "^0.5.9",
+    "@flydotio/dockerfile": "^0.6.0",
     "@react-router/dev": "^7.1.1",
     "@sentry/types": "^8.47.0",
-    "@types/react": "^19.0.2",
+    "@types/react": "^19.0.3",
     "@types/react-dom": "^19.0.2",
     "husky": "^9.1.7",
     "lint-staged": "^15.3.0",
