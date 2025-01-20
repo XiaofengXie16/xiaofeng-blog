@@ -15,9 +15,18 @@ import OrbStack from "~/assets/images/orbstack.png";
 import Oxc from "~/assets/images/oxc.png";
 import Obsidian from "~/assets/images/obsidian.png";
 import DSLR from "~/assets/images/dslr.png";
+import Windsurf from "~/assets/images/windsurf.svg";
 import { CATEGORY } from "~/constants/name";
 
 export const TOOLS = [
+  {
+    icon: Windsurf,
+    name: "Windsurf",
+    description:
+      "Windsurf is the world's first agentic IDE, powered by Codeium's AI Flow paradigm. It enables you to work both independently and collaboratively with AI to solve coding tasks.",
+    category: CATEGORY.DEVELOPMENT_TOOL,
+    link: "https://www.codeium.com/windsurf",
+  },
   {
     icon: Raycast,
     name: "Raycast",
