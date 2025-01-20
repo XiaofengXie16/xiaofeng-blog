@@ -4,22 +4,29 @@ type CardParams = {
   link: string;
 };
 
-export const BlogCard = ({  name, description, link }: CardParams) => {
+export const BlogCard = ({ name, description, link }: CardParams) => {
   return (
-    <div className={"flex w-full flex-col gap-1 rounded-2xl"}>
+    <div className="group rounded-2xl bg-gray-800/50 transition-all duration-200 hover:bg-gray-700/50">
       <a
         href={link}
-        className={
-          "flex rounded gap-1 pr-6 pt-6 pb-6"
-        }
+        className="block p-6 sm:p-8"
         rel="prefetch"
       >
-        <div className={"sm:w-2/3 "}>
-          <h1 className={"text-2xl text-pink-200 pb-2.5 hover:underline"}>{name}</h1>
-          <h2 className={"text-white break-words"}>{description}</h2>
-        </div>
+        <article>
+          <h2 className="mb-3 text-2xl font-semibold text-pink-200 transition-colors duration-200 group-hover:text-pink-300">
+            {name}
+          </h2>
+          <p className="text-gray-300 leading-relaxed">
+            {description}
+          </p>
+          <div className="mt-4 flex items-center text-sm text-gray-400">
+            <span className="group-hover:text-pink-200 transition-colors duration-200">
+              Read more
+              <span className="ml-1 inline-block transition-transform duration-200 group-hover:translate-x-1">→</span>
+            </span>
+          </div>
+        </article>
       </a>
     </div>
   );
 };
-

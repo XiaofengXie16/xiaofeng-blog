@@ -8,84 +8,57 @@ import { Link } from "react-router";
 
 export default function _index() {
   return (
-    <div
-      className={"h-screen w-screen bg-gray-700 overflow-auto overflow-x-hidden"}
-    >
-      <main
-        className={
-          "flex h-full flex-col items-center justify-center gap-24 pr-6 pl-6"
-        }
-      >
-        <section className={"flex flex-col items-center justify-center gap-10"}>
-          <h1 className="font-mono text-2xl text-white md:text-4xl">
-            Read,Think and Code
+    <div className="min-h-screen bg-gradient-to-b from-gray-800 to-gray-900 overflow-auto overflow-x-hidden">
+      <main className="flex min-h-screen flex-col items-center justify-center gap-16 px-6">
+        <section className="flex flex-col items-center justify-center gap-6 text-center">
+          <h1 className="font-mono text-3xl font-bold text-pink-200 md:text-5xl">
+            Read, Think and Code
           </h1>
-          <h2 className={"text-2xl text-white md:text-3xl"}>Xiaofeng Xie</h2>
+          <h2 className="text-2xl font-medium text-gray-200 md:text-3xl">
+            Xiaofeng Xie
+          </h2>
         </section>
-        <section className={"z-10 flex md:gap-20 gap-10 flex-fluid"}>
+        
+        <section className="z-10 flex gap-8 md:gap-16">
           <Link
             to="https://www.linkedin.com/in/xiaofengxie16/"
-            className={"md:h-12 md:w-12 h-6 w-6"}
+            className="transition-transform hover:scale-110"
           >
-            <img
-              src={LinkedinIcon}
-              className={"md:h-12 md:w-12 h-6 w-6"}
-              alt={"linkedin"}
-            />
+            <img src={LinkedinIcon} className="h-8 w-8 md:h-12 md:w-12" alt="linkedin" />
           </Link>
           <Link
             to="https://github.com/XiaofengXie16"
-            className={"md:h-12 md:w-12 h-6 w-6"}
+            className="transition-transform hover:scale-110"
           >
-            <img
-              src={GithubIcon}
-              className={"md:h-12 md:w-12 h-6 w-6"}
-              alt={"github"}
-            />
+            <img src={GithubIcon} className="h-8 w-8 md:h-12 md:w-12" alt="github" />
           </Link>
           <Link
             to="https://twitter.com/XiaofengXie16"
-            className={"md:h-12 md:w-12 h-6 w-6"}
+            className="transition-transform hover:scale-110"
           >
-            <img
-              src={TwitterIcon}
-              className={"md:h-12 md:w-12 h-6 w-6"}
-              alt={"twitter"}
-            />
+            <img src={TwitterIcon} className="h-8 w-8 md:h-12 md:w-12" alt="twitter" />
           </Link>
           <Link
             to="./tool"
-            prefetch={"intent"}
-            className={"md:h-12 md:w-12 h-6 w-6"}
+            prefetch="intent"
+            className="transition-transform hover:scale-110"
           >
-            <img
-              src={ToolIcon}
-              className={"md:h-12 md:w-12 h-6 w-6"}
-              alt={"blog"}
-            />
+            <img src={ToolIcon} className="h-8 w-8 md:h-12 md:w-12" alt="tools" />
           </Link>
           <Link
-            to={"./reading-list"}
-            prefetch={"intent"}
-            className={"md:h-12 md:w-12 h-6 w-6"}
+            to="./reading-list"
+            prefetch="intent"
+            className="transition-transform hover:scale-110"
           >
-            <img
-              src={BookIcon}
-              className={"md:h-12 md:w-12 h-6 w-6"}
-              alt={"readingList"}
-            />
+            <img src={BookIcon} className="h-8 w-8 md:h-12 md:w-12" alt="reading list" />
           </Link>
-            <Link
-                to={"./blog"}
-                prefetch={"intent"}
-                className={"md:h-12 md:w-12 h-6 w-6"}
-            >
-                <img
-                    src={BlogIcon}
-                    className={"md:h-12 md:w-12 h-6 w-6"}
-                    alt={"blog"}
-                />
-            </Link>
+          <Link
+            to="./blog"
+            prefetch="intent"
+            className="transition-transform hover:scale-110"
+          >
+            <img src={BlogIcon} className="h-8 w-8 md:h-12 md:w-12" alt="blog" />
+          </Link>
         </section>
       </main>
     </div>
