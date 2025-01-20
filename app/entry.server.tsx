@@ -25,7 +25,6 @@ export default async function handleRequest(
       signal: request.signal,
       onError(error: any) {
         console.error(error);
-        // biome-ignore lint/style/noParameterAssign: It's ok
         status = 500;
       },
     },

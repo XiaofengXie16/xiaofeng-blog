@@ -1,5 +1,4 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from "react-router";
-// import { withSentry } from "@sentry/remix";
 
 import stylesheet from "./tailwind.css?url";
 
@@ -77,4 +76,3 @@ function App() {
 }
 
 export default App;
-// export default withSentry(App);
