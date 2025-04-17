@@ -20,7 +20,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   const filenames = await fs.readdir(folderPath);
 
   const matchingFile = filenames.find(
-    (filename) => filename.endsWith(".md") && filename.includes(slug),
+    (filename: string) => filename.endsWith(".md") && filename.includes(slug),
   );
   if (!matchingFile) {
     throw new Response("Blog post not found", { status: 404 });
@@ -69,7 +69,7 @@ export default function BlogPost() {
           <h1 className="mb-12 text-4xl font-bold tracking-tight text-pink-200 sm:text-5xl">
             {title}
           </h1>
-          
+
           <div 
             className="
               prose-h2:text-3xl prose-h2:font-bold prose-h2:text-pink-200 prose-h2:mt-16 prose-h2:mb-8

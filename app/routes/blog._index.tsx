@@ -20,8 +20,8 @@ export const loader: LoaderFunction = async () => {
 
   const posts = await Promise.all(
     filenames
-      .filter((filename) => filename.endsWith(".md"))
-      .map(async (filename) => {
+      .filter((filename: string) => filename.endsWith(".md"))
+      .map(async (filename: string) => {
         const filePath = path.join(BLOG_FOLDER_PATH, filename);
         const content = await fs.readFile(filePath, "utf-8");
         const { frontMatter, html, preview } = parseMarkdownWithPreview(
@@ -57,7 +57,7 @@ export default function Posts() {
             Read, Think and Code
           </Link>
         </nav>
-        
+
         <h1 className="mb-12 text-4xl font-bold tracking-tight text-pink-200 sm:text-5xl">
           Blogs
         </h1>

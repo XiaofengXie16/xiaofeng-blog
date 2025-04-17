@@ -11,7 +11,9 @@
     "lint": "oxlint .",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@react-router/fs-routes": "^7.5.0",
@@ -35,9 +37,13 @@
   "devDependencies": {
     "@flydotio/dockerfile": "^0.7.10",
     "@react-router/dev": "^7.5.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^22.14.1",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
     "lint-staged": "^15.5.1",
     "oxlint": "^0.16.6",
     "prettier": "^3.5.3",

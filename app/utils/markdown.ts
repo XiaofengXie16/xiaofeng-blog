@@ -26,8 +26,14 @@ export const parseMarkdownWithPreview = (
     plainText.slice(0, previewLength) +
     (plainText.length > previewLength ? "..." : "");
 
+  // Convert any Date objects in frontMatter back to strings
+  const processedData = { ...data };
+  if (processedData.date instanceof Date) {
+    processedData.date = processedData.date.toISOString().split('T')[0];
+  }
+
   return {
-    frontMatter: data,
+    frontMatter: processedData,
     html,
     preview,
   };
