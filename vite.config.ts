@@ -10,7 +10,6 @@ export default defineConfig({
         tsconfigPaths()
     ],
     server: {
-        host: '192.168.215.2',
         port: 3000
     },
     build: {
