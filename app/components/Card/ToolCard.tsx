@@ -28,7 +28,8 @@ export const ToolCard = ({ icon, name, description, category, link }: CardParams
       <a
         href={link}
         className="flex flex-col sm:flex-row p-6 gap-4 rounded-2xl border-2 border-transparent transition-all duration-200 hover:border-cyan-200/30"
-        rel="prefetch"
+        target="_blank"
+        rel="noopener noreferrer"
       >
         <div className="flex items-center justify-center sm:justify-start">
           <img 

@@ -16,7 +16,31 @@ export const meta = () => {
 
 export const ErrorBoundary = () => {
   const error = useRouteError();
-  console.error(error);
+  
+  // Log error to console in development
+  if (process.env.NODE_ENV === 'development') {
+    console.error('ErrorBoundary caught an error:', error);
+  }
+
+  const getErrorMessage = (error: unknown): string => {
+    if (error instanceof Error) {
+      return error.message;
+    }
+    if (typeof error === 'string') {
+      return error;
+    }
+    return "An unexpected error occurred. Don't worry, it happens!";
+  };
+
+  const getErrorStack = (error: unknown): string | null => {
+    if (error instanceof Error && process.env.NODE_ENV === 'development') {
+      return error.stack ?? null;
+    }
+    return null;
+  };
+
+  const errorMessage = getErrorMessage(error);
+  const errorStack = getErrorStack(error);
 
   return (
     <html
@@ -34,15 +58,16 @@ export const ErrorBoundary = () => {
             Oops! Something went wrong...
           </h1>
           <p className="text-lg text-gray-400 mb-6">
-            {error instanceof Error
-              ? error.message
-              : "An unexpected error occurred. Don’t worry, it happens!"}
+            {errorMessage}
           </p>
 
-          {error instanceof Error && (
-            <pre className="bg-gray-700 p-4 rounded-lg text-sm text-gray-400 overflow-x-auto mb-6 max-h-32 border border-gray-600 animate-fade-in">
-              {error.stack}
-            </pre>
+          {errorStack && (
+            <details className="mb-6">
+              <summary className="cursor-pointer text-gray-300 mb-2">Show Error Details</summary>
+              <pre className="bg-gray-700 p-4 rounded-lg text-sm text-gray-400 overflow-x-auto max-h-32 border border-gray-600 animate-fade-in text-left">
+                {errorStack}
+              </pre>
+            </details>
           )}
 
           <a
