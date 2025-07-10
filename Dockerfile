@@ -1,56 +1,45 @@
-# syntax=docker/dockerfile:1
+# syntax = docker/dockerfile:1
 
-# Use the official Bun image
-FROM oven/bun:latest as base
+# Adjust NODE_VERSION as desired
+ARG NODE_VERSION=21.6.2
+FROM node:${NODE_VERSION}-slim as base
 
-# Label for the runtime environment
 LABEL fly_launch_runtime="Remix"
 
-# Set the working directory
+# Remix app lives here
 WORKDIR /app
 
 # Set production environment
 ENV NODE_ENV="production"
 
+
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
-# Copy package files first for better caching
-COPY package.json bun.lockb ./
+# Install packages needed to build node modules
+RUN apt-get update -qq && \
+    apt-get install -y build-essential pkg-config python-is-python3
 
-# Install dependencies using Bun with clean install
-RUN bun install --frozen-lockfile --production=false
+# Install node modules
+COPY --link package-lock.json package.json ./
+RUN npm ci --include=dev
 
 # Copy application code
-COPY . .
+COPY --link . .
 
-# Build application using Bun
-RUN bun run build
+# Build application
+RUN npm run build
 
 # Remove development dependencies
-RUN bun install --production --frozen-lockfile
+RUN npm prune --omit=dev
+
 
 # Final stage for app image
 FROM base
 
-# Create non-root user for security
-RUN addgroup --system --gid 1001 bun
-RUN adduser --system --uid 1001 bun
-
-# Copy only the built application and production dependencies
-COPY --from=build --chown=bun:bun /app/build /app/build
-COPY --from=build --chown=bun:bun /app/node_modules /app/node_modules
-COPY --from=build --chown=bun:bun /app/package.json /app/package.json
-
-# Switch to non-root user
-USER bun
-
-# Expose port
-EXPOSE 3000
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/ || exit 1
+# Copy built application
+COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
-CMD ["bun", "run", "start"]
+EXPOSE 3000
+CMD [ "npm", "run", "start" ]
