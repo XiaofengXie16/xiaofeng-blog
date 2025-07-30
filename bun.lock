@@ -7,7 +7,6 @@
         "@react-router/fs-routes": "^7.7.1",
         "@react-router/node": "^7.7.1",
         "@react-router/serve": "^7.7.1",
-        "@rollup/rollup-linux-x64-gnu": "^4.46.2",
         "@tailwindcss/typography": "^0.5.16",
         "@tailwindcss/vite": "^4.1.11",
         "@types/markdown-it": "^14.1.2",
@@ -222,8 +221,6 @@
     "@react-router/serve": ["@react-router/serve@7.7.1", "", { "dependencies": { "@react-router/express": "7.7.1", "@react-router/node": "7.7.1", "compression": "^1.7.4", "express": "^4.19.2", "get-port": "5.1.1", "morgan": "^1.10.0", "source-map-support": "^0.5.21" }, "peerDependencies": { "react-router": "7.7.1" }, "bin": { "react-router-serve": "bin.js" } }, "sha512-LyAiX+oI+6O6j2xWPUoKW+cgayUf3USBosSMv73Jtwi99XUhSDu2MUhM+BB+AbrYRubauZ83QpZTROiXoaf8jA=="],
 
     "@rollup/rollup-darwin-arm64": ["@rollup/rollup-darwin-arm64@4.40.0", "", { "os": "darwin", "cpu": "arm64" }, ""],
-
-    "@rollup/rollup-linux-x64-gnu": ["@rollup/rollup-linux-x64-gnu@4.46.2", "", { "os": "linux", "cpu": "x64" }, "sha512-Jj5a9RUoe5ra+MEyERkDKLwTXVu6s3aACP51nkfnK9wJTraCC8IMe3snOfALkrjTYd2G1ViE1hICj0fZ7ALBPA=="],
 
     "@tailwindcss/node": ["@tailwindcss/node@4.1.11", "", { "dependencies": { "@ampproject/remapping": "^2.3.0", "enhanced-resolve": "^5.18.1", "jiti": "^2.4.2", "lightningcss": "1.30.1", "magic-string": "^0.30.17", "source-map-js": "^1.2.1", "tailwindcss": "4.1.11" } }, ""],
 
