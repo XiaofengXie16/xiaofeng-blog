@@ -11,11 +11,11 @@
         "@tailwindcss/vite": "^4.1.11",
         "@types/markdown-it": "^14.1.2",
         "gray-matter": "^4.0.3",
-        "isbot": "^5.1.28",
+        "isbot": "^5.1.29",
         "markdown-it": "^14.1.0",
-        "oxlint": "^1.8.0",
-        "react": "^19.1.0",
-        "react-dom": "^19.1.0",
+        "oxlint": "^1.9.0",
+        "react": "^19.1.1",
+        "react-dom": "^19.1.1",
         "react-router": "^7.7.1",
         "react-router-dom": "^7.7.1",
         "tailwindcss": "^4.1.11",
@@ -29,8 +29,8 @@
         "@testing-library/jest-dom": "^6.6.4",
         "@testing-library/react": "^16.3.0",
         "@types/node": "^24.1.0",
-        "@types/react": "^19.1.8",
-        "@types/react-dom": "^19.1.6",
+        "@types/react": "^19.1.9",
+        "@types/react-dom": "^19.1.7",
         "@vitest/coverage-v8": "3.2.4",
         "husky": "^9.1.7",
         "jsdom": "^26.1.0",
@@ -192,21 +192,21 @@
 
     "@npmcli/promise-spawn": ["@npmcli/promise-spawn@6.0.2", "", { "dependencies": { "which": "^3.0.0" } }, ""],
 
-    "@oxlint/darwin-arm64": ["@oxlint/darwin-arm64@1.8.0", "", { "os": "darwin", "cpu": "arm64" }, "sha512-1juYJF1xqRNkswzDSN1V44NoZ+O2Mkc9LjbkDB/UErb8dxTqFhCZC3CQR6Em55/tys1FtajXgK3B+ykWnY9HNQ=="],
+    "@oxlint/darwin-arm64": ["@oxlint/darwin-arm64@1.9.0", "", { "os": "darwin", "cpu": "arm64" }, "sha512-VRxI/T0I4bq+xoaI0qNFeGPxOOganHlfLmx8JbFFZswoxMkm5lIvVYScDKLrsbbPSe4bcZ5v1DmX5sNGQ619Uw=="],
 
-    "@oxlint/darwin-x64": ["@oxlint/darwin-x64@1.8.0", "", { "os": "darwin", "cpu": "x64" }, "sha512-5b7J/XE2eGhx3+vw6IFuuL0BbIF3wRzo4SWHVXN9rO3WYq2YpoHToY4C5WMWb8toVZcoJlx4Y1lq3IO2V78zTg=="],
+    "@oxlint/darwin-x64": ["@oxlint/darwin-x64@1.9.0", "", { "os": "darwin", "cpu": "x64" }, "sha512-vMBa3eNrJMSBApXvsx6FgMuWCnNE+ETJJieLPhemZKctMNWOJQX+2i09CG2kb1IkmxagLapH7dZ4i0+Lf13mqg=="],
 
-    "@oxlint/linux-arm64-gnu": ["@oxlint/linux-arm64-gnu@1.8.0", "", { "os": "linux", "cpu": "arm64" }, "sha512-pzfk9IZBbYuIYn4sbT//Vox8B8e8hOZPkIQnNAdzhpGtRjV4NYOgNL5/h2QZC+ecmxl8H+Gi9WV6dyKjFrBtcw=="],
+    "@oxlint/linux-arm64-gnu": ["@oxlint/linux-arm64-gnu@1.9.0", "", { "os": "linux", "cpu": "arm64" }, "sha512-8wnMjloRbz7hPKvcgqd8HKNgkEgFJZvp9Los2pdE1CKh33msIxIXPGT3KKhYzyrtBaRaG2LJHshUPub02Q+x9A=="],
 
-    "@oxlint/linux-arm64-musl": ["@oxlint/linux-arm64-musl@1.8.0", "", { "os": "linux", "cpu": "arm64" }, "sha512-6rpaeAG271wbUNM+WeJhdvJDDMwfoenm7rPY304dxnC+fcuR8Q0LSv09dGeNWrsqjjZuDP9R10qR154nysBxFg=="],
+    "@oxlint/linux-arm64-musl": ["@oxlint/linux-arm64-musl@1.9.0", "", { "os": "linux", "cpu": "arm64" }, "sha512-elj9FTNXvq9oP8UedeHHq2R8lCtTmBGvUO/xLez734zVx3tvBl3avmuEfPBqR4wlUKDANExDh3Rg0pssflhw9w=="],
 
-    "@oxlint/linux-x64-gnu": ["@oxlint/linux-x64-gnu@1.8.0", "", { "os": "linux", "cpu": "x64" }, "sha512-qPEF8tKMu+63b58gPfwU3KyJf2z9KyorbrC0yGXFHQLzRPEtrh6bAjf+AzCs3n8WhDR1K6jPgcPT4Sp8bahCyQ=="],
+    "@oxlint/linux-x64-gnu": ["@oxlint/linux-x64-gnu@1.9.0", "", { "os": "linux", "cpu": "x64" }, "sha512-d7VjQttKDgXKIYY3tm2GXTD83dyI+D8POGdPRT8GjhitHKasHQWFMBDG5iLp60FNc5Ky1cIe/2nwKW9ReQvhKw=="],
 
-    "@oxlint/linux-x64-musl": ["@oxlint/linux-x64-musl@1.8.0", "", { "os": "linux", "cpu": "x64" }, "sha512-JyErk/LsLg/tA3XkHhU8VIxahOdq56L99mbpMFGLTkOQgtnhY2MDAYULVgOuFFX3v6Q02o4mpIR/SwW/tRnZlg=="],
+    "@oxlint/linux-x64-musl": ["@oxlint/linux-x64-musl@1.9.0", "", { "os": "linux", "cpu": "x64" }, "sha512-R9vi5LGxNNi3pisp4dG7Ez00mAvCeki8VI5DUg6W1MR0GTnaejlVtMflziA2jqpdTGOK4bjLDsHKIadGC1SMVg=="],
 
-    "@oxlint/win32-arm64": ["@oxlint/win32-arm64@1.8.0", "", { "os": "win32", "cpu": "arm64" }, "sha512-QvhtDAU9bBdC2m5xO+ibKyMG4KZR44wB0vDbQ5YkQxJiuXrlleHLyz0+saFzVYQ/Fvc0QgIRTIwiVz9dzxidVw=="],
+    "@oxlint/win32-arm64": ["@oxlint/win32-arm64@1.9.0", "", { "os": "win32", "cpu": "arm64" }, "sha512-TiV7xYBMhkc/r0X+c9cMwGKUWYJRlWnI61m8powqer6lMJ8VfDe1RkRF4ttO5wlPGkiBwBa3vYWAgxaXc9JAMQ=="],
 
-    "@oxlint/win32-x64": ["@oxlint/win32-x64@1.8.0", "", { "os": "win32", "cpu": "x64" }, "sha512-veXJXgF905UOvuxtmvzM328b4Itm8Fyu+lUq4PagXOmyRScevaVUXq6++ui3A/Gxd8yo0SHspHCbYkpuvJkXqQ=="],
+    "@oxlint/win32-x64": ["@oxlint/win32-x64@1.9.0", "", { "os": "win32", "cpu": "x64" }, "sha512-OWqqkXsLrpS1uQsxjNqiOkC9a/CszMLa3VwlRcpm/z3iPxEL/qEVjGfjZX6XZw8Q6YukFB77rgYqzotvtCvI1A=="],
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, ""],
 
@@ -254,9 +254,9 @@
 
     "@types/node": ["@types/node@24.1.0", "", { "dependencies": { "undici-types": "~7.8.0" } }, "sha512-ut5FthK5moxFKH2T1CUOC6ctR67rQRvvHdFLCD2Ql6KXmMuCrjsSsRI9UsLCm9M18BMwClv4pn327UvB7eeO1w=="],
 
-    "@types/react": ["@types/react@19.1.8", "", { "dependencies": { "csstype": "^3.0.2" } }, ""],
+    "@types/react": ["@types/react@19.1.9", "", { "dependencies": { "csstype": "^3.0.2" } }, "sha512-WmdoynAX8Stew/36uTSVMcLJJ1KRh6L3IZRx1PZ7qJtBqT3dYTgyDTx8H1qoRghErydW7xw9mSJ3wS//tCRpFA=="],
 
-    "@types/react-dom": ["@types/react-dom@19.1.6", "", { "peerDependencies": { "@types/react": "^19.0.0" } }, ""],
+    "@types/react-dom": ["@types/react-dom@19.1.7", "", { "peerDependencies": { "@types/react": "^19.0.0" } }, "sha512-i5ZzwYpqjmrKenzkoLM2Ibzt6mAsM7pxB6BCIouEVVmgiqaMj1TjaK7hnA36hbW5aZv20kx7Lw6hWzPWg0Rurw=="],
 
     "@vitest/coverage-v8": ["@vitest/coverage-v8@3.2.4", "", { "dependencies": { "@ampproject/remapping": "^2.3.0", "@bcoe/v8-coverage": "^1.0.2", "ast-v8-to-istanbul": "^0.3.3", "debug": "^4.4.1", "istanbul-lib-coverage": "^3.2.2", "istanbul-lib-report": "^3.0.1", "istanbul-lib-source-maps": "^5.0.6", "istanbul-reports": "^3.1.7", "magic-string": "^0.30.17", "magicast": "^0.3.5", "std-env": "^3.9.0", "test-exclude": "^7.0.1", "tinyrainbow": "^2.0.0" }, "peerDependencies": { "@vitest/browser": "3.2.4", "vitest": "3.2.4" }, "optionalPeers": ["@vitest/browser"] }, ""],
 
@@ -538,7 +538,7 @@
 
     "is-potential-custom-element-name": ["is-potential-custom-element-name@1.0.1", "", {}, ""],
 
-    "isbot": ["isbot@5.1.28", "", {}, ""],
+    "isbot": ["isbot@5.1.29", "", {}, "sha512-DelDWWoa3mBoyWTq3wjp+GIWx/yZdN7zLUE7NFhKjAiJ+uJVRkbLlwykdduCE4sPUUy8mlTYTmdhBUYu91F+sw=="],
 
     "isexe": ["isexe@2.0.0", "", {}, ""],
 
@@ -670,7 +670,7 @@
 
     "os-tmpdir": ["os-tmpdir@1.0.2", "", {}, ""],
 
-    "oxlint": ["oxlint@1.8.0", "", { "optionalDependencies": { "@oxlint/darwin-arm64": "1.8.0", "@oxlint/darwin-x64": "1.8.0", "@oxlint/linux-arm64-gnu": "1.8.0", "@oxlint/linux-arm64-musl": "1.8.0", "@oxlint/linux-x64-gnu": "1.8.0", "@oxlint/linux-x64-musl": "1.8.0", "@oxlint/win32-arm64": "1.8.0", "@oxlint/win32-x64": "1.8.0" }, "bin": { "oxlint": "bin/oxlint", "oxc_language_server": "bin/oxc_language_server" } }, "sha512-kDC3zuplBM35GbrZ/3rRdDrZ6unpUkUjM8P3VSbyLgaYh2xZeg0TLLDbYALNAUyChVonNafXzgHZmbwnHfrTRg=="],
+    "oxlint": ["oxlint@1.9.0", "", { "optionalDependencies": { "@oxlint/darwin-arm64": "1.9.0", "@oxlint/darwin-x64": "1.9.0", "@oxlint/linux-arm64-gnu": "1.9.0", "@oxlint/linux-arm64-musl": "1.9.0", "@oxlint/linux-x64-gnu": "1.9.0", "@oxlint/linux-x64-musl": "1.9.0", "@oxlint/win32-arm64": "1.9.0", "@oxlint/win32-x64": "1.9.0" }, "bin": { "oxlint": "bin/oxlint", "oxc_language_server": "bin/oxc_language_server" } }, "sha512-vvqpkRt7UA1F1DoOJGYO2+T52L6jV4RxS+9hFVCPQ0X+hcNVtbl/TxQuwjobBw8Yw2U8Rb9d8VLJxa8eRSqpQQ=="],
 
     "package-json-from-dist": ["package-json-from-dist@1.0.1", "", {}, ""],
 
@@ -722,9 +722,9 @@
 
     "raw-body": ["raw-body@2.5.2", "", { "dependencies": { "bytes": "3.1.2", "http-errors": "2.0.0", "iconv-lite": "0.4.24", "unpipe": "1.0.0" } }, ""],
 
-    "react": ["react@19.1.0", "", {}, ""],
+    "react": ["react@19.1.1", "", {}, "sha512-w8nqGImo45dmMIfljjMwOGtbmC/mk4CMYhWIicdSflH91J9TyCyczcPFXJzrZ/ZXcgGRFeP6BU0BEJTw6tZdfQ=="],
 
-    "react-dom": ["react-dom@19.1.0", "", { "dependencies": { "scheduler": "^0.26.0" }, "peerDependencies": { "react": "^19.1.0" } }, ""],
+    "react-dom": ["react-dom@19.1.1", "", { "dependencies": { "scheduler": "^0.26.0" }, "peerDependencies": { "react": "^19.1.1" } }, "sha512-Dlq/5LAZgF0Gaz6yiqZCf6VCcZs1ghAJyrsu84Q/GT0gV+mCxbfmKNoGRKBYMJ8IEdGPqu49YWXD02GCknEDkw=="],
 
     "react-is": ["react-is@17.0.2", "", {}, ""],
 
@@ -995,6 +995,8 @@
     "@isaacs/fs-minipass/minipass": ["minipass@7.1.2", "", {}, ""],
 
     "@npmcli/git/lru-cache": ["lru-cache@7.18.3", "", {}, ""],
+
+    "@react-router/dev/isbot": ["isbot@5.1.28", "", {}, ""],
 
     "@testing-library/dom/@babel/code-frame": ["@babel/code-frame@7.24.2", "", { "dependencies": { "@babel/highlight": "^7.24.2", "picocolors": "^1.0.0" } }, ""],
 
