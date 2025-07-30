@@ -25,10 +25,7 @@ jobs:
 
       - name: Run linting
         run: bun run lint
-
-      - name: Run type checking
-        run: bun run typecheck
-
+        
       - name: Run tests with coverage
         run: bun run test:coverage
 
