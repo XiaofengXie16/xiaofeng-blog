@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 type CardParams = {
   name: string;
   description: string;
@@ -7,10 +9,10 @@ type CardParams = {
 export const BlogCard = ({ name, description, link }: CardParams) => {
   return (
     <div className="group rounded-2xl bg-gray-800/50 transition-all duration-200 hover:bg-gray-700/50">
-      <a
-        href={link}
+      <Link
+        to={link}
         className="block p-6 sm:p-8"
-        rel="prefetch"
+        prefetch="intent"
       >
         <article>
           <h2 className="mb-3 text-2xl font-semibold text-pink-200 transition-colors duration-200 group-hover:text-pink-300">
@@ -26,7 +28,7 @@ export const BlogCard = ({ name, description, link }: CardParams) => {
             </span>
           </div>
         </article>
-      </a>
+      </Link>
     </div>
   );
 };

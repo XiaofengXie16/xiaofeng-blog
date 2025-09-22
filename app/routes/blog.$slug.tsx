@@ -1,14 +1,13 @@
 import fs from "fs/promises";
 import path from "path";
+import type { LoaderFunction } from "react-router";
 import { Link, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
-import { LoaderFunction } from "react-router";
 import { BLOG_FOLDER_PATH } from "~/constants/blog";
-import {parseMarkdownWithPreview} from "~/utils/markdown";
+import { parseMarkdownWithPreview } from "~/utils/markdown";
 
 type LoaderData = {
   title: string;
-  date: string;
   content: string;
 };
 
@@ -16,24 +15,34 @@ export const loader: LoaderFunction = async ({ params }) => {
   const { slug } = params;
   invariant(slug, "Expected 'slug' parameter");
 
-  const folderPath = BLOG_FOLDER_PATH;
-  const filenames = await fs.readdir(folderPath);
+  const filenames = await fs.readdir(BLOG_FOLDER_PATH);
+  let matchedPost: LoaderData | null = null;
 
-  const matchingFile = filenames.find(
-    (filename: string) => filename.endsWith(".md") && filename.includes(slug),
-  );
-  if (!matchingFile) {
+  for (const filename of filenames) {
+    if (!filename.endsWith(".md")) continue;
+
+    const filePath = path.join(BLOG_FOLDER_PATH, filename);
+    const fileContent = await fs.readFile(filePath, "utf-8");
+    const parsed = parseMarkdownWithPreview(fileContent, 400);
+    const fileSlug =
+      typeof parsed.frontMatter.slug === "string"
+        ? parsed.frontMatter.slug
+        : filename.replace(/\.md$/, "");
+
+    if (fileSlug === slug) {
+      matchedPost = {
+        title: parsed.frontMatter.title || slug,
+        content: parsed.html,
+      };
+      break;
+    }
+  }
+
+  if (!matchedPost) {
     throw new Response("Blog post not found", { status: 404 });
   }
 
-  const filePath = path.join(folderPath, matchingFile);
-  const fileContent = await fs.readFile(filePath, "utf-8");
-  const { frontMatter, html } = parseMarkdownWithPreview(fileContent,400);
-
-  return {
-    title: frontMatter.title || slug,
-    content: html,
-  };
+  return matchedPost;
 };
 
 export default function BlogPost() {
@@ -70,7 +79,7 @@ export default function BlogPost() {
             {title}
           </h1>
 
-          <div 
+          <div
             className="
               prose-h2:text-3xl prose-h2:font-bold prose-h2:text-pink-200 prose-h2:mt-16 prose-h2:mb-8
               prose-h3:text-2xl prose-h3:font-semibold prose-h3:text-pink-200/90 prose-h3:mt-12 prose-h3:mb-6
@@ -114,7 +123,7 @@ export default function BlogPost() {
               [&>.pros-cons-list>li:before]:text-pink-200/70
               [&>.pros-cons-list>li:before]:mr-2
             "
-            dangerouslySetInnerHTML={{ __html: content }} 
+            dangerouslySetInnerHTML={{ __html: content }}
           />
         </article>
       </div>

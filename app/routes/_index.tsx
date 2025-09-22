@@ -18,26 +18,32 @@ export default function _index() {
             Xiaofeng Xie
           </h2>
         </section>
-        
+
         <section className="z-10 flex gap-8 md:gap-16">
-          <Link
-            to="https://www.linkedin.com/in/xiaofengxie16/"
+          <a
+            href="https://www.linkedin.com/in/xiaofengxie16/"
             className="transition-transform hover:scale-110"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <img src={LinkedinIcon} className="h-8 w-8 md:h-12 md:w-12" alt="linkedin" />
-          </Link>
-          <Link
-            to="https://github.com/XiaofengXie16"
+          </a>
+          <a
+            href="https://github.com/XiaofengXie16"
             className="transition-transform hover:scale-110"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <img src={GithubIcon} className="h-8 w-8 md:h-12 md:w-12" alt="github" />
-          </Link>
-          <Link
-            to="https://twitter.com/XiaofengXie16"
+          </a>
+          <a
+            href="https://twitter.com/XiaofengXie16"
             className="transition-transform hover:scale-110"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <img src={TwitterIcon} className="h-8 w-8 md:h-12 md:w-12" alt="twitter" />
-          </Link>
+          </a>
           <Link
             to="./tool"
             prefetch="intent"

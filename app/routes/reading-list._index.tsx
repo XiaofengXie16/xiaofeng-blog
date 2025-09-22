@@ -21,27 +21,29 @@ const ReadingList = () => {
           Reading List
         </h1>
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {BOOKS.map(({ name, icon, link }) => (
             <li key={name} className="group list-none">
-              <Link
-                to={link}
+              <a
+                href={link}
                 className="block transition duration-200 group-hover:opacity-90"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <div className="aspect-[3/4] overflow-hidden rounded-xl bg-gray-800/50">
-                  <img 
-                    src={icon} 
-                    alt={name} 
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" 
+                  <img
+                    src={icon}
+                    alt={name}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
                 <h2 className="mt-4 text-center text-xl font-medium text-gray-200 group-hover:text-pink-200">
                   {name}
                 </h2>
-              </Link>
+              </a>
             </li>
           ))}
-        </div>
+        </ul>
       </div>
     </main>
   );
