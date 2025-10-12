@@ -1,7 +1,11 @@
-import { Link } from "react-router";
+import { createFileRoute, Link } from "@tanstack/react-router"
 import { BOOKS } from "~/constants/book";
 
-const ReadingList = () => {
+export const Route = createFileRoute('/reading-list/')({
+  component: ReadingList,
+})
+
+function ReadingList() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-800 to-gray-900">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
@@ -47,6 +51,4 @@ const ReadingList = () => {
       </div>
     </main>
   );
-};
-
-export default ReadingList;
+}

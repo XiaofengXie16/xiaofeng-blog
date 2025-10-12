@@ -2,15 +2,13 @@
   "include": [
     "env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    ".react-router/types/**/*"
+    "**/*.tsx"
   ],
   "compilerOptions": {
-    "types": ["@react-router/node", "vite/client"],
+    "types": ["vite/client"],
     "skipLibCheck": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "rootDirs": [".", "./.react-router/types"],
     "lib": [
       "DOM",
       "DOM.Iterable",

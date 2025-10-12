@@ -1,7 +1,6 @@
+import { createFileRoute, Link } from "@tanstack/react-router"
 import fs from "fs/promises";
 import path from "path";
-import type { LoaderFunction } from "react-router";
-import { Link, useLoaderData } from "react-router";
 import invariant from "tiny-invariant";
 import { BLOG_FOLDER_PATH } from "~/constants/blog";
 import { parseMarkdownWithPreview } from "~/utils/markdown";
@@ -11,42 +10,45 @@ type LoaderData = {
   content: string;
 };
 
-export const loader: LoaderFunction = async ({ params }) => {
-  const { slug } = params;
-  invariant(slug, "Expected 'slug' parameter");
+export const Route = createFileRoute('/blog/$slug')({
+  loader: async ({ params }) => {
+    const { slug } = params;
+    invariant(slug, "Expected 'slug' parameter");
 
-  const filenames = await fs.readdir(BLOG_FOLDER_PATH);
-  let matchedPost: LoaderData | null = null;
+    const filenames = await fs.readdir(BLOG_FOLDER_PATH);
+    let matchedPost: LoaderData | null = null;
 
-  for (const filename of filenames) {
-    if (!filename.endsWith(".md")) continue;
+    for (const filename of filenames) {
+      if (!filename.endsWith(".md")) continue;
 
-    const filePath = path.join(BLOG_FOLDER_PATH, filename);
-    const fileContent = await fs.readFile(filePath, "utf-8");
-    const parsed = parseMarkdownWithPreview(fileContent, 400);
-    const fileSlug =
-      typeof parsed.frontMatter.slug === "string"
-        ? parsed.frontMatter.slug
-        : filename.replace(/\.md$/, "");
+      const filePath = path.join(BLOG_FOLDER_PATH, filename);
+      const fileContent = await fs.readFile(filePath, "utf-8");
+      const parsed = parseMarkdownWithPreview(fileContent, 400);
+      const fileSlug =
+        typeof parsed.frontMatter.slug === "string"
+          ? parsed.frontMatter.slug
+          : filename.replace(/\.md$/, "");
 
-    if (fileSlug === slug) {
-      matchedPost = {
-        title: parsed.frontMatter.title || slug,
-        content: parsed.html,
-      };
-      break;
+      if (fileSlug === slug) {
+        matchedPost = {
+          title: parsed.frontMatter.title || slug,
+          content: parsed.html,
+        };
+        break;
+      }
     }
-  }
 
-  if (!matchedPost) {
-    throw new Response("Blog post not found", { status: 404 });
-  }
+    if (!matchedPost) {
+      throw new Response("Blog post not found", { status: 404 });
+    }
 
-  return matchedPost;
-};
+    return matchedPost;
+  },
+  component: BlogPost,
+})
 
-export default function BlogPost() {
-  const { title, content } = useLoaderData<LoaderData>();
+function BlogPost() {
+  const { title, content } = Route.useLoaderData();
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-800 to-gray-900">

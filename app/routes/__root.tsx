@@ -1,22 +1,38 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useRouteError } from "react-router";
+import {
+  Outlet,
+  createRootRoute,
+  HeadContent,
+  Scripts,
+} from "@tanstack/react-router"
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import stylesheet from "../tailwind.css?url"
+import { getRouter } from '../router'
 
-import stylesheet from "./tailwind.css?url";
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: ReturnType<typeof getRouter>
+  }
+}
 
-export const links = () => [
-    { rel: "stylesheet", href: stylesheet },
-];
+export const Route = createRootRoute({
+  head: () => ({
+    meta: [
+      { charSet: "utf-8" },
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
+      },
+      { title: "Xiaofeng's Blog" }
+    ],
+    links: [
+      { rel: "stylesheet", href: stylesheet },
+    ],
+  }),
+  errorComponent: ErrorBoundary,
+  component: RootLayout,
+})
 
-export const meta = () => {
-  return [
-    { title: "Xiaofeng's Blog" },
-    { charset: "utf-8" },
-    { viewport: "width=device-width,initial-scale=1" },
-  ];
-};
-
-export const ErrorBoundary = () => {
-  const error = useRouteError();
-  
+function ErrorBoundary({ error }: { error: unknown }) {
   // Log error to console in development
   if (process.env.NODE_ENV === 'development') {
     console.error('ErrorBoundary caught an error:', error);
@@ -49,8 +65,7 @@ export const ErrorBoundary = () => {
     >
       <head>
         <title>Oh no!</title>
-        <Meta />
-        <Links />
+        <HeadContent />
       </head>
       <body className="flex justify-center items-center min-h-screen">
         <div className="relative p-8 max-w-xl mx-4 text-center">
@@ -81,23 +96,19 @@ export const ErrorBoundary = () => {
       </body>
     </html>
   );
-};
-function App() {
+}
+
+function RootLayout() {
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
+        <HeadContent />
       </head>
       <body>
         <Outlet />
-        <ScrollRestoration />
         <Scripts />
+        <TanStackRouterDevtools />
       </body>
     </html>
-  );
+  )
 }
-
-export default App;

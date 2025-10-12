@@ -39,17 +39,17 @@ export const ToolCard = ({ icon, name, description, category, link }: CardParams
           />
         </div>
         <div className="flex-1 min-w-0">
-          <h1 className="text-xl font-semibold text-pink-200 mb-1">{name}</h1>
-          <h2 className="text-gray-200 break-words leading-relaxed">{description}</h2>
+          <h3 className="text-xl font-semibold text-pink-200 mb-1">{name}</h3>
+          <p className="text-gray-200 break-words leading-relaxed">{description}</p>
         </div>
         <div className="hidden sm:flex items-start">
-          <h6
+          <span
             className={`whitespace-nowrap text-sm font-medium px-3 py-1 rounded-full bg-gray-700/50 ${selectLabelColor(
               category,
             )}`}
           >
             {category}
-          </h6>
+          </span>
         </div>
       </a>
     </div>
