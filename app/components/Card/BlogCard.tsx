@@ -12,7 +12,6 @@ export const BlogCard = ({ name, description, link }: CardParams) => {
       <Link
         to={link}
         className="block p-6 sm:p-8"
-        prefetch="intent"
       >
         <article>
           <h2 className="mb-3 text-2xl font-semibold text-pink-200 transition-colors duration-200 group-hover:text-pink-300">

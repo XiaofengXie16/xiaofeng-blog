@@ -6,14 +6,6 @@ import { parseMarkdownWithPreview } from "~/utils/markdown";
 import { BlogCard } from "~/components/Card";
 import { BLOG_FOLDER_PATH } from "~/constants/blog";
 
-type Post = {
-  filename: string;
-  title: string;
-  slug: string;
-  preview: string;
-  html: string;
-};
-
 export const Route = createFileRoute('/blog/')({
   loader: async () => {
     const filenames = await fs.readdir(BLOG_FOLDER_PATH);
@@ -48,8 +40,8 @@ function Posts() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-800 to-gray-900">
       {/* Skip to main content link for keyboard users */}
-      <a 
-        href="#main-content" 
+      <a
+        href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-pink-500 text-white px-4 py-2 rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-pink-300"
       >
         Skip to main content
@@ -72,7 +64,7 @@ function Posts() {
         </h1>
 
         <div className="space-y-8">
-          {posts.map(({filename, preview, title, slug}) => (
+          {posts.map(({ filename, preview, title, slug }) => (
             <BlogCard
               key={filename}
               description={preview}
