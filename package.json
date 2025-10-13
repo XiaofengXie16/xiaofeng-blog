@@ -10,7 +10,7 @@
     "build": "vite build",
     "dev": "vite dev",
     "lint": "oxlint --type-aware .",
-    "start": "node dist/server/server.js",
+    "start": "bun -b dist/server/server.js",
     "typecheck": "tsc",
     "prepare": "husky",
     "test": "vitest run",
