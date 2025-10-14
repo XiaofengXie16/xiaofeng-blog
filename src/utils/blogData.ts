@@ -10,7 +10,8 @@ type BlogPost = {
 
 const markdownFiles = import.meta.glob("../blogs/*.md", {
   eager: true,
-  as: "raw",
+  query: "?raw",
+  import: "default",
 }) as Record<string, string>;
 
 function parsePost(filePath: string, rawContent: string): BlogPost {
