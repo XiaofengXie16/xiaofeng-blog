@@ -1,36 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router"
-import path from "path";
-import fs from "fs/promises";
-import { parseMarkdownWithPreview } from "~/utils/markdown";
 
 import { BlogCard } from "~/components/Card";
-import { BLOG_FOLDER_PATH } from "~/constants/blog";
+import { getAllBlogPosts } from "~/utils/blogData";
 
 export const Route = createFileRoute('/blog/')({
-  loader: async () => {
-    const filenames = await fs.readdir(BLOG_FOLDER_PATH);
-
-    const posts = await Promise.all(
-      filenames
-        .filter((filename: string) => filename.endsWith(".md"))
-        .map(async (filename: string) => {
-          const filePath = path.join(BLOG_FOLDER_PATH, filename);
-          const content = await fs.readFile(filePath, "utf-8");
-          const { frontMatter, html, preview } = parseMarkdownWithPreview(
-            content,
-            400,
-          );
-          return {
-            filename,
-            title: frontMatter.title,
-            slug: frontMatter.slug,
-            preview,
-            html,
-          };
-        }),
-    );
-    return { posts };
-  },
+  loader: () => ({ posts: getAllBlogPosts() }),
   component: Posts,
 })
 

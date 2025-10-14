@@ -1,9 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router"
-import fs from "fs/promises";
-import path from "path";
 import invariant from "tiny-invariant";
-import { BLOG_FOLDER_PATH } from "~/constants/blog";
-import { parseMarkdownWithPreview } from "~/utils/markdown";
+
+import { getBlogPostBySlug } from "~/utils/blogData";
 
 type LoaderData = {
   title: string;
@@ -15,34 +13,16 @@ export const Route = createFileRoute('/blog/$slug')({
     const { slug } = params;
     invariant(slug, "Expected 'slug' parameter");
 
-    const filenames = await fs.readdir(BLOG_FOLDER_PATH);
-    let matchedPost: LoaderData | null = null;
+    const post = getBlogPostBySlug(slug);
 
-    for (const filename of filenames) {
-      if (!filename.endsWith(".md")) continue;
-
-      const filePath = path.join(BLOG_FOLDER_PATH, filename);
-      const fileContent = await fs.readFile(filePath, "utf-8");
-      const parsed = parseMarkdownWithPreview(fileContent, 400);
-      const fileSlug =
-        typeof parsed.frontMatter.slug === "string"
-          ? parsed.frontMatter.slug
-          : filename.replace(/\.md$/, "");
-
-      if (fileSlug === slug) {
-        matchedPost = {
-          title: parsed.frontMatter.title || slug,
-          content: parsed.html,
-        };
-        break;
-      }
-    }
-
-    if (!matchedPost) {
+    if (!post) {
       throw new Response("Blog post not found", { status: 404 });
     }
 
-    return matchedPost;
+    return {
+      title: post.title,
+      content: post.html,
+    } satisfies LoaderData;
   },
   component: BlogPost,
 })

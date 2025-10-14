@@ -5,34 +5,17 @@
     "**/*.tsx"
   ],
   "compilerOptions": {
-    "types": ["vite/client"],
-    "skipLibCheck": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2022"
-    ],
-    "isolatedModules": true,
-    "esModuleInterop": true,
     "jsx": "react-jsx",
-    "resolveJsonModule": true,
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
     "target": "ES2022",
-    "strict": true,
-    "allowJs": true,
-    "forceConsistentCasingInFileNames": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "exactOptionalPropertyTypes": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
     "baseUrl": ".",
     "paths": {
       "~/*": [
-        "./app/*"
+        "./src/*"
       ]
     },
-    // Remix takes care of building everything in `remix build`.
-    "noEmit": true
   }
 }
