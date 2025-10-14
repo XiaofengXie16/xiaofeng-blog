@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router"
 import { ToolCard } from "~/components/Card";
 import { TOOLS } from "~/constants/tool";
 
-export const Route = createFileRoute('/tool/')({
+export const Route = createFileRoute('/tool')({
   component: Tool,
 })
 

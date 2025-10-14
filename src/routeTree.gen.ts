@@ -9,20 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ToolRouteImport } from './routes/tool'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ToolIndexRouteImport } from './routes/tool.index'
 import { Route as ReadingListIndexRouteImport } from './routes/reading-list.index'
-import { Route as BlogIndexRouteImport } from './routes/blog.index'
-import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
 
+const ToolRoute = ToolRouteImport.update({
+  id: '/tool',
+  path: '/tool',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ToolIndexRoute = ToolIndexRouteImport.update({
-  id: '/tool/',
-  path: '/tool/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReadingListIndexRoute = ReadingListIndexRouteImport.update({
@@ -43,56 +43,56 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/tool': typeof ToolRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
   '/reading-list': typeof ReadingListIndexRoute
-  '/tool': typeof ToolIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/tool': typeof ToolRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog': typeof BlogIndexRoute
   '/reading-list': typeof ReadingListIndexRoute
-  '/tool': typeof ToolIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/tool': typeof ToolRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/blog/': typeof BlogIndexRoute
   '/reading-list/': typeof ReadingListIndexRoute
-  '/tool/': typeof ToolIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/blog/$slug' | '/blog' | '/reading-list' | '/tool'
+  fullPaths: '/' | '/tool' | '/blog/$slug' | '/blog' | '/reading-list'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/blog/$slug' | '/blog' | '/reading-list' | '/tool'
-  id: '__root__' | '/' | '/blog/$slug' | '/blog/' | '/reading-list/' | '/tool/'
+  to: '/' | '/tool' | '/blog/$slug' | '/blog' | '/reading-list'
+  id: '__root__' | '/' | '/tool' | '/blog/$slug' | '/blog/' | '/reading-list/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ToolRoute: typeof ToolRoute
   BlogSlugRoute: typeof BlogSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
   ReadingListIndexRoute: typeof ReadingListIndexRoute
-  ToolIndexRoute: typeof ToolIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tool': {
+      id: '/tool'
+      path: '/tool'
+      fullPath: '/tool'
+      preLoaderRoute: typeof ToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tool/': {
-      id: '/tool/'
-      path: '/tool'
-      fullPath: '/tool'
-      preLoaderRoute: typeof ToolIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reading-list/': {
@@ -121,10 +121,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ToolRoute: ToolRoute,
   BlogSlugRoute: BlogSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
   ReadingListIndexRoute: ReadingListIndexRoute,
-  ToolIndexRoute: ToolIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
