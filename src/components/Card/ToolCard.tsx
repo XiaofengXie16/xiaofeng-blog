@@ -1,4 +1,4 @@
-import {CATEGORY} from "~/constants/name";
+import { CATEGORY } from "~/constants/name";
 
 type CardParams = {
   icon: string;
@@ -9,17 +9,17 @@ type CardParams = {
 };
 
 const selectLabelColor = (category: string) => {
-    const colorMap = {
-        [CATEGORY.JAVASCRIPT_RUNTIME]: "text-teal-200",
-        [CATEGORY.TEST_FRAMEWORK]: "text-purple-200",
-        [CATEGORY.JAVASCRIPT_FRAMEWORK]: "text-red-200",
-        [CATEGORY.TERMINAL_UTILITY]: "text-green-200",
-        [CATEGORY.TERMINAL_THEME]: "text-orange-200",
-        [CATEGORY.CSS_FRAMEWORK]: "text-blue-200",
-        [CATEGORY.DEVELOPMENT_TOOL]: "text-pink-200",
-        [CATEGORY.PRODUCTIVITY_TOOL]: "text-emerald-200",
-    };
-    return colorMap[category] || "text-gray-200";
+  const colorMap = {
+    [CATEGORY.JAVASCRIPT_RUNTIME]: "text-teal-200",
+    [CATEGORY.TEST_FRAMEWORK]: "text-purple-200",
+    [CATEGORY.JAVASCRIPT_FRAMEWORK]: "text-red-200",
+    [CATEGORY.TERMINAL_UTILITY]: "text-green-200",
+    [CATEGORY.TERMINAL_THEME]: "text-orange-200",
+    [CATEGORY.CSS_FRAMEWORK]: "text-blue-200",
+    [CATEGORY.DEVELOPMENT_TOOL]: "text-pink-200",
+    [CATEGORY.PRODUCTIVITY_TOOL]: "text-emerald-200",
+  };
+  return colorMap[category] || "text-gray-200";
 };
 
 export const ToolCard = ({ icon, name, description, category, link }: CardParams) => {
@@ -32,9 +32,9 @@ export const ToolCard = ({ icon, name, description, category, link }: CardParams
         rel="noopener noreferrer"
       >
         <div className="flex items-center justify-center sm:justify-start">
-          <img 
-            className="h-12 w-12 rounded-xl transition-transform duration-200 group-hover:scale-110" 
-            src={icon} 
+          <img
+            className="h-12 w-12 rounded-xl transition-transform duration-200 group-hover:scale-110"
+            src={icon}
             alt={name}
           />
         </div>
