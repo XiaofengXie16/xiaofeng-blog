@@ -24,7 +24,8 @@ function Posts() {
         {posts.map(({ filename, preview, title, slug }, index) => (
           <Link
             key={filename}
-            to={`/blog/${slug}`}
+            to={`/blog/$slug` as '/blog/$slug'}
+            params={{ slug }}
             className="block group relative p-8 bg-surface/50 backdrop-blur-sm border border-white/5 rounded-3xl hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/5 animate-slide-up"
             style={{ animationDelay: `${index * 0.1}s` }}
           >
