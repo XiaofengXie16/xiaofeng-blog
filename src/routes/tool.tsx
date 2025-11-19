@@ -1,5 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
-import { ToolCard } from "~/components/Card";
+import { createFileRoute } from "@tanstack/react-router"
 import { TOOLS } from "~/constants/tool";
 
 export const Route = createFileRoute('/tool')({
@@ -8,44 +7,45 @@ export const Route = createFileRoute('/tool')({
 
 function Tool() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-800 to-gray-900">
-      {/* Skip to main content link for keyboard users */}
-      <a 
-        href="#main-content" 
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-pink-500 text-white px-4 py-2 rounded-md z-50 focus:outline-none focus:ring-2 focus:ring-pink-300"
-      >
-        Skip to main content
-      </a>
-      <div id="main-content" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-        <nav className="mb-12" aria-label="Breadcrumb navigation">
-          <Link
-            to="/"
-            className="inline-flex items-center text-xl font-medium text-gray-200 hover:text-pink-200 transition-colors"
-          >
-            <svg className="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Read, Think and Code
-          </Link>
-        </nav>
-
-        <h1 className="mb-12 text-4xl font-bold tracking-tight text-pink-200 sm:text-5xl">
+    <div className="max-w-7xl mx-auto px-6 py-12 animate-fade-in">
+      <div className="text-center mb-16 space-y-4">
+        <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-primary pb-2">
           Development Tools
         </h1>
-
-        <div className="space-y-8">
-          {TOOLS.map(({ description, icon, name, category, link }) => (
-            <ToolCard
-              key={name}
-              description={description}
-              icon={icon}
-              category={category}
-              name={name}
-              link={link}
-            />
-          ))}
-        </div>
+        <p className="text-xl text-text-muted max-w-2xl mx-auto">
+          The software and hardware that powers my workflow.
+        </p>
       </div>
-    </main>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {TOOLS.map(({ description, icon, name, category, link }, index) => (
+          <a
+            key={name}
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative p-6 bg-surface/50 backdrop-blur-sm border border-white/5 rounded-2xl hover:border-accent/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-accent/5 animate-slide-up"
+            style={{ animationDelay: `${index * 0.05}s` }}
+          >
+            <div className="flex items-start justify-between mb-4">
+              <div className="p-3 bg-white/5 rounded-xl group-hover:bg-accent/10 transition-colors">
+                <img src={icon} alt={name} className="w-8 h-8" />
+              </div>
+              <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-white/5 text-text-muted border border-white/5">
+                {category}
+              </span>
+            </div>
+
+            <h3 className="text-xl font-bold text-text-main mb-2 group-hover:text-accent transition-colors">
+              {name}
+            </h3>
+
+            <p className="text-text-muted text-sm leading-relaxed">
+              {description}
+            </p>
+          </a>
+        ))}
+      </div>
+    </div>
   );
 }

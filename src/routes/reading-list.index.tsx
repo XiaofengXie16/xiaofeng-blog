@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router"
 import { BOOKS } from "~/constants/book";
 
 export const Route = createFileRoute('/reading-list/')({
@@ -7,48 +7,46 @@ export const Route = createFileRoute('/reading-list/')({
 
 function ReadingList() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-800 to-gray-900">
-      <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-        <nav className="mb-12">
-          <Link
-            to="/"
-            className="inline-flex items-center text-xl font-medium text-gray-200 hover:text-pink-200 transition-colors"
-          >
-            <svg className="mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Read, Think and Code
-          </Link>
-        </nav>
-
-        <h1 className="mb-12 text-4xl font-bold tracking-tight text-pink-200 sm:text-5xl">
+    <div className="max-w-7xl mx-auto px-6 py-12 animate-fade-in">
+      <div className="text-center mb-16 space-y-4">
+        <h1 className="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-secondary to-accent pb-2">
           Reading List
         </h1>
+        <p className="text-xl text-text-muted max-w-2xl mx-auto">
+          Books and articles that have shaped my perspective on software, leadership, and life.
+        </p>
+      </div>
 
-        <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {BOOKS.map(({ name, icon, link }) => (
-            <li key={name} className="group list-none">
-              <a
-                href={link}
-                className="block transition duration-200 group-hover:opacity-90"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div className="aspect-[3/4] overflow-hidden rounded-xl bg-gray-800/50">
-                  <img
-                    src={icon}
-                    alt={name}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <h2 className="mt-4 text-center text-xl font-medium text-gray-200 group-hover:text-pink-200">
+      <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {BOOKS.map(({ name, icon, link }, index) => (
+          <li
+            key={name}
+            className="group list-none animate-slide-up"
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            <a
+              href={link}
+              className="block h-full bg-surface/50 backdrop-blur-sm border border-white/5 rounded-3xl overflow-hidden hover:border-secondary/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-secondary/10"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="aspect-[3/4] overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-60 z-10" />
+                <img
+                  src={icon}
+                  alt={name}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
+              <div className="p-6 relative z-20 -mt-20">
+                <h2 className="text-xl font-bold text-white group-hover:text-secondary transition-colors text-center drop-shadow-lg">
                   {name}
                 </h2>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </main>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
