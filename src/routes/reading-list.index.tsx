@@ -30,7 +30,7 @@ function ReadingList() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <div className="aspect-[3/4] overflow-hidden relative">
+              <div className="aspect-[3/4] relative">
                 <div className="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-60 z-10" />
                 <img
                   src={icon}

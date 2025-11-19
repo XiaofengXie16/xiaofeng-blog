@@ -3,15 +3,6 @@ import { useState, useEffect } from "react";
 
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 20);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
     const navLinks = [
         { to: "/", label: "Home" },
@@ -22,9 +13,7 @@ export const Header = () => {
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled || isMenuOpen
-                ? "bg-background/70 backdrop-blur-xl border-b border-white/5 shadow-lg"
-                : "bg-transparent border-b border-transparent"
+            className={`relative bg-background/70 backdrop-blur-xl border-b border-white/5 transition-all duration-300 ${isMenuOpen ? "shadow-lg" : ""
                 }`}
         >
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
