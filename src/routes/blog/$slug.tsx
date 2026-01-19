@@ -2,10 +2,12 @@ import { createFileRoute, Link } from "@tanstack/react-router"
 import invariant from "tiny-invariant";
 
 import { getBlogPostBySlug } from "~/utils/blogData";
+import { ReviewSection } from "~/components/Review";
 
 type LoaderData = {
   title: string;
   content: string;
+  slug: string;
 };
 
 export const Route = createFileRoute('/blog/$slug')({
@@ -22,13 +24,14 @@ export const Route = createFileRoute('/blog/$slug')({
     return {
       title: post.title,
       content: post.html,
+      slug,
     } satisfies LoaderData;
   },
   component: BlogPost,
 })
 
 function BlogPost() {
-  const { title, content } = Route.useLoaderData();
+  const { title, content, slug } = Route.useLoaderData();
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8 animate-fade-in">
@@ -107,6 +110,8 @@ function BlogPost() {
           dangerouslySetInnerHTML={{ __html: content }}
         />
       </article>
+
+      <ReviewSection slug={slug} />
     </div>
   );
 }

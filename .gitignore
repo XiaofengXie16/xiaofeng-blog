@@ -9,3 +9,8 @@ node_modules
 .fleet
 .react-router/
 dist/
+
+# SQLite database
+prisma/data/
+*.db
+*.db-journal

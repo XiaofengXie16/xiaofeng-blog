@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
