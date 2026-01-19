@@ -17,14 +17,15 @@ ENV NODE_ENV="production"
 FROM base as build
 
 # Install dependencies using bun
-COPY --link bun.lockb* package.json ./
+COPY --link bun.lock* package.json ./
+COPY --link prisma ./prisma
 RUN bun install --frozen-lockfile
-
-# Copy application code
-COPY --link . .
 
 # Generate Prisma client
 RUN bun run prisma generate
+
+# Copy application code
+COPY --link . .
 
 # Build application
 RUN bun run build
@@ -35,9 +36,6 @@ FROM base
 
 # Copy built application
 COPY --from=build /app /app
-
-# Copy Prisma schema for migrations at runtime
-COPY --from=build /app/prisma /app/prisma
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
