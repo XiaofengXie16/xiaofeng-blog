@@ -16,13 +16,12 @@ ENV NODE_ENV="production"
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
+# Install build dependencies for better-sqlite3
+RUN apk add --no-cache python3 make g++
+
 # Install dependencies using bun
 COPY --link bun.lock* package.json ./
-COPY --link prisma ./prisma
 RUN bun install --frozen-lockfile
-
-# Generate Prisma client
-RUN bun run prisma generate
 
 # Copy application code
 COPY --link . .
@@ -34,9 +33,12 @@ RUN bun run build
 # Final stage for app image
 FROM base
 
+# Install runtime dependencies for better-sqlite3
+RUN apk add --no-cache libstdc++
+
 # Copy built application
 COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD [ "sh", "-c", "bun run prisma db push --skip-generate && bun run start" ]
+CMD [ "bun", "run", "start" ]

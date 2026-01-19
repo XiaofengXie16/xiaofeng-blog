@@ -1,6 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { prisma } from "~/utils/db";
+import { eq, desc, avg, count } from "drizzle-orm";
+import { db } from "~/utils/db";
+import { reviews } from "../../drizzle/schema";
 
 // Validation schemas for review input - protects against injection
 const slugSchema = z.object({ slug: z.string().min(1).max(200) });
@@ -32,46 +34,68 @@ function zodValidator<T>(schema: z.ZodSchema<T>) {
   return (input: unknown): T => schema.parse(input);
 }
 
+// Generate a unique ID
+function generateId(): string {
+  return crypto.randomUUID();
+}
+
 // Get reviews for a specific blog post
 export const getReviews = createServerFn({ method: "GET" })
   .inputValidator(zodValidator(slugSchema))
   .handler(async ({ data }) => {
-    const reviews = await prisma.review.findMany({
-      where: { slug: data.slug },
-      orderBy: { createdAt: "desc" },
-    });
+    const result = await db
+      .select()
+      .from(reviews)
+      .where(eq(reviews.slug, data.slug))
+      .orderBy(desc(reviews.createdAt));
 
-    return reviews;
+    return result.map((r) => ({
+      ...r,
+      createdAt: r.createdAt,
+    }));
   });
 
 // Create a new review
 export const createReview = createServerFn({ method: "POST" })
   .inputValidator(zodValidator(reviewInputSchema))
   .handler(async ({ data }) => {
-    const review = await prisma.review.create({
-      data: {
-        slug: data.slug,
-        name: data.name ?? null,
-        review: data.review,
-        stars: data.stars,
-      },
+    const id = generateId();
+    const now = new Date();
+
+    await db.insert(reviews).values({
+      id,
+      slug: data.slug,
+      name: data.name ?? null,
+      review: data.review,
+      stars: data.stars,
+      createdAt: now,
     });
 
-    return review;
+    return {
+      id,
+      slug: data.slug,
+      name: data.name ?? null,
+      review: data.review,
+      stars: data.stars,
+      createdAt: now,
+    };
   });
 
 // Get average rating for a blog post
 export const getAverageRating = createServerFn({ method: "GET" })
   .inputValidator(zodValidator(slugSchema))
   .handler(async ({ data }) => {
-    const result = await prisma.review.aggregate({
-      where: { slug: data.slug },
-      _avg: { stars: true },
-      _count: { stars: true },
-    });
+    const result = await db
+      .select({
+        average: avg(reviews.stars),
+        count: count(reviews.stars),
+      })
+      .from(reviews)
+      .where(eq(reviews.slug, data.slug));
 
+    const row = result[0];
     return {
-      average: result._avg.stars ?? 0,
-      count: result._count.stars,
+      average: row?.average ? Number(row.average) : 0,
+      count: row?.count ?? 0,
     };
   });

@@ -10,7 +10,7 @@ primary_region = "bos"
   dockerfile = "Dockerfile"
 
 [env]
-  DATABASE_URL = "file:/data/reviews.db"
+  DATABASE_URL = "/data/reviews.db"
 
 [http_service]
   internal_port = 3000

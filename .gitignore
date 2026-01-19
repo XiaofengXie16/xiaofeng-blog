@@ -11,6 +11,8 @@ node_modules
 dist/
 
 # SQLite database
-prisma/data/
+data/
 *.db
 *.db-journal
+*.db-wal
+*.db-shm
