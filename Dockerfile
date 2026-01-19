@@ -16,9 +16,6 @@ ENV NODE_ENV="production"
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
-# Install build dependencies for better-sqlite3
-RUN apk add --no-cache python3 make g++
-
 # Install dependencies using bun
 COPY --link bun.lock* package.json ./
 RUN bun install --frozen-lockfile
@@ -32,9 +29,6 @@ RUN bun run build
 
 # Final stage for app image
 FROM base
-
-# Install runtime dependencies for better-sqlite3
-RUN apk add --no-cache libstdc++
 
 # Copy built application
 COPY --from=build /app /app

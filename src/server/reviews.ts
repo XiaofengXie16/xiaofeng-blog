@@ -1,8 +1,17 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { eq, desc, avg, count } from "drizzle-orm";
-import { db } from "~/utils/db";
+import { db, initializeDatabase } from "~/utils/db";
 import { reviews } from "../../drizzle/schema";
+
+// Ensure database is initialized
+let dbInitialized = false;
+async function ensureDbInitialized() {
+  if (!dbInitialized) {
+    await initializeDatabase();
+    dbInitialized = true;
+  }
+}
 
 // Validation schemas for review input - protects against injection
 const slugSchema = z.object({ slug: z.string().min(1).max(200) });
@@ -43,6 +52,7 @@ function generateId(): string {
 export const getReviews = createServerFn({ method: "GET" })
   .inputValidator(zodValidator(slugSchema))
   .handler(async ({ data }) => {
+    await ensureDbInitialized();
     const result = await db
       .select()
       .from(reviews)
@@ -59,6 +69,7 @@ export const getReviews = createServerFn({ method: "GET" })
 export const createReview = createServerFn({ method: "POST" })
   .inputValidator(zodValidator(reviewInputSchema))
   .handler(async ({ data }) => {
+    await ensureDbInitialized();
     const id = generateId();
     const now = new Date();
 
@@ -85,6 +96,7 @@ export const createReview = createServerFn({ method: "POST" })
 export const getAverageRating = createServerFn({ method: "GET" })
   .inputValidator(zodValidator(slugSchema))
   .handler(async ({ data }) => {
+    await ensureDbInitialized();
     const result = await db
       .select({
         average: avg(reviews.stars),
