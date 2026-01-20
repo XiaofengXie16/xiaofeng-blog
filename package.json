@@ -65,6 +65,9 @@
   "trustedDependencies": [
     "esbuild"
   ],
+  "resolutions": {
+    "esbuild": "0.27.2"
+  },
   "optionalDependencies": {
     "@oxlint/linux-x64-gnu": "^1.41.0",
     "@rollup/rollup-linux-x64-gnu": "^4.55.2",
