@@ -16,7 +16,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "analyze": "vite-bundle-analyzer dist/"
+    "analyze": "vite-bundle-analyzer dist/",
+    "db:start": "docker compose up -d",
+    "db:stop": "docker compose down",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.19",
