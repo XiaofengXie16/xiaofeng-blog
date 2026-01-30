@@ -48,7 +48,7 @@ export const Header = () => {
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center">
                         <div className="flex items-center border border-white/5 bg-surface/30 backdrop-blur-sm">
-                            {navLinks.map((link, index) => (
+                            {navLinks.map((link) => (
                                 <Link
                                     key={link.to}
                                     to={link.to}
