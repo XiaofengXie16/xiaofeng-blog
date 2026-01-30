@@ -1,8 +1,19 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    useEffect(() => {
+        if (isMenuOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isMenuOpen]);
 
     const navLinks = [
         { to: "/", label: "HOME", code: "00" },
@@ -12,7 +23,7 @@ export const Header = () => {
     ];
 
     return (
-        <header className="relative z-50">
+        <header className="relative z-[110]">
             {/* Main Header Bar */}
             <div className="bg-background/80 backdrop-blur-xl border-b border-primary/10">
                 <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -77,40 +88,53 @@ export const Header = () => {
                 </div>
             </div>
 
-            {/* Mobile Navigation */}
-            <div className={`md:hidden absolute top-20 left-0 right-0 bg-background/95 backdrop-blur-xl border-b border-primary/10 transition-all duration-300 ${isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
-                <nav className="max-w-7xl mx-auto px-6 py-6">
-                    <div className="space-y-2">
-                        {navLinks.map((link, index) => (
-                            <Link
-                                key={link.to}
-                                to={link.to}
-                                className="group flex items-center gap-4 p-4 border border-white/5 hover:border-primary/30 hover:bg-primary/5 transition-all"
-                                onClick={() => setIsMenuOpen(false)}
-                                style={{ animationDelay: `${index * 0.05}s` }}
-                            >
-                                <span className="terminal-text text-xs text-primary w-6">
-                                    [{link.code}]
-                                </span>
-                                <span className="terminal-text text-lg text-text-muted group-hover:text-primary transition-colors tracking-wider">
-                                    {link.label}
-                                </span>
-                                <svg className="w-4 h-4 ml-auto text-primary opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                            </Link>
-                        ))}
-                    </div>
-
-                    {/* Mobile Status */}
-                    <div className="mt-6 pt-6 border-t border-white/5 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <span className="status-dot" />
-                            <span className="terminal-text text-xs text-neon-green">SYSTEM_ACTIVE</span>
+            {/* Mobile Navigation - fixed overlay so it always appears above page content */}
+            <div
+                className={`md:hidden fixed inset-0 z-[120] transition-opacity duration-300 ${isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
+                aria-hidden={!isMenuOpen}
+            >
+                {/* Backdrop */}
+                <button
+                    type="button"
+                    className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                    onClick={() => setIsMenuOpen(false)}
+                    aria-label="Close menu"
+                />
+                {/* Menu panel - below header bar (top-20 = 5rem) */}
+                <div className="absolute top-20 left-0 right-0 z-10 bg-background border-b border-primary/10 shadow-xl">
+                    <nav className="max-w-7xl mx-auto px-6 py-6">
+                        <div className="space-y-2">
+                            {navLinks.map((link, index) => (
+                                <Link
+                                    key={link.to}
+                                    to={link.to}
+                                    className="group flex items-center gap-4 p-4 border border-white/5 hover:border-primary/30 hover:bg-primary/5 transition-all"
+                                    onClick={() => setIsMenuOpen(false)}
+                                    style={{ animationDelay: `${index * 0.05}s` }}
+                                >
+                                    <span className="terminal-text text-xs text-primary w-6">
+                                        [{link.code}]
+                                    </span>
+                                    <span className="terminal-text text-lg text-text-muted group-hover:text-primary transition-colors tracking-wider">
+                                        {link.label}
+                                    </span>
+                                    <svg className="w-4 h-4 ml-auto text-primary opacity-0 group-hover:opacity-100 transform translate-x-0 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </Link>
+                            ))}
                         </div>
-                        <span className="terminal-text text-xs text-text-muted">v1.0.0</span>
-                    </div>
-                </nav>
+
+                        {/* Mobile Status */}
+                        <div className="mt-6 pt-6 border-t border-white/5 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <span className="status-dot" />
+                                <span className="terminal-text text-xs text-neon-green">SYSTEM_ACTIVE</span>
+                            </div>
+                            <span className="terminal-text text-xs text-text-muted">v1.0.0</span>
+                        </div>
+                    </nav>
+                </div>
             </div>
         </header>
     );

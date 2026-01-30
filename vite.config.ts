@@ -14,4 +14,10 @@ export default defineConfig({
     tanstackStart(),
     viteReact(),
   ],
+  define: {
+    global: 'globalThis',
+  },
+  optimizeDeps: {
+    include: ['buffer'],
+  },
 })

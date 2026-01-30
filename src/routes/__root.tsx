@@ -1,3 +1,9 @@
+// Buffer polyfill for gray-matter in browser
+import { Buffer } from 'buffer';
+if (typeof window !== 'undefined') {
+  window.Buffer = Buffer;
+}
+
 import {
   Outlet,
   createRootRoute,
