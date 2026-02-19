@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
-import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-import viteReact from '@vitejs/plugin-react'
-import tsconfigPaths from 'vite-tsconfig-paths'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from "vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   server: {
@@ -12,12 +12,16 @@ export default defineConfig({
     tailwindcss(),
     tsconfigPaths(),
     tanstackStart(),
-    viteReact(),
+    viteReact({
+      babel: {
+        plugins: ["babel-plugin-react-compiler"],
+      },
+    }),
   ],
   define: {
-    global: 'globalThis',
+    global: "globalThis",
   },
   optimizeDeps: {
-    include: ['buffer'],
+    include: ["buffer"],
   },
-})
+});
