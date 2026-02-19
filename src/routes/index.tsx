@@ -1,16 +1,16 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
-import { Button } from "../components/ui/Button"
-import { GlitchText, ScrambleText, Typewriter } from "../components/effects/GlitchText"
-import { FloatingOrbs, GridLines, NoiseOverlay } from "../components/effects/FloatingOrbs"
-import { TiltCard } from "../components/effects/TiltCard"
-import { useState, useEffect } from "react"
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "../components/ui/Button";
+import { GlitchText } from "../components/effects/GlitchText";
+import { FloatingOrbs, GridLines, NoiseOverlay } from "../components/effects/FloatingOrbs";
+import { TiltCard } from "../components/effects/TiltCard";
+import { useState, useEffect } from "react";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   component: Index,
-})
+});
 
 function Index() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [_isLoaded, setIsLoaded] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -23,8 +23,8 @@ function Index() {
       });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
@@ -45,8 +45,8 @@ function Index() {
           <div
             className="absolute top-1/4 right-1/4 w-64 h-64 border border-primary/10 opacity-30"
             style={{
-              clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)',
-              animation: 'rotate 30s linear infinite',
+              clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+              animation: "rotate 30s linear infinite",
               transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
             }}
           />
@@ -55,7 +55,7 @@ function Index() {
           <div
             className="absolute bottom-1/3 left-1/4 w-48 h-48 border border-secondary/10 rotate-45 opacity-20"
             style={{
-              animation: 'rotate 25s linear infinite reverse',
+              animation: "rotate 25s linear infinite reverse",
               transform: `translate(${-mousePosition.x}px, ${-mousePosition.y}px) rotate(45deg)`,
             }}
           />
@@ -70,9 +70,7 @@ function Index() {
         </div>
 
         {/* Main Content */}
-        <div
-          className="relative z-10 max-w-5xl mx-auto text-center"
-        >
+        <div className="relative z-10 max-w-5xl mx-auto text-center">
           {/* Status Badge */}
           <div className="inline-flex items-center gap-3 px-5 py-2.5 mb-8 border border-primary/30 bg-surface/50 backdrop-blur-xl animate-fade-in">
             <span className="relative flex h-2 w-2">
@@ -160,10 +158,22 @@ function Index() {
             <Link to="/blog">
               <button className="neon-button group">
                 <span className="flex items-center gap-2">
-                  <span className="text-xs opacity-50 group-hover:opacity-100 transition-opacity">01</span>
+                  <span className="text-xs opacity-50 group-hover:opacity-100 transition-opacity">
+                    01
+                  </span>
                   EXPLORE BLOG
-                  <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  <svg
+                    className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
                   </svg>
                 </span>
               </button>
@@ -190,11 +200,17 @@ function Index() {
         </div>
 
         {/* Corner Decorations */}
-        <div className="absolute top-20 left-6 md:left-20 terminal-text text-xs text-text-muted/50 animate-fade-in" style={{ animationDelay: '1.5s' }}>
+        <div
+          className="absolute top-20 left-6 md:left-20 terminal-text text-xs text-text-muted/50 animate-fade-in"
+          style={{ animationDelay: "1.5s" }}
+        >
           <div>LAT: 37.7749° N</div>
           <div>LON: 122.4194° W</div>
         </div>
-        <div className="absolute top-20 right-6 md:right-20 terminal-text text-xs text-text-muted/50 text-right animate-fade-in" style={{ animationDelay: '1.5s' }}>
+        <div
+          className="absolute top-20 right-6 md:right-20 terminal-text text-xs text-text-muted/50 text-right animate-fade-in"
+          style={{ animationDelay: "1.5s" }}
+        >
           <div>SYS.VERSION: 2.0.0</div>
           <div>STATUS: ACTIVE</div>
         </div>
@@ -274,66 +290,96 @@ interface FeatureCardProps {
   title: string;
   subtitle: string;
   description: string;
-  accentColor: 'primary' | 'secondary' | 'accent';
+  accentColor: "primary" | "secondary" | "accent";
   delay: number;
 }
 
-function FeatureCard({ to, number, title, subtitle, description, accentColor, delay }: FeatureCardProps) {
+function FeatureCard({
+  to,
+  number,
+  title,
+  subtitle,
+  description,
+  accentColor,
+  delay,
+}: FeatureCardProps) {
   const colorClasses = {
-    primary: 'group-hover:border-primary/50 group-hover:shadow-primary/20',
-    secondary: 'group-hover:border-secondary/50 group-hover:shadow-secondary/20',
-    accent: 'group-hover:border-accent/50 group-hover:shadow-accent/20',
+    primary: "group-hover:border-primary/50 group-hover:shadow-primary/20",
+    secondary: "group-hover:border-secondary/50 group-hover:shadow-secondary/20",
+    accent: "group-hover:border-accent/50 group-hover:shadow-accent/20",
   };
 
   const textColors = {
-    primary: 'text-primary',
-    secondary: 'text-secondary',
-    accent: 'text-accent',
+    primary: "text-primary",
+    secondary: "text-secondary",
+    accent: "text-accent",
   };
 
   return (
-    <Link
-      to={to}
-      className="group block animate-slide-up"
-      style={{ animationDelay: `${delay}ms` }}
-    >
+    <Link to={to} className="group block animate-slide-up" style={{ animationDelay: `${delay}ms` }}>
       <TiltCard className="h-full">
-        <div className={`relative h-full cyber-card hud-corners p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${colorClasses[accentColor]}`}>
+        <div
+          className={`relative h-full cyber-card hud-corners p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${colorClasses[accentColor]}`}
+        >
           {/* Number */}
-          <div className={`absolute top-6 right-6 terminal-text text-4xl font-bold ${textColors[accentColor]} opacity-20 group-hover:opacity-40 transition-opacity`}>
+          <div
+            className={`absolute top-6 right-6 terminal-text text-4xl font-bold ${textColors[accentColor]} opacity-20 group-hover:opacity-40 transition-opacity`}
+          >
             {number}
           </div>
 
           {/* Content */}
           <div className="relative z-10">
             {/* Title Label */}
-            <div className={`inline-flex items-center gap-2 mb-4 px-3 py-1 border ${accentColor === 'primary' ? 'border-primary/30 bg-primary/5' : accentColor === 'secondary' ? 'border-secondary/30 bg-secondary/5' : 'border-accent/30 bg-accent/5'}`}>
-              <span className={`w-1.5 h-1.5 ${accentColor === 'primary' ? 'bg-primary' : accentColor === 'secondary' ? 'bg-secondary' : 'bg-accent'}`} />
-              <span className={`terminal-text text-[10px] tracking-widest ${textColors[accentColor]}`}>{title}</span>
+            <div
+              className={`inline-flex items-center gap-2 mb-4 px-3 py-1 border ${accentColor === "primary" ? "border-primary/30 bg-primary/5" : accentColor === "secondary" ? "border-secondary/30 bg-secondary/5" : "border-accent/30 bg-accent/5"}`}
+            >
+              <span
+                className={`w-1.5 h-1.5 ${accentColor === "primary" ? "bg-primary" : accentColor === "secondary" ? "bg-secondary" : "bg-accent"}`}
+              />
+              <span
+                className={`terminal-text text-[10px] tracking-widest ${textColors[accentColor]}`}
+              >
+                {title}
+              </span>
             </div>
 
             {/* Main Title */}
-            <h3 className={`text-3xl font-bold mb-4 text-text-main group-hover:${textColors[accentColor]} transition-colors`}>
+            <h3
+              className={`text-3xl font-bold mb-4 text-text-main group-hover:${textColors[accentColor]} transition-colors`}
+            >
               {subtitle}
             </h3>
 
             {/* Description */}
-            <p className="text-text-muted leading-relaxed mb-8">
-              {description}
-            </p>
+            <p className="text-text-muted leading-relaxed mb-8">{description}</p>
 
             {/* Action */}
             <div className={`flex items-center terminal-text text-sm ${textColors[accentColor]}`}>
-              <span className="mr-2 opacity-50 group-hover:opacity-100 transition-opacity">&gt;</span>
+              <span className="mr-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                &gt;
+              </span>
               <span className="group-hover:tracking-wider transition-all">ACCESS</span>
-              <svg className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <svg
+                className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </svg>
             </div>
           </div>
 
           {/* Bottom Glow Line */}
-          <div className={`absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-500 ${accentColor === 'primary' ? 'bg-gradient-to-r from-primary to-primary/50' : accentColor === 'secondary' ? 'bg-gradient-to-r from-secondary to-secondary/50' : 'bg-gradient-to-r from-accent to-accent/50'}`} />
+          <div
+            className={`absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-500 ${accentColor === "primary" ? "bg-gradient-to-r from-primary to-primary/50" : accentColor === "secondary" ? "bg-gradient-to-r from-secondary to-secondary/50" : "bg-gradient-to-r from-accent to-accent/50"}`}
+          />
         </div>
       </TiltCard>
     </Link>
@@ -343,12 +389,12 @@ function FeatureCard({ to, number, title, subtitle, description, accentColor, de
 function StatItem({ value, label, color }: { value: string; label: string; color: string }) {
   return (
     <div className="text-center group">
-      <div className={`text-4xl md:text-5xl font-bold mb-2 text-${color} glow-text-subtle transition-all group-hover:scale-110`}>
+      <div
+        className={`text-4xl md:text-5xl font-bold mb-2 text-${color} glow-text-subtle transition-all group-hover:scale-110`}
+      >
         {value}
       </div>
-      <div className="terminal-text text-xs text-text-muted tracking-widest">
-        {label}
-      </div>
+      <div className="terminal-text text-xs text-text-muted tracking-widest">{label}</div>
     </div>
   );
 }
