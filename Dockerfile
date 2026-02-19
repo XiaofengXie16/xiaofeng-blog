@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 
 # Adjust BUN_VERSION as desired
-ARG BUN_VERSION=1.1.34
+ARG BUN_VERSION=1.3.9
 FROM oven/bun:${BUN_VERSION}-alpine as base
 
 LABEL fly_launch_runtime="React Router"
@@ -17,7 +17,7 @@ ENV NODE_ENV="production"
 FROM base as build
 
 # Install dependencies using bun
-COPY --link bun.lockb* package.json ./
+COPY --link bun.lock* bun.lockb* package.json ./
 RUN bun install --frozen-lockfile
 
 # Copy application code
