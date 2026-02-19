@@ -1,23 +1,12 @@
-// Buffer polyfill for gray-matter in browser
-import { Buffer } from 'buffer';
-if (typeof window !== 'undefined') {
-  (window as unknown as { Buffer: typeof Buffer }).Buffer = Buffer;
-}
+import { Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import stylesheet from "../tailwind.css?url";
+import { getRouter } from "../router";
+import { Layout } from "../components/Layout/Layout";
 
-import {
-  Outlet,
-  createRootRoute,
-  HeadContent,
-  Scripts,
-} from "@tanstack/react-router"
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import stylesheet from "../tailwind.css?url"
-import { getRouter } from '../router'
-import { Layout } from "../components/Layout/Layout"
-
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface Register {
-    router: ReturnType<typeof getRouter>
+    router: ReturnType<typeof getRouter>;
   }
 }
 
@@ -30,37 +19,40 @@ export const Route = createRootRoute({
         content: "width=device-width, initial-scale=1",
       },
       { title: "Xiaofeng's Blog" },
-      { name: "description", content: "Personal blog of Xiaofeng Xie - Software Engineer" }
+      { name: "description", content: "Personal blog of Xiaofeng Xie - Software Engineer" },
     ],
     links: [
       { rel: "stylesheet", href: stylesheet },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap", rel: "stylesheet" }
+      {
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+        rel: "stylesheet",
+      },
     ],
   }),
   errorComponent: ErrorBoundary,
   component: RootLayout,
-})
+});
 
 function ErrorBoundary({ error }: { error: unknown }) {
   // Log error to console in development
-  if (process.env.NODE_ENV === 'development') {
-    console.error('ErrorBoundary caught an error:', error);
+  if (process.env.NODE_ENV === "development") {
+    console.error("ErrorBoundary caught an error:", error);
   }
 
   const getErrorMessage = (error: unknown): string => {
     if (error instanceof Error) {
       return error.message;
     }
-    if (typeof error === 'string') {
+    if (typeof error === "string") {
       return error;
     }
     return "An unexpected error occurred. Don't worry, it happens!";
   };
 
   const getErrorStack = (error: unknown): string | null => {
-    if (error instanceof Error && process.env.NODE_ENV === 'development') {
+    if (error instanceof Error && process.env.NODE_ENV === "development") {
       return error.stack ?? null;
     }
     return null;
@@ -70,10 +62,7 @@ function ErrorBoundary({ error }: { error: unknown }) {
   const errorStack = getErrorStack(error);
 
   return (
-    <html
-      lang="en"
-      className="h-full bg-background text-text-main"
-    >
+    <html lang="en" className="h-full bg-background text-text-main">
       <head>
         <title>Oh no!</title>
         <HeadContent />
@@ -83,9 +72,7 @@ function ErrorBoundary({ error }: { error: unknown }) {
           <h1 className="text-3xl font-bold text-primary mb-6 max-w-full">
             Oops! Something went wrong...
           </h1>
-          <p className="text-lg text-text-muted mb-6">
-            {errorMessage}
-          </p>
+          <p className="text-lg text-text-muted mb-6">{errorMessage}</p>
 
           {errorStack && (
             <details className="mb-6">
@@ -123,5 +110,5 @@ function RootLayout() {
         <TanStackRouterDevtools />
       </body>
     </html>
-  )
+  );
 }
