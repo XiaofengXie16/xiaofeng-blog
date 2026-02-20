@@ -394,7 +394,7 @@ function StatItem({ value, label, color }: { value: string; label: string; color
       >
         {value}
       </div>
-      <div className="terminal-text text-xs text-text-muted tracking-widest">{label}</div>
+      <div className="terminal-text text-xs text-text-main/60 tracking-widest">{label}</div>
     </div>
   );
 }
