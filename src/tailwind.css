@@ -308,18 +308,21 @@ body::before {
 .cyber-card::after {
   content: '';
   position: absolute;
-  inset: -1px;
+  inset: 0;
+  padding: 1px;
   background: linear-gradient(90deg,
     var(--color-primary),
-    var(--color-secondary),
-    var(--color-accent),
+    rgba(0, 240, 255, 0.4),
     var(--color-primary)
   );
   background-size: 300% 100%;
-  z-index: -1;
+  z-index: 0;
   opacity: 0;
   transition: opacity 0.3s ease;
   animation: border-flow 4s linear infinite;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .cyber-card:hover::after {

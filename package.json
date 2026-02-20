@@ -8,7 +8,7 @@
   "scripts": {
     "deploy": "fly deploy --remote-only",
     "build": "vite build",
-    "dev": "vite dev",
+    "dev": "bunx --bun vite dev",
     "lint": "oxlint --type-aware .",
     "start": "bun ./scripts/start-server.ts",
     "typecheck": "tsgo",
