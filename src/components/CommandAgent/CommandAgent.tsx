@@ -240,7 +240,7 @@ export const CommandAgent = () => {
         setMode("ai");
         setQuery(currentQuery);
         sendAIQuery(currentQuery);
-      }, 800);
+      }, 200);
     }
 
     return () => {
