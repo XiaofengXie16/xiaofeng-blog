@@ -236,10 +236,7 @@ export const CommandAgent = () => {
 
     if (mode === "search" && query.trim() && results.length === 0) {
       autoSwitchTimerRef.current = setTimeout(() => {
-        const currentQuery = query;
         setMode("ai");
-        setQuery(currentQuery);
-        sendAIQuery(currentQuery);
       }, 200);
     }
 
