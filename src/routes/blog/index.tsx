@@ -1,10 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
-import { getAllBlogPosts } from "~/utils/blogData";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { fetchAllBlogPosts } from "~/server/blog";
 
-export const Route = createFileRoute('/blog/')({
-  loader: () => ({ posts: getAllBlogPosts() }),
+export const Route = createFileRoute("/blog/")({
+  loader: async () => ({ posts: await fetchAllBlogPosts() }),
   component: Posts,
-})
+});
 
 function Posts() {
   const { posts } = Route.useLoaderData();
@@ -15,7 +15,9 @@ function Posts() {
       <div className="mb-16">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 mb-8 terminal-text text-sm text-text-muted">
-          <Link to="/" className="hover:text-primary transition-colors">HOME</Link>
+          <Link to="/" className="hover:text-primary transition-colors">
+            HOME
+          </Link>
           <span className="text-primary">/</span>
           <span className="text-primary">BLOG</span>
         </div>
@@ -25,12 +27,16 @@ function Posts() {
           <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-primary to-transparent" />
           <h1 className="text-4xl md:text-6xl font-bold">
             <span className="text-text-main">Data</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary"> Stream</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+              {" "}
+              Stream
+            </span>
           </h1>
         </div>
 
         <p className="mt-6 text-lg text-text-muted max-w-2xl terminal-text">
-          <span className="text-primary">&gt;</span> Transmitting thoughts on software engineering, architecture, and innovation...
+          <span className="text-primary">&gt;</span> Transmitting thoughts on software engineering,
+          architecture, and innovation...
         </p>
 
         {/* Stats bar */}
@@ -55,7 +61,7 @@ function Posts() {
         {posts.map(({ filename, preview, title, slug }, index) => (
           <Link
             key={filename}
-            to={`/blog/$slug` as '/blog/$slug'}
+            to={`/blog/$slug` as "/blog/$slug"}
             params={{ slug }}
             className="group block relative animate-slide-up"
             style={{ animationDelay: `${index * 0.1}s` }}
@@ -63,7 +69,7 @@ function Posts() {
             <article className="relative cyber-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-primary/30">
               {/* Post Number */}
               <div className="absolute top-4 right-4 terminal-text text-xs text-text-muted opacity-50 group-hover:opacity-100 group-hover:text-primary transition-all">
-                [{String(index + 1).padStart(2, '0')}]
+                [{String(index + 1).padStart(2, "0")}]
               </div>
 
               {/* Corner Brackets */}
@@ -82,9 +88,7 @@ function Posts() {
                   {title}
                 </h2>
 
-                <p className="text-text-muted leading-relaxed mb-6 line-clamp-3">
-                  {preview}
-                </p>
+                <p className="text-text-muted leading-relaxed mb-6 line-clamp-3">{preview}</p>
 
                 {/* Footer */}
                 <div className="flex items-center justify-between pt-4 border-t border-white/5">
@@ -97,8 +101,18 @@ function Posts() {
                   <div className="flex items-center gap-2 terminal-text text-sm text-text-muted group-hover:text-primary transition-colors">
                     <span>&gt;</span>
                     <span>ACCESS_DATA</span>
-                    <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    <svg
+                      className="w-4 h-4 transform group-hover:translate-x-2 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
                     </svg>
                   </div>
                 </div>

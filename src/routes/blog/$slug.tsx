@@ -1,7 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
+import { createFileRoute, Link } from "@tanstack/react-router";
 import invariant from "tiny-invariant";
 
-import { getBlogPostBySlug } from "~/utils/blogData";
+import { fetchBlogPostBySlug } from "~/server/blog";
 
 type LoaderData = {
   title: string;
@@ -9,12 +9,12 @@ type LoaderData = {
   slug: string;
 };
 
-export const Route = createFileRoute('/blog/$slug')({
+export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
     const { slug } = params;
     invariant(slug, "Expected 'slug' parameter");
 
-    const post = getBlogPostBySlug(slug);
+    const post = await fetchBlogPostBySlug({ data: slug });
 
     if (!post) {
       throw new Response("Blog post not found", { status: 404 });
@@ -27,7 +27,7 @@ export const Route = createFileRoute('/blog/$slug')({
     } satisfies LoaderData;
   },
   component: BlogPost,
-})
+});
 
 function BlogPost() {
   const { title, content, slug } = Route.useLoaderData();
@@ -39,11 +39,17 @@ function BlogPost() {
         <div className="flex items-center justify-between flex-wrap gap-4">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 terminal-text text-sm text-text-muted">
-            <Link to="/" className="hover:text-primary transition-colors">HOME</Link>
+            <Link to="/" className="hover:text-primary transition-colors">
+              HOME
+            </Link>
             <span className="text-primary">/</span>
-            <Link to="/blog" className="hover:text-primary transition-colors">BLOG</Link>
+            <Link to="/blog" className="hover:text-primary transition-colors">
+              BLOG
+            </Link>
             <span className="text-primary">/</span>
-            <span className="text-primary truncate max-w-[150px]">{slug.slice(0, 20).toUpperCase()}...</span>
+            <span className="text-primary truncate max-w-[150px]">
+              {slug.slice(0, 20).toUpperCase()}...
+            </span>
           </div>
 
           {/* All Posts Link */}
@@ -51,8 +57,18 @@ function BlogPost() {
             to="/blog"
             className="group flex items-center gap-2 px-4 py-2 border border-white/10 hover:border-primary/30 hover:bg-primary/5 transition-all terminal-text text-sm text-text-muted hover:text-primary"
           >
-            <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg
+              className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
             </svg>
             ALL_POSTS
           </Link>
@@ -78,12 +94,18 @@ function BlogPost() {
           <div className="flex flex-wrap items-center gap-6 terminal-text text-xs text-text-muted">
             <div className="flex items-center gap-2">
               <span className="status-dot" />
-              <span>AUTHOR: <span className="text-primary">XIAOFENG</span></span>
+              <span>
+                AUTHOR: <span className="text-primary">XIAOFENG</span>
+              </span>
             </div>
             <span className="hidden sm:inline text-white/20">|</span>
-            <span>ID: <span className="text-primary">{slug.slice(0, 8).toUpperCase()}</span></span>
+            <span>
+              ID: <span className="text-primary">{slug.slice(0, 8).toUpperCase()}</span>
+            </span>
             <span className="hidden sm:inline text-white/20">|</span>
-            <span>STATUS: <span className="text-neon-green">PUBLISHED</span></span>
+            <span>
+              STATUS: <span className="text-neon-green">PUBLISHED</span>
+            </span>
           </div>
         </header>
 
@@ -143,18 +165,28 @@ function BlogPost() {
         {/* Article Footer */}
         <footer className="mt-16 pt-8 border-t border-white/5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="terminal-text text-xs text-text-muted">
-              END_OF_TRANSMISSION
-            </div>
+            <div className="terminal-text text-xs text-text-muted">END_OF_TRANSMISSION</div>
 
             <Link
               to="/blog"
               className="group flex items-center gap-3 px-6 py-3 cyber-card hover:border-primary/30 transition-all terminal-text text-sm"
             >
-              <svg className="w-4 h-4 text-primary transform group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className="w-4 h-4 text-primary transform group-hover:-translate-x-1 transition-transform"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
-              <span className="text-text-muted group-hover:text-primary transition-colors">BACK_TO_ARCHIVE</span>
+              <span className="text-text-muted group-hover:text-primary transition-colors">
+                BACK_TO_ARCHIVE
+              </span>
             </Link>
           </div>
         </footer>
