@@ -225,6 +225,31 @@ export const CommandAgent = () => {
       .map(({ item }) => item);
   }, [query, allItems]);
 
+  // Auto-switch to AI mode when search has no results
+  const autoSwitchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (autoSwitchTimerRef.current) {
+      clearTimeout(autoSwitchTimerRef.current);
+      autoSwitchTimerRef.current = null;
+    }
+
+    if (mode === "search" && query.trim() && results.length === 0) {
+      autoSwitchTimerRef.current = setTimeout(() => {
+        const currentQuery = query;
+        setMode("ai");
+        setQuery(currentQuery);
+        sendAIQuery(currentQuery);
+      }, 800);
+    }
+
+    return () => {
+      if (autoSwitchTimerRef.current) {
+        clearTimeout(autoSwitchTimerRef.current);
+      }
+    };
+  }, [mode, query, results.length, sendAIQuery]);
+
   useEffect(() => {
     setSelectedIndex(0);
   }, [results.length, query]);
@@ -369,13 +394,9 @@ export const CommandAgent = () => {
               {results.length === 0 && query.trim() && (
                 <div className="px-4 py-8 text-center">
                   <p className="terminal-text text-sm text-text-muted">NO_MATCH_FOUND</p>
-                  <button
-                    type="button"
-                    onClick={() => setMode("ai")}
-                    className="terminal-text text-xs text-neon-green hover:text-neon-green mt-3 underline underline-offset-4 decoration-neon-green/30"
-                  >
-                    Ask AI instead?
-                  </button>
+                  <p className="terminal-text text-xs text-neon-green/60 mt-3 animate-pulse">
+                    Switching to AI mode...
+                  </p>
                 </div>
               )}
 
