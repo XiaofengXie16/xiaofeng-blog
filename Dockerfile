@@ -24,7 +24,7 @@ RUN bun install --frozen-lockfile --ignore-scripts
 COPY --link . .
 
 # Build application
-RUN bunx --bun vite build
+RUN ./node_modules/.bin/vite build
 
 
 # Final stage for app image
