@@ -11,7 +11,15 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
-  plugins: [tailwindcss(), tanstackStart(), viteReact(), babel(reactCompilerPreset())],
+  plugins: [
+    tailwindcss(),
+    tanstackStart(),
+    viteReact(),
+    babel({
+      parserOpts: { plugins: ["typescript", "jsx"] },
+      presets: [reactCompilerPreset()],
+    }),
+  ],
   define: {
     global: "globalThis",
   },
