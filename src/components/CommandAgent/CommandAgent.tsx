@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { TOOLS } from "~/constants/tool";
 import { BOOKS } from "~/constants/book";
@@ -95,70 +95,64 @@ export const CommandAgent = () => {
     }
   }, [chatHistory]);
 
-  const close = useCallback(() => {
+  const close = () => {
     setIsOpen(false);
-  }, []);
+  };
 
-  const handleAction = useCallback(
-    (action: { type: string; path?: string; url?: string; label?: string }) => {
-      if (action.type === "navigate" && action.path) {
-        navigate({ to: action.path });
-        close();
-      } else if (action.type === "open" && action.url) {
-        window.open(action.url, "_blank", "noopener,noreferrer");
-      }
-    },
-    [navigate, close],
-  );
+  const handleAction = (action: { type: string; path?: string; url?: string; label?: string }) => {
+    if (action.type === "navigate" && action.path) {
+      navigate({ to: action.path });
+      close();
+    } else if (action.type === "open" && action.url) {
+      window.open(action.url, "_blank", "noopener,noreferrer");
+    }
+  };
 
   // Send AI query
   const chatHistoryRef = useRef(chatHistory);
   chatHistoryRef.current = chatHistory;
 
-  const sendAIQuery = useCallback(
-    async (userQuery: string) => {
-      if (!userQuery.trim() || isLoading) return;
+  const sendAIQuery = async (userQuery: string) => {
+    if (!userQuery.trim() || isLoading) return;
 
-      const currentHistory = chatHistoryRef.current;
-      const newHistory: ChatMessage[] = [...currentHistory, { role: "user", content: userQuery }];
-      setChatHistory(newHistory);
-      setQuery("");
-      setIsLoading(true);
+    const currentHistory = chatHistoryRef.current;
+    const newHistory: ChatMessage[] = [...currentHistory, { role: "user", content: userQuery }];
+    setChatHistory(newHistory);
+    setQuery("");
+    setIsLoading(true);
 
-      try {
-        const result = await askAI({
-          data: {
-            query: userQuery,
-            history: newHistory.slice(-6).map((m) => ({
-              role: m.role,
-              content: m.content,
-            })),
-          },
-        });
+    try {
+      const result = await askAI({
+        data: {
+          query: userQuery,
+          history: newHistory.slice(-6).map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        },
+      });
 
-        setChatHistory((prev) => [
-          ...prev,
-          {
-            role: "assistant",
-            content: result.response,
-            actions: result.actions,
-          },
-        ]);
-      } catch {
-        setChatHistory((prev) => [
-          ...prev,
-          { role: "assistant", content: "Connection error. Try again." },
-        ]);
-      } finally {
-        setIsLoading(false);
-        requestAnimationFrame(() => inputRef.current?.focus());
-      }
-    },
-    [isLoading],
-  );
+      setChatHistory((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: result.response,
+          actions: result.actions,
+        },
+      ]);
+    } catch {
+      setChatHistory((prev) => [
+        ...prev,
+        { role: "assistant", content: "Connection error. Try again." },
+      ]);
+    } finally {
+      setIsLoading(false);
+      requestAnimationFrame(() => inputRef.current?.focus());
+    }
+  };
 
   // Build search index
-  const allItems = useMemo((): ResultItem[] => {
+  const allItems: ResultItem[] = (() => {
     const items: ResultItem[] = [];
 
     const pages = [
@@ -207,10 +201,10 @@ export const CommandAgent = () => {
     }
 
     return items;
-  }, [navigate, close]);
+  })();
 
   // Filter and sort results
-  const results = useMemo(() => {
+  const results = (() => {
     if (!query.trim()) {
       return allItems.filter((item) => item.type === "navigate");
     }
@@ -223,7 +217,7 @@ export const CommandAgent = () => {
       .sort((a, b) => b.score - a.score)
       .slice(0, 12)
       .map(({ item }) => item);
-  }, [query, allItems]);
+  })();
 
   // Auto-switch to AI mode when search has no results
   const autoSwitchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
