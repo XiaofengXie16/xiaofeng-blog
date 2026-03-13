@@ -2,7 +2,7 @@
 
 # Adjust BUN_VERSION as desired
 ARG BUN_VERSION=1.3.9
-FROM oven/bun:${BUN_VERSION}-alpine as base
+FROM oven/bun:${BUN_VERSION}-slim as base
 
 LABEL fly_launch_runtime="React Router"
 
@@ -16,6 +16,13 @@ ENV NODE_ENV="production"
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
+# Install curl for vp installer
+RUN apt-get update -qq && apt-get install -y --no-install-recommends curl ca-certificates && rm -rf /var/lib/apt/lists/*
+
+# Install Vite+ CLI
+RUN curl -fsSL https://vite.plus | bash
+ENV PATH="/root/.vite-plus/bin:$PATH"
+
 # Install dependencies using bun
 COPY --link bun.lock* bun.lockb* package.json ./
 RUN sed -i 's/"prepare": "vp config"/"prepare": "true"/' package.json && \
@@ -25,7 +32,7 @@ RUN sed -i 's/"prepare": "vp config"/"prepare": "true"/' package.json && \
 COPY --link . .
 
 # Build application
-RUN bun run build
+RUN vp build
 
 
 # Final stage for app image
