@@ -9,7 +9,7 @@
     "deploy": "fly deploy --remote-only",
     "build": "vite build",
     "dev": "bunx --bun vite dev",
-    "lint": "oxlint --type-aware --ignore-pattern vite.config.ts .",
+    "lint": "bunx --bun oxlint --type-aware .",
     "start": "bun ./scripts/start-server.ts",
     "typecheck": "tsgo",
     "format": "oxfmt .",
