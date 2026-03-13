@@ -24,6 +24,7 @@ export default defineConfig({
     tanstackStart(),
     viteReact(),
     babel({
+      parserOpts: { plugins: ["typescript", "jsx"] },
       presets: [reactCompilerPreset()],
     }),
   ],
