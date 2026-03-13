@@ -99,9 +99,14 @@ export const CommandAgent = () => {
     setIsOpen(false);
   };
 
-  const handleAction = (action: { type: string; path?: string; url?: string; label?: string }) => {
+  const handleAction = async (action: {
+    type: string;
+    path?: string;
+    url?: string;
+    label?: string;
+  }) => {
     if (action.type === "navigate" && action.path) {
-      navigate({ to: action.path });
+      await navigate({ to: action.path });
       close();
     } else if (action.type === "open" && action.url) {
       window.open(action.url, "_blank", "noopener,noreferrer");
@@ -167,8 +172,8 @@ export const CommandAgent = () => {
         label: page.label,
         description: page.desc,
         icon: ">_",
-        action: () => {
-          navigate({ to: page.path });
+        action: async () => {
+          await navigate({ to: page.path });
           close();
         },
       });
@@ -252,7 +257,7 @@ export const CommandAgent = () => {
     }
   }, [selectedIndex]);
 
-  const handleInputKeyDown = (e: React.KeyboardEvent) => {
+  const handleInputKeyDown = async (e: React.KeyboardEvent) => {
     // Tab to switch modes
     if (e.key === "Tab") {
       e.preventDefault();
@@ -263,7 +268,7 @@ export const CommandAgent = () => {
     if (mode === "ai") {
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
-        sendAIQuery(query);
+        await sendAIQuery(query);
       }
       return;
     }
@@ -456,9 +461,9 @@ export const CommandAgent = () => {
                       <button
                         key={suggestion}
                         type="button"
-                        onClick={() => {
+                        onClick={async () => {
                           setQuery(suggestion);
-                          sendAIQuery(suggestion);
+                          await sendAIQuery(suggestion);
                         }}
                         className="terminal-text text-[11px] text-text-muted px-3 py-1.5 border border-white/10 hover:border-neon-green/30 hover:text-neon-green hover:bg-neon-green/5 transition-all"
                       >
