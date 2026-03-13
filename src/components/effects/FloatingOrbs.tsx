@@ -5,10 +5,10 @@ export const FloatingOrbs = () => {
       <div
         className="absolute w-[600px] h-[600px] rounded-full animate-float-slow"
         style={{
-          background: 'radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, transparent 70%)',
-          top: '-10%',
-          right: '-10%',
-          filter: 'blur(60px)',
+          background: "radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, transparent 70%)",
+          top: "-10%",
+          right: "-10%",
+          filter: "blur(60px)",
         }}
       />
 
@@ -16,11 +16,11 @@ export const FloatingOrbs = () => {
       <div
         className="absolute w-[500px] h-[500px] rounded-full animate-float-reverse"
         style={{
-          background: 'radial-gradient(circle, rgba(191, 0, 255, 0.12) 0%, transparent 70%)',
-          bottom: '10%',
-          left: '-5%',
-          filter: 'blur(80px)',
-          animationDelay: '2s',
+          background: "radial-gradient(circle, rgba(191, 0, 255, 0.12) 0%, transparent 70%)",
+          bottom: "10%",
+          left: "-5%",
+          filter: "blur(80px)",
+          animationDelay: "2s",
         }}
       />
 
@@ -28,12 +28,12 @@ export const FloatingOrbs = () => {
       <div
         className="absolute w-[400px] h-[400px] rounded-full animate-float-slow"
         style={{
-          background: 'radial-gradient(circle, rgba(255, 0, 170, 0.1) 0%, transparent 70%)',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          filter: 'blur(100px)',
-          animationDelay: '4s',
+          background: "radial-gradient(circle, rgba(255, 0, 170, 0.1) 0%, transparent 70%)",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          filter: "blur(100px)",
+          animationDelay: "4s",
         }}
       />
 

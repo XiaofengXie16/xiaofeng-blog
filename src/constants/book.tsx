@@ -34,6 +34,6 @@ export const BOOKS = [
   {
     name: "Designing Data-Intensive Applications",
     icon: DesigningDataIntensiveApplications,
-    link: "https://dataintensive.net/"
-  }
+    link: "https://dataintensive.net/",
+  },
 ];

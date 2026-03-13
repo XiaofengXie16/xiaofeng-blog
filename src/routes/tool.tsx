@@ -1,19 +1,22 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { TOOLS } from "~/constants/tool";
 
-export const Route = createFileRoute('/tool')({
+export const Route = createFileRoute("/tool")({
   component: Tool,
-})
+});
 
 function Tool() {
   // Group tools by category
-  const toolsByCategory = TOOLS.reduce((acc, tool) => {
-    if (!acc[tool.category]) {
-      acc[tool.category] = [];
-    }
-    acc[tool.category].push(tool);
-    return acc;
-  }, {} as Record<string, typeof TOOLS>);
+  const toolsByCategory = TOOLS.reduce(
+    (acc, tool) => {
+      if (!acc[tool.category]) {
+        acc[tool.category] = [];
+      }
+      acc[tool.category].push(tool);
+      return acc;
+    },
+    {} as Record<string, typeof TOOLS>,
+  );
 
   const categories = Object.keys(toolsByCategory);
 
@@ -23,7 +26,9 @@ function Tool() {
       <div className="mb-16">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 mb-8 terminal-text text-sm text-text-muted">
-          <Link to="/" className="hover:text-primary transition-colors">HOME</Link>
+          <Link to="/" className="hover:text-primary transition-colors">
+            HOME
+          </Link>
           <span className="text-accent">/</span>
           <span className="text-accent">TOOLS</span>
         </div>
@@ -33,12 +38,16 @@ function Tool() {
           <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-accent to-transparent" />
           <h1 className="text-4xl md:text-6xl font-bold">
             <span className="text-text-main">Arsenal</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary"> Matrix</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">
+              {" "}
+              Matrix
+            </span>
           </h1>
         </div>
 
         <p className="mt-6 text-lg text-text-muted max-w-2xl terminal-text">
-          <span className="text-accent">&gt;</span> The software and hardware that powers the development workflow...
+          <span className="text-accent">&gt;</span> The software and hardware that powers the
+          development workflow...
         </p>
 
         {/* Stats bar */}
@@ -90,19 +99,27 @@ function Tool() {
               {/* Content */}
               <h3 className="text-xl font-bold text-text-main mb-2 group-hover:text-accent transition-colors flex items-center gap-2">
                 {name}
-                <svg className="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                <svg
+                  className="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
                 </svg>
               </h3>
 
-              <p className="text-text-muted text-sm leading-relaxed mb-4">
-                {description}
-              </p>
+              <p className="text-text-muted text-sm leading-relaxed mb-4">{description}</p>
 
               {/* Footer */}
               <div className="flex items-center justify-between pt-4 border-t border-white/5">
                 <span className="terminal-text text-xs text-text-muted">
-                  [{String(index + 1).padStart(2, '0')}]
+                  [{String(index + 1).padStart(2, "0")}]
                 </span>
                 <span className="terminal-text text-xs text-accent opacity-0 group-hover:opacity-100 transition-opacity">
                   LAUNCH &gt;

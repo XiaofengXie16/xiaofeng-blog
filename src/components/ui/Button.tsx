@@ -1,17 +1,18 @@
-import React from 'react';
+import React from "react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'ghost' | 'outline';
+  variant?: "primary" | "ghost" | "outline";
   className?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({
   children,
-  variant = 'primary',
-  className = '',
+  variant = "primary",
+  className = "",
   ...props
 }) => {
-  const baseStyles = "relative px-8 py-3 font-semibold transition-all duration-300 focus:outline-none overflow-hidden group terminal-text tracking-wide";
+  const baseStyles =
+    "relative px-8 py-3 font-semibold transition-all duration-300 focus:outline-none overflow-hidden group terminal-text tracking-wide";
 
   const variants = {
     primary: `
@@ -34,16 +35,13 @@ export const Button: React.FC<ButtonProps> = ({
       hover:border-primary/50 hover:text-primary
       hover:shadow-[0_0_20px_rgba(0,240,255,0.15)]
       hover:bg-primary/5
-    `
+    `,
   };
 
   return (
-    <button
-      className={`${baseStyles} ${variants[variant]} ${className}`}
-      {...props}
-    >
+    <button className={`${baseStyles} ${variants[variant]} ${className}`} {...props}>
       <span className="relative z-10 flex items-center justify-center gap-2">{children}</span>
-      {variant === 'primary' && (
+      {variant === "primary" && (
         <>
           {/* Animated corner accents */}
           <span className="absolute top-0 left-0 w-3 h-3 border-l-2 border-t-2 border-primary/50 transition-all duration-300 group-hover:w-4 group-hover:h-4 group-hover:border-primary" />

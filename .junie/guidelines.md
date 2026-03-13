@@ -12,6 +12,7 @@ This document provides essential information for developers working on this proj
 ### Setup
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/XiaofengXie16/xiaofeng-blog.git
    cd xiaofeng-blog
@@ -27,6 +28,7 @@ This document provides essential information for developers working on this proj
 ### Development
 
 Start the development server:
+
 ```bash
 npm run dev
 # or
@@ -38,6 +40,7 @@ This uses React Router's development server and will be available at http://loca
 ### Building for Production
 
 Build the project:
+
 ```bash
 npm run build
 # or
@@ -49,6 +52,7 @@ The build output will be in the `build` directory.
 ### Deployment
 
 The project is configured for deployment to Fly.io:
+
 ```bash
 npm run deploy
 # or
@@ -62,6 +66,7 @@ This runs `fly deploy --remote-only` to deploy the application.
 ### Test Configuration
 
 The project uses Vitest for testing with the following configuration:
+
 - JSDOM as the test environment (for simulating browser DOM)
 - Global test functions enabled
 - Setup file at `setupTests.ts` for any global test configuration
@@ -69,6 +74,7 @@ The project uses Vitest for testing with the following configuration:
 ### Running Tests
 
 Run tests using Vitest:
+
 ```bash
 npx vitest run
 # or for watch mode
@@ -76,6 +82,7 @@ npx vitest
 ```
 
 Consider adding a test script to package.json for convenience:
+
 ```json
 "scripts": {
   "test": "vitest run",
@@ -91,7 +98,7 @@ Tests are located in the `app/__tests__` directory. Follow these guidelines when
 2. Use the describe/it pattern for organizing tests
 3. Import testing utilities from vitest:
    ```typescript
-   import { describe, it, expect } from 'vitest';
+   import { describe, it, expect } from "vitest";
    ```
 
 #### Example Test
@@ -99,11 +106,11 @@ Tests are located in the `app/__tests__` directory. Follow these guidelines when
 Here's an example test for the markdown utility:
 
 ```typescript
-import { describe, it, expect } from 'vitest';
-import { parseMarkdownWithPreview } from '../utils/markdown';
+import { describe, it, expect } from "vitest";
+import { parseMarkdownWithPreview } from "../utils/markdown";
 
-describe('parseMarkdownWithPreview', () => {
-  it('should parse markdown with front matter', () => {
+describe("parseMarkdownWithPreview", () => {
+  it("should parse markdown with front matter", () => {
     const markdown = `---
 title: Test Post
 date: 2023-01-01
@@ -117,13 +124,13 @@ This is a paragraph with **bold** text.`;
 
     // Check front matter
     expect(result.frontMatter).toEqual({
-      title: 'Test Post',
-      date: '2023-01-01'
+      title: "Test Post",
+      date: "2023-01-01",
     });
 
     // Check HTML contains expected elements
-    expect(result.html).toContain('<h1>Heading 1</h1>');
-    expect(result.html).toContain('<strong>bold</strong>');
+    expect(result.html).toContain("<h1>Heading 1</h1>");
+    expect(result.html).toContain("<strong>bold</strong>");
   });
 });
 ```

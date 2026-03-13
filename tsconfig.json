@@ -1,14 +1,6 @@
 {
-  "include": [
-    "env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "vite.config.ts"
-  ],
+  "include": ["env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist", "vite.config.ts"],
   "compilerOptions": {
     "jsx": "react-jsx",
     "moduleResolution": "Bundler",
@@ -17,9 +9,7 @@
     "skipLibCheck": true,
     "strictNullChecks": true,
     "paths": {
-      "~/*": [
-        "./src/*"
-      ]
+      "~/*": ["./src/*"]
     },
     "noEmit": true
   }

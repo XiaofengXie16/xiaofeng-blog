@@ -8,11 +8,9 @@ As someone who's worked extensively with Module Federation 1.0, I can say it's b
 
 Let's talk about why Module Federation 2.0 isn't just an upgrade but a game-changer for modular development.
 
-
 ## **Why Use Module Federation 2.0?**
 
 Module Federation 1.0 was groundbreaking for a few key reasons: it enabled different applications to pull in shared modules directly at runtime, making it possible to develop isolated micro-frontends while sharing dependencies across the board. However, as we scaled, a few limitations emerged. Now, Module Federation 2.0 addresses these issues with enhanced flexibility, type safety, and new tools for debugging and deployment. Here are the highlights that I'm most excited about.
-
 
 ### **Decoupling the Runtime from Build Tools**
 
@@ -20,20 +18,17 @@ In Module Federation 1.0, the Runtime was tightly coupled to Webpack, which made
 
 For me, this decoupling represents a major shift. It opens the door for experimenting with different build tools, optimizing for specific project needs, or integrating Module Federation into more complex build setups. Having a unified, standalone Runtime SDK also means that I can work with projects built on different stacks and easily share modules across them, which is huge for micro-frontends.
 
-
 ### **Type Safety with Dynamic Type Hints**
 
 In 1.0, working with TypeScript in a Module Federation setup was functional, but far from ideal. We were constantly juggling types, especially when dealing with dynamically imported modules. The pain was real: TypeScript often couldn't infer the types for these remote modules, so we had to create manual type definitions or lose out on type safety.
 
 Module Federation 2.0 has taken a big leap forward by dynamically generating type hints for remote modules in TypeScript projects. Now, the Runtime can automatically load types and sync them, similar to the experience you get with `npm link`. This means that type updates are reflected in real-time across all locally running projects. For developers like me who rely on TypeScript, this feature alone is worth the upgrade—no more guessing types or manually maintaining them.
 
-
 ### **Enhanced Debugging with Chrome DevTools**
 
 One of the frustrations in Module Federation 1.0 was debugging dependencies and shared modules. Figuring out why a module wasn't loading or why there was a version conflict often meant going through Webpack output or logs line by line. With Module Federation 2.0, we now have a Chrome DevTools extension specifically for debugging federated modules.
 
 The new DevTools extension provides a visual overview of dependencies, exposing and sharing configurations, and even allows proxying modules from live environments into your local setup for testing. It supports hot updates, making it easier to see how changes affect shared modules in real time. This kind of tooling simplifies troubleshooting and gives me more confidence when making updates, especially in large projects where multiple teams are contributing modules.
-
 
 ### **Flexible Module Loading and Preloading**
 
@@ -42,20 +37,20 @@ Module Federation 1.0 was amazing for pulling in modules as needed, but managing
 Here's a quick example:
 
 ```javascript
-import { init, loadRemote } from '@module-federation/enhanced/runtime';
+import { init, loadRemote } from "@module-federation/enhanced/runtime";
 
 init({
-  name: '@demo/app-main',
+  name: "@demo/app-main",
   remotes: [
     {
       name: "@demo/app1",
       entry: "http://localhost:3005/mf-manifest.json",
-      alias: "app1"
+      alias: "app1",
     },
     {
       name: "@demo/app2",
       entry: "http://localhost:3006/remoteEntry.js",
-      alias: "app2"
+      alias: "app2",
     },
   ],
 });
@@ -67,27 +62,24 @@ loadRemote("app2/util").then((md) => {
 
 This ability to dynamically register modules makes Module Federation more flexible and efficient. For example, I can now preload only the modules I know users will need, reducing initial load times and improving the overall user experience.
 
-
 ### **New Manifest Protocol for Deployment**
 
 The new manifest protocol in Module Federation 2.0 introduces a standardized way to handle deployment configurations. This protocol allows for better version management and more granular control over module loading, making it easier to:
 
-* Track dependencies between modules
-* Manage version compatibility
-* Handle deployment rollbacks
-* Configure loading strategies
+- Track dependencies between modules
+- Manage version compatibility
+- Handle deployment rollbacks
+- Configure loading strategies
 
 Using this manifest protocol, deployment platforms can now manage versions with precision, simplifying the handling of complex dependencies. In practice, this should make deploying new versions and managing "gray releases" (controlled rollouts) much easier, particularly in environments with multiple services or micro-frontends.
-
 
 ### **Future Plans: What's Next?**
 
 Module Federation 2.0 has already set a new standard for module sharing and micro-frontends, but it looks like there's more to come. Here are a few future features on the roadmap that I'm excited about:
 
-* **Enhanced Type Safety**: More improvements to TypeScript integration and type inference are planned, making it even easier to work with shared modules in a type-safe way.
-* **High-Performance Solutions**: Module Federation 2.0 plans to address the "request waterfall" issue that can impact performance in micro-frontends. Techniques like Server-Side Rendering (SSR) and data prefetching are on the horizon, which should reduce load times and optimize module loading.
-* **Community and Compatibility**: Currently, Module Federation 2.0 is fully compatible with Webpack and Rspack, and with the SDK, it's primed for further expansion. As more build tools adopt this standard, I'm excited to see how the community will integrate Module Federation into their workflows and create best practices for micro-frontend architectures.
-
+- **Enhanced Type Safety**: More improvements to TypeScript integration and type inference are planned, making it even easier to work with shared modules in a type-safe way.
+- **High-Performance Solutions**: Module Federation 2.0 plans to address the "request waterfall" issue that can impact performance in micro-frontends. Techniques like Server-Side Rendering (SSR) and data prefetching are on the horizon, which should reduce load times and optimize module loading.
+- **Community and Compatibility**: Currently, Module Federation 2.0 is fully compatible with Webpack and Rspack, and with the SDK, it's primed for further expansion. As more build tools adopt this standard, I'm excited to see how the community will integrate Module Federation into their workflows and create best practices for micro-frontend architectures.
 
 ### **Final Thoughts**
 

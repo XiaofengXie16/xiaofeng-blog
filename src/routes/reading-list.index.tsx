@@ -1,9 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { BOOKS } from "~/constants/book";
 
-export const Route = createFileRoute('/reading-list/')({
+export const Route = createFileRoute("/reading-list/")({
   component: ReadingList,
-})
+});
 
 function ReadingList() {
   return (
@@ -12,7 +12,9 @@ function ReadingList() {
       <div className="mb-16">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 mb-8 terminal-text text-sm text-text-muted">
-          <Link to="/" className="hover:text-primary transition-colors">HOME</Link>
+          <Link to="/" className="hover:text-primary transition-colors">
+            HOME
+          </Link>
           <span className="text-secondary">/</span>
           <span className="text-secondary">READING</span>
         </div>
@@ -22,12 +24,16 @@ function ReadingList() {
           <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-secondary to-transparent" />
           <h1 className="text-4xl md:text-6xl font-bold">
             <span className="text-text-main">Knowledge</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent"> Archive</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">
+              {" "}
+              Archive
+            </span>
           </h1>
         </div>
 
         <p className="mt-6 text-lg text-text-muted max-w-2xl terminal-text">
-          <span className="text-secondary">&gt;</span> Books and resources that have shaped my perspective on software, leadership, and life...
+          <span className="text-secondary">&gt;</span> Books and resources that have shaped my
+          perspective on software, leadership, and life...
         </p>
 
         {/* Stats bar */}
@@ -65,13 +71,23 @@ function ReadingList() {
               <div className="relative h-full cyber-card overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:border-secondary/30">
                 {/* Index Number */}
                 <div className="absolute top-4 left-4 z-20 terminal-text text-xs text-white/50 group-hover:text-secondary transition-colors">
-                  [{String(index + 1).padStart(2, '0')}]
+                  [{String(index + 1).padStart(2, "0")}]
                 </div>
 
                 {/* External Link Indicator */}
                 <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <svg className="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  <svg
+                    className="w-5 h-5 text-secondary"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                    />
                   </svg>
                 </div>
 
@@ -99,7 +115,9 @@ function ReadingList() {
                   {/* Category Tag */}
                   <div className="inline-flex items-center gap-2 mb-3 px-2 py-1 border border-secondary/30 bg-surface/80 backdrop-blur-sm">
                     <span className="w-1.5 h-1.5 bg-secondary" />
-                    <span className="terminal-text text-[10px] text-secondary tracking-wider">VOLUME</span>
+                    <span className="terminal-text text-[10px] text-secondary tracking-wider">
+                      VOLUME
+                    </span>
                   </div>
 
                   <h2 className="text-lg font-bold text-white group-hover:text-secondary transition-colors leading-tight">
@@ -108,13 +126,21 @@ function ReadingList() {
 
                   {/* Access Indicator */}
                   <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                    <span className="terminal-text text-xs text-text-muted">
-                      READY
-                    </span>
+                    <span className="terminal-text text-xs text-text-muted">READY</span>
                     <span className="terminal-text text-xs text-secondary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
                       ACCESS
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
                       </svg>
                     </span>
                   </div>

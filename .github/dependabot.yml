@@ -1,7 +1,7 @@
 version: 2
 updates:
   # Define update settings for different package managers (e.g., npm, bundler, pip, etc.)
-  - package-ecosystem: "npm"  # Replace with your package manager (e.g., bundler, pip)
-    directory: "/"           # Specify the directory where your dependencies are located
+  - package-ecosystem: "npm" # Replace with your package manager (e.g., bundler, pip)
+    directory: "/" # Specify the directory where your dependencies are located
     schedule:
-      interval: "daily"     # Specify how often Dependabot should check for updates
+      interval: "daily" # Specify how often Dependabot should check for updates
