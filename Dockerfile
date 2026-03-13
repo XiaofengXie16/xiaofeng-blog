@@ -16,15 +16,16 @@ ENV NODE_ENV="production"
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
-# Install dependencies using bun (skip prepare/postinstall scripts for Docker)
+# Install dependencies using bun
 COPY --link bun.lock* bun.lockb* package.json ./
-RUN bun install --frozen-lockfile --ignore-scripts
+RUN sed -i 's/"prepare": "vp config"/"prepare": "true"/' package.json && \
+    bun install --frozen-lockfile
 
 # Copy application code
 COPY --link . .
 
 # Build application
-RUN ./node_modules/.bin/vite build
+RUN bun run build
 
 
 # Final stage for app image
