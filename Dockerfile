@@ -16,15 +16,15 @@ ENV NODE_ENV="production"
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
-# Install dependencies using bun
+# Install dependencies using bun (skip prepare/postinstall scripts for Docker)
 COPY --link bun.lock* bun.lockb* package.json ./
-RUN bun install --frozen-lockfile
+RUN bun install --frozen-lockfile --ignore-scripts
 
 # Copy application code
 COPY --link . .
 
 # Build application
-RUN bun run build
+RUN bunx --bun vite build
 
 
 # Final stage for app image
