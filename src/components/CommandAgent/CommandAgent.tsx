@@ -244,7 +244,7 @@ export const CommandAgent = () => {
         clearTimeout(autoSwitchTimerRef.current);
       }
     };
-  }, [mode, query, results.length, sendAIQuery]);
+  }, [mode, query, results.length]);
 
   useEffect(() => {
     setSelectedIndex(0);
