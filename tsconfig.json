@@ -4,6 +4,11 @@
     "**/*.ts",
     "**/*.tsx"
   ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "vite.config.ts"
+  ],
   "compilerOptions": {
     "jsx": "react-jsx",
     "moduleResolution": "Bundler",
