@@ -16,11 +16,11 @@ ENV NODE_ENV="production"
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
-# Install curl for vp installer
-RUN apt-get update -qq && apt-get install -y --no-install-recommends curl ca-certificates && rm -rf /var/lib/apt/lists/*
-
-# Install Vite+ CLI
-RUN curl -fsSL https://vite.plus | bash
+# Install Vite+ CLI (curl needed for installer)
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends curl ca-certificates && \
+    rm -rf /var/lib/apt/lists/* && \
+    curl -fsSL https://vite.plus | bash
 ENV PATH="/root/.vite-plus/bin:$PATH"
 
 # Install dependencies using bun
