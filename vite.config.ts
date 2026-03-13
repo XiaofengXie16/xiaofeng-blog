@@ -1,23 +1,17 @@
 import { defineConfig } from "vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact from "@vitejs/plugin-react";
-import tsconfigPaths from "vite-tsconfig-paths";
+import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   server: {
     port: 3000,
   },
-  plugins: [
-    tailwindcss(),
-    tsconfigPaths(),
-    tanstackStart(),
-    viteReact({
-      babel: {
-        plugins: ["babel-plugin-react-compiler"],
-      },
-    }),
-  ],
+  resolve: {
+    tsconfigPaths: true,
+  },
+  plugins: [tailwindcss(), tanstackStart(), viteReact(), babel(reactCompilerPreset())],
   define: {
     global: "globalThis",
   },
