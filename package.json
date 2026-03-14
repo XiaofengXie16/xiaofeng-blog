@@ -15,6 +15,7 @@
     "format": "vp fmt .",
     "format:check": "vp fmt --check .",
     "prepare": "vp config",
+    "postinstall": "node -e \"const{rmSync,symlinkSync,lstatSync,existsSync}=require('fs');const v='node_modules/vite';if(existsSync(v)&&!lstatSync(v).isSymbolicLink()){rmSync(v,{recursive:true});symlinkSync('@voidzero-dev/vite-plus-core',v)}\"",
     "test": "vp test run",
     "test:watch": "vp test",
     "test:coverage": "vp test run --coverage",
