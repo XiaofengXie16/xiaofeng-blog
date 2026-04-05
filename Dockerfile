@@ -1,12 +1,12 @@
 # syntax = docker/dockerfile:1
 
-# Adjust BUN_VERSION as desired
-ARG BUN_VERSION=1.3.9
-FROM oven/bun:${BUN_VERSION}-slim as base
+# Adjust NODE_VERSION as desired
+ARG NODE_VERSION=22.11.0
+FROM node:${NODE_VERSION}-slim as base
 
-LABEL fly_launch_runtime="React Router"
+LABEL fly_launch_runtime="TanStack Start"
 
-# React Router app lives here
+# App lives here
 WORKDIR /app
 
 # Set production environment
@@ -23,16 +23,19 @@ RUN apt-get update -qq && \
     curl -fsSL https://vite.plus | bash
 ENV PATH="/root/.vite-plus/bin:$PATH"
 
-# Install dependencies using bun
-COPY --link bun.lock* bun.lockb* package.json ./
+# Install dependencies
+COPY --link package-lock.json package.json ./
 RUN sed -i 's/"prepare": "vp config"/"prepare": "true"/' package.json && \
-    bun install --frozen-lockfile
+    npm ci
 
 # Copy application code
 COPY --link . .
 
-# Build application
+# Build application (emits .output/ via Nitro)
 RUN vp build
+
+# Drop dev dependencies for the final image
+RUN npm prune --omit=dev
 
 
 # Final stage for app image
@@ -41,6 +44,6 @@ FROM base
 # Copy built application
 COPY --from=build /app /app
 
-# Start the server by default, this can be overwritten at runtime
+# Start the Nitro node-server output
 EXPOSE 3000
-CMD [ "bun", "run", "start" ]
+CMD [ "node", "./.output/server/index.mjs" ]

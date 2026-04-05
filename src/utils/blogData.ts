@@ -33,7 +33,7 @@ function parsePost(filePath: string, rawContent: string): BlogPost {
   };
 }
 
-// Lazy-initialize posts to avoid running gray-matter/Bun.markdown on the client
+// Lazy-initialize posts to avoid running gray-matter/marked on the client
 let _posts: BlogPost[] | null = null;
 function getPosts(): BlogPost[] {
   if (!_posts) {
