@@ -1,4 +1,5 @@
 ---
+"xiaofeng-blog": patch
 ---
 
 Switch the runtime from Bun to Node and wire the `nitro()` plugin into Vite
