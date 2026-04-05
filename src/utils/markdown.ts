@@ -1,4 +1,10 @@
 import matter from "gray-matter";
+import { Marked } from "marked";
+
+// Match the options previously passed to Bun.markdown.html:
+//   autolinks      -> GFM autolink extension (on by default in `marked` with gfm:true)
+//   hardSoftBreaks -> treat single newlines as <br>
+const marked = new Marked({ gfm: true, breaks: true });
 
 export const parseMarkdownWithPreview = (markdownText: string, previewLength = 200) => {
   const { data, content } = matter(markdownText);
@@ -6,10 +12,7 @@ export const parseMarkdownWithPreview = (markdownText: string, previewLength = 2
   // Add newlines before headings for better spacing
   const formattedContent = content.replace(/^(#{1,6})\s/gm, "\n$1 ").replace(/\n\n\n+/g, "\n\n");
 
-  const html = Bun.markdown.html(formattedContent, {
-    autolinks: true,
-    hardSoftBreaks: true,
-  });
+  const html = marked.parse(formattedContent, { async: false }) as string;
 
   const plainText = html.replace(/<[^>]+>/g, "");
   const preview =

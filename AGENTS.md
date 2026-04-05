@@ -22,4 +22,4 @@ Write present-tense, imperative commit subjects under 72 characters (e.g., `Add 
 
 ## Environment & Deployment Notes
 
-Target Node 18+ as declared in `package.json`; re-run `npm install` whenever `bun.lock` changes. Store secrets in Fly.io or local `.env` files kept out of version control, and monitor Fly logs after `npm run deploy` for regressions.
+Target Node 18+ as declared in `package.json`; re-run `vp install` whenever `package-lock.json` changes. Store secrets in Fly.io or local `.env` files kept out of version control, and monitor Fly logs after `vp run deploy` for regressions.
