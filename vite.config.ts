@@ -5,6 +5,8 @@ import babel from "@rolldown/plugin-babel";
 import tailwindcss from "@tailwindcss/vite";
 import { nitro } from "nitro/vite";
 
+const isTest = !!process.env.VITEST;
+
 export default defineConfig({
   fmt: {
     ignorePatterns: ["src/routeTree.gen.ts", ".output/**", "dist/**"],
@@ -25,13 +27,13 @@ export default defineConfig({
   },
   plugins: [
     tailwindcss(),
-    tanstackStart({ srcDirectory: "src" }),
+    ...(isTest ? [] : [tanstackStart({ srcDirectory: "src" })]),
     viteReact(),
     babel({
       parserOpts: { plugins: ["typescript", "jsx"] },
       presets: [reactCompilerPreset()],
     }),
-    nitro(),
+    ...(isTest ? [] : [nitro()]),
   ],
   test: {
     environment: "jsdom",
