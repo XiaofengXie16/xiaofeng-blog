@@ -2,11 +2,13 @@ name: Scheduled Test
 
 on:
   schedule:
-    # Runs every 10 minutes from 7:20pm to 9:00pm EDT (UTC-4).
-    # Note: GitHub Actions cron runs in UTC and does not adjust for DST.
-    - cron: '20,30,40,50 23 * * *'
-    - cron: '0,10,20,30,40,50 0 * * *'
-    - cron: '0 1 * * *'
+    # Runs every 10 minutes from 7:20pm to 9:00pm America/New_York.
+    - cron: '20,30,40,50 19 * * *'
+      timezone: America/New_York
+    - cron: '0,10,20,30,40,50 20 * * *'
+      timezone: America/New_York
+    - cron: '0 21 * * *'
+      timezone: America/New_York
   workflow_dispatch:
 
 jobs:
