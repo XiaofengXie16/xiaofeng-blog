@@ -352,37 +352,6 @@ export const CommandAgent = () => {
             </div>
           </div>
 
-          {/* Input area */}
-          <div className="flex items-center gap-3 px-4 py-4 border-b border-primary/10">
-            <span
-              className={`terminal-text text-sm shrink-0 ${mode === "ai" ? "text-neon-green" : "text-primary"}`}
-            >
-              {mode === "ai" ? (cursorVisible ? "?" : "\u00A0") : cursorVisible ? ">" : "\u00A0"}
-            </span>
-            <input
-              ref={inputRef}
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={handleInputKeyDown}
-              placeholder={
-                mode === "ai" ? "Ask me anything about this site..." : "Type a command or search..."
-              }
-              className="flex-1 bg-transparent text-text-main terminal-text text-sm outline-none placeholder:text-text-muted/50"
-              autoComplete="off"
-              spellCheck={false}
-            />
-            {query && (
-              <button
-                type="button"
-                onClick={() => setQuery("")}
-                className="terminal-text text-xs text-text-muted hover:text-primary transition-colors"
-              >
-                CLEAR
-              </button>
-            )}
-          </div>
-
           {/* Content area */}
           {mode === "search" ? (
             /* Search results */
@@ -521,6 +490,37 @@ export const CommandAgent = () => {
               )}
             </div>
           )}
+
+          {/* Input area */}
+          <div className="flex items-center gap-3 px-4 py-4 border-t border-primary/10">
+            <span
+              className={`terminal-text text-sm shrink-0 ${mode === "ai" ? "text-neon-green" : "text-primary"}`}
+            >
+              {mode === "ai" ? (cursorVisible ? "?" : "\u00A0") : cursorVisible ? ">" : "\u00A0"}
+            </span>
+            <input
+              ref={inputRef}
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleInputKeyDown}
+              placeholder={
+                mode === "ai" ? "Ask me anything about this site..." : "Type a command or search..."
+              }
+              className="flex-1 bg-transparent text-text-main terminal-text text-sm outline-none placeholder:text-text-muted/50"
+              autoComplete="off"
+              spellCheck={false}
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                className="terminal-text text-xs text-text-muted hover:text-primary transition-colors"
+              >
+                CLEAR
+              </button>
+            )}
+          </div>
 
           {/* Footer */}
           <div className="flex items-center justify-between px-4 py-2 border-t border-primary/10 bg-surface/30">
