@@ -16,7 +16,7 @@ export default defineConfig({
     ignorePatterns: ["src/routeTree.gen.ts", ".output/**", "dist/**"],
   },
   staged: {
-    "*.{ts,tsx,js,jsx,mjs,cjs}": ["vp fmt --write", "vp lint"],
+    "*.{ts,tsx,js,jsx,mjs,cjs}": ["vp fmt --write", "vp lint --fix"],
   },
   server: {
     port: 3000,
