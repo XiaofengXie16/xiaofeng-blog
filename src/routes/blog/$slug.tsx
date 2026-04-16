@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import invariant from "tiny-invariant";
 
-import { fetchBlogPostBySlug } from "~/server/blog";
+import { fetchBlogPostBySlug } from "~/server/blog.functions";
 
 type LoaderData = {
   title: string;

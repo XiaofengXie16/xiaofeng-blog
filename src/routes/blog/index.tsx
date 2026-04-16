@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { fetchAllBlogPosts } from "~/server/blog";
+import { fetchAllBlogPosts } from "~/server/blog.functions";
 
 export const Route = createFileRoute("/blog/")({
   loader: async () => ({ posts: await fetchAllBlogPosts() }),

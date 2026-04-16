@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { TOOLS } from "~/constants/tool";
 import { BOOKS } from "~/constants/book";
-import { askAI } from "~/server/ai";
+import { askAI } from "~/server/ai.functions";
 
 type ResultItem = {
   type: "navigate" | "tool" | "book" | "ai-action";
