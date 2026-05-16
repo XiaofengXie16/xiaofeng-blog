@@ -3,6 +3,23 @@ import { fetchAllBlogPosts } from "~/server/blog.functions";
 
 export const Route = createFileRoute("/blog/")({
   loader: async () => ({ posts: await fetchAllBlogPosts() }),
+  head: () => ({
+    meta: [
+      { title: "Blog | Xiaofeng Xie" },
+      {
+        name: "description",
+        content:
+          "Software engineering articles by Xiaofeng Xie on architecture, frontend systems, and developer tooling.",
+      },
+      { property: "og:title", content: "Blog | Xiaofeng Xie" },
+      {
+        property: "og:description",
+        content:
+          "Software engineering articles by Xiaofeng Xie on architecture, frontend systems, and developer tooling.",
+      },
+      { property: "og:type", content: "website" },
+    ],
+  }),
   component: Posts,
 });
 
@@ -24,10 +41,10 @@ function Posts() {
 
         {/* Title with HUD styling */}
         <div className="relative inline-block">
-          <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-primary to-transparent" />
+          <div className="absolute -left-4 top-0 w-1 h-full bg-linear-to-b from-primary to-transparent" />
           <h1 className="text-4xl md:text-6xl font-bold">
             <span className="text-text-main">Data</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
               {" "}
               Stream
             </span>
@@ -58,7 +75,7 @@ function Posts() {
 
       {/* Blog Posts */}
       <div className="space-y-6">
-        {posts.map(({ filename, preview, title, slug }, index) => (
+        {posts.map(({ date, filename, preview, tags, title, slug }, index) => (
           <Link
             key={filename}
             to={`/blog/$slug` as "/blog/$slug"}
@@ -90,12 +107,30 @@ function Posts() {
 
                 <p className="text-text-muted leading-relaxed mb-6 line-clamp-3">{preview}</p>
 
+                {tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="terminal-text text-[10px] tracking-wider px-2 py-1 border border-secondary/20 text-secondary/80 bg-secondary/5"
+                      >
+                        #{tag.toUpperCase()}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
                 {/* Footer */}
                 <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-wrap items-center gap-4">
                     <span className="terminal-text text-xs text-text-muted">
                       ID: <span className="text-primary">{slug.slice(0, 8).toUpperCase()}</span>
                     </span>
+                    {date && (
+                      <span className="terminal-text text-xs text-text-muted">
+                        DATE: <span className="text-primary">{date}</span>
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-2 terminal-text text-sm text-text-muted group-hover:text-primary transition-colors">
@@ -119,7 +154,7 @@ function Posts() {
               </div>
 
               {/* Bottom Glow Line */}
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-500" />
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-linear-to-r from-primary to-secondary group-hover:w-full transition-all duration-500" />
             </article>
           </Link>
         ))}

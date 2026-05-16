@@ -2,6 +2,12 @@
 share: true
 slug: solving_multi-app_integration_challenges_with_module_federation
 title: Solving Multi-App Integration Challenges with Module Federation
+date: 2025-10-13
+description: How Module Federation can simplify shared components and smoother navigation across multi-app architectures.
+tags:
+  - module federation
+  - micro-frontends
+  - architecture
 ---
 
 When we set out to streamline our multi-app setup, we knew we needed a solution that could handle component sharing with ease and make the user experience smooth across the board. Enter Module Federation—the answer to all our multi-app headaches! It offered a way to tackle two major problems: keeping shared components consistent without driving ourselves crazy, and making app transitions feel seamless and effortless.

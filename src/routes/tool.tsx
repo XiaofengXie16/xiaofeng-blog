@@ -35,10 +35,10 @@ function Tool() {
 
         {/* Title */}
         <div className="relative inline-block">
-          <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-accent to-transparent" />
+          <div className="absolute -left-4 top-0 w-1 h-full bg-linear-to-b from-accent to-transparent" />
           <h1 className="text-4xl md:text-6xl font-bold">
             <span className="text-text-main">Arsenal</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-primary">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-primary">
               {" "}
               Matrix
             </span>
@@ -86,7 +86,7 @@ function Tool() {
               {/* Header */}
               <div className="flex items-start justify-between mb-4">
                 <div className="relative p-3 border border-white/10 group-hover:border-accent/30 group-hover:bg-accent/5 transition-all duration-300">
-                  <img src={icon} alt={name} className="w-8 h-8" />
+                  <img src={icon} alt={name} className="w-8 h-8" loading="lazy" decoding="async" />
                   {/* Pulse effect on hover */}
                   <div className="absolute inset-0 bg-accent/20 opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-opacity" />
                 </div>
@@ -127,7 +127,7 @@ function Tool() {
               </div>
 
               {/* Bottom Glow */}
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-accent to-primary group-hover:w-full transition-all duration-500" />
+              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-linear-to-r from-accent to-primary group-hover:w-full transition-all duration-500" />
             </div>
           </a>
         ))}

@@ -16,12 +16,12 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variants = {
     primary: `
-      bg-gradient-to-r from-primary to-secondary text-background
+      bg-linear-to-r from-primary to-secondary text-background
       border border-primary/50
       shadow-[0_0_20px_rgba(0,240,255,0.3),inset_0_0_20px_rgba(0,240,255,0.1)]
       hover:shadow-[0_0_40px_rgba(0,240,255,0.5),inset_0_0_30px_rgba(0,240,255,0.2)]
       hover:scale-[1.02]
-      before:absolute before:inset-0 before:bg-gradient-to-r before:from-secondary before:to-primary before:opacity-0 before:transition-opacity before:duration-300
+      before:absolute before:inset-0 before:bg-linear-to-r before:from-secondary before:to-primary before:opacity-0 before:transition-opacity before:duration-300
       hover:before:opacity-100
     `,
     ghost: `

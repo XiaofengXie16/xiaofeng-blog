@@ -6,7 +6,10 @@ import { fetchBlogPostBySlug } from "~/server/blog.functions";
 type LoaderData = {
   title: string;
   content: string;
+  description: string;
   slug: string;
+  date?: string;
+  tags: string[];
 };
 
 export const Route = createFileRoute("/blog/$slug")({
@@ -23,14 +26,32 @@ export const Route = createFileRoute("/blog/$slug")({
     return {
       title: post.title,
       content: post.html,
+      description: post.description ?? post.preview,
       slug,
+      date: post.date,
+      tags: post.tags,
     } satisfies LoaderData;
   },
+  head: ({ loaderData }) => ({
+    meta: [
+      { title: `${loaderData?.title ?? "Blog Post"} | Xiaofeng Xie` },
+      {
+        name: "description",
+        content: loaderData?.description ?? "Software engineering article by Xiaofeng Xie.",
+      },
+      { property: "og:title", content: `${loaderData?.title ?? "Blog Post"} | Xiaofeng Xie` },
+      {
+        property: "og:description",
+        content: loaderData?.description ?? "Software engineering article by Xiaofeng Xie.",
+      },
+      { property: "og:type", content: "article" },
+    ],
+  }),
   component: BlogPost,
 });
 
 function BlogPost() {
-  const { title, content, slug } = Route.useLoaderData();
+  const { title, content, date, tags, slug } = Route.useLoaderData();
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-12 animate-fade-in">
@@ -47,7 +68,7 @@ function BlogPost() {
               BLOG
             </Link>
             <span className="text-primary">/</span>
-            <span className="text-primary truncate max-w-[150px]">
+            <span className="text-primary truncate max-w-37.5">
               {slug.slice(0, 20).toUpperCase()}...
             </span>
           </div>
@@ -102,11 +123,32 @@ function BlogPost() {
             <span>
               ID: <span className="text-primary">{slug.slice(0, 8).toUpperCase()}</span>
             </span>
+            {date && (
+              <>
+                <span className="hidden sm:inline text-white/20">|</span>
+                <span>
+                  DATE: <span className="text-primary">{date}</span>
+                </span>
+              </>
+            )}
             <span className="hidden sm:inline text-white/20">|</span>
             <span>
               STATUS: <span className="text-neon-green">PUBLISHED</span>
             </span>
           </div>
+
+          {tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-6">
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="terminal-text text-[10px] tracking-wider px-2 py-1 border border-secondary/20 text-secondary/80 bg-secondary/5"
+                >
+                  #{tag.toUpperCase()}
+                </span>
+              ))}
+            </div>
+          )}
         </header>
 
         {/* Article Content */}

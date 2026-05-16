@@ -36,6 +36,8 @@ export const ToolCard = ({ icon, name, description, category, link }: CardParams
             className="h-12 w-12 rounded-xl transition-transform duration-200 group-hover:scale-110"
             src={icon}
             alt={name}
+            loading="lazy"
+            decoding="async"
           />
         </div>
         <div className="flex-1 min-w-0">

@@ -219,15 +219,15 @@ function Index() {
       {/* Features Section */}
       <section className="relative py-32 px-6">
         {/* Section Divider */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent" />
 
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-4 mb-6">
-              <div className="h-px w-12 bg-gradient-to-r from-transparent to-primary" />
+              <div className="h-px w-12 bg-linear-to-r from-transparent to-primary" />
               <span className="terminal-text text-sm text-primary tracking-[0.3em]">EXPLORE</span>
-              <div className="h-px w-12 bg-gradient-to-l from-transparent to-primary" />
+              <div className="h-px w-12 bg-linear-to-l from-transparent to-primary" />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold">
               <GlitchText text="SELECT MODULE" className="text-text-main" glitchOnHover />
@@ -378,7 +378,7 @@ function FeatureCard({
 
           {/* Bottom Glow Line */}
           <div
-            className={`absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-500 ${accentColor === "primary" ? "bg-gradient-to-r from-primary to-primary/50" : accentColor === "secondary" ? "bg-gradient-to-r from-secondary to-secondary/50" : "bg-gradient-to-r from-accent to-accent/50"}`}
+            className={`absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-500 ${accentColor === "primary" ? "bg-linear-to-r from-primary to-primary/50" : accentColor === "secondary" ? "bg-linear-to-r from-secondary to-secondary/50" : "bg-linear-to-r from-accent to-accent/50"}`}
           />
         </div>
       </TiltCard>

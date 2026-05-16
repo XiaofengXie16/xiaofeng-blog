@@ -6,7 +6,7 @@ export const Footer = () => {
   return (
     <footer className="relative mt-auto border-t border-primary/10 bg-background/80 backdrop-blur-xl">
       {/* Top Line Accent */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Main Footer Content */}
@@ -76,6 +76,8 @@ const SocialLink = ({ href, icon, label }: { href: string; icon: string; label: 
       src={icon}
       className="w-5 h-5 opacity-50 group-hover:opacity-100 transition-all duration-300"
       alt={label}
+      loading="lazy"
+      decoding="async"
     />
     {/* Tooltip */}
     <span className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-surface border border-primary/30 terminal-text text-xs text-primary opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">

@@ -55,13 +55,60 @@ INSTRUCTIONS:
 
 type AskAIInput = {
   query: string;
-  history: Array<{ role: string; content: string }>;
+  history: Array<{ role: "user" | "assistant"; content: string }>;
 };
 
-type ActionItem = { type: string; path?: string; url?: string; label?: string };
+type ActionItem = { type: "navigate" | "open"; path?: string; url?: string; label?: string };
+
+function validateAskAIInput(input: unknown): AskAIInput {
+  if (!input || typeof input !== "object") {
+    throw new Error("Expected an AI request payload");
+  }
+
+  const payload = input as Record<string, unknown>;
+  if (typeof payload.query !== "string" || !payload.query.trim()) {
+    throw new Error("Expected a non-empty AI query");
+  }
+
+  const history = Array.isArray(payload.history) ? payload.history : [];
+  return {
+    query: payload.query.trim().slice(0, 1_000),
+    history: history
+      .filter(
+        (msg): msg is { role: "user" | "assistant"; content: string } =>
+          !!msg &&
+          typeof msg === "object" &&
+          ((msg as { role?: unknown }).role === "user" ||
+            (msg as { role?: unknown }).role === "assistant") &&
+          typeof (msg as { content?: unknown }).content === "string",
+      )
+      .slice(-6)
+      .map((msg) => ({ role: msg.role, content: msg.content.slice(0, 1_000) })),
+  };
+}
+
+function normalizeActions(actions: unknown): ActionItem[] {
+  if (!Array.isArray(actions)) return [];
+
+  return actions.flatMap<ActionItem>((action) => {
+    if (!action || typeof action !== "object") return [];
+    const item = action as Record<string, unknown>;
+    const label = typeof item.label === "string" ? item.label.slice(0, 80) : undefined;
+
+    if (item.type === "navigate" && typeof item.path === "string" && item.path.startsWith("/")) {
+      return [{ type: "navigate", path: item.path, label }];
+    }
+
+    if (item.type === "open" && typeof item.url === "string" && /^https?:\/\//i.test(item.url)) {
+      return [{ type: "open", url: item.url, label }];
+    }
+
+    return [];
+  });
+}
 
 export const askAI = createServerFn({ method: "POST" })
-  .inputValidator((input: AskAIInput) => input)
+  .inputValidator(validateAskAIInput)
   .handler(async ({ data }) => {
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
@@ -101,7 +148,7 @@ export const askAI = createServerFn({ method: "POST" })
       if (actionsMatch) {
         try {
           const parsed = JSON.parse(actionsMatch[1]);
-          actions = parsed.actions || [];
+          actions = normalizeActions(parsed.actions);
           cleanText = text.replace(/\[ACTIONS:\s*\{.*\}\]/s, "").trim();
         } catch {
           // ignore parse errors

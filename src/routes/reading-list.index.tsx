@@ -21,10 +21,10 @@ function ReadingList() {
 
         {/* Title */}
         <div className="relative inline-block">
-          <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-secondary to-transparent" />
+          <div className="absolute -left-4 top-0 w-1 h-full bg-linear-to-b from-secondary to-transparent" />
           <h1 className="text-4xl md:text-6xl font-bold">
             <span className="text-text-main">Knowledge</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-secondary to-accent">
               {" "}
               Archive
             </span>
@@ -97,17 +97,19 @@ function ReadingList() {
                   <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
 
                   {/* Scan Line Effect on Hover */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-secondary/20 to-transparent translate-y-full group-hover:translate-y-[-100%] transition-transform duration-1000 z-10" />
+                  <div className="absolute inset-0 bg-linear-to-b from-transparent via-secondary/20 to-transparent translate-y-full group-hover:translate-y-[-100%] transition-transform duration-1000 z-10" />
 
                   {/* Image */}
                   <img
                     src={icon}
                     alt={name}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                    decoding="async"
                   />
 
                   {/* Bottom Gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10" />
+                  <div className="absolute inset-0 bg-linear-to-t from-background via-background/50 to-transparent z-10" />
                 </div>
 
                 {/* Content */}
@@ -151,7 +153,7 @@ function ReadingList() {
                 <div className="absolute bottom-0 right-0 w-6 h-6 border-r-2 border-b-2 border-accent/30 group-hover:border-accent/60 group-hover:w-8 group-hover:h-8 transition-all duration-300 z-20" />
 
                 {/* Bottom Glow */}
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-secondary to-accent group-hover:w-full transition-all duration-500 z-20" />
+                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-linear-to-r from-secondary to-accent group-hover:w-full transition-all duration-500 z-20" />
               </div>
             </a>
           </li>

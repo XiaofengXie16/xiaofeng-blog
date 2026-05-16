@@ -303,7 +303,7 @@ export const CommandAgent = () => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-start justify-center pt-[12vh]">
+    <div className="fixed inset-0 z-200 flex items-start justify-center pt-[12vh]">
       {/* Backdrop */}
       <button
         type="button"
@@ -314,7 +314,7 @@ export const CommandAgent = () => {
 
       {/* Modal */}
       <div className="relative w-full max-w-2xl mx-4 animate-scale-in">
-        <div className="absolute -inset-[1px] bg-gradient-to-r from-primary/50 via-secondary/30 to-primary/50 opacity-60 blur-[1px]" />
+        <div className="absolute -inset-px bg-linear-to-r from-primary/50 via-secondary/30 to-primary/50 opacity-60 blur-[1px]" />
 
         <div className="relative bg-background border border-primary/20 overflow-hidden">
           {/* Header bar */}
@@ -348,7 +348,7 @@ export const CommandAgent = () => {
                   AI
                 </button>
               </div>
-              <span className="status-dot !w-[6px] !h-[6px]" />
+              <span className="status-dot w-1.5! h-1.5!" />
             </div>
           </div>
 

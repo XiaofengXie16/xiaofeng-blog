@@ -56,4 +56,19 @@ Some text`;
     expect(result.html).toContain("<h1>Heading 1</h1>");
     expect(result.html).toContain("<h2>Heading 2</h2>");
   });
+
+  it("should remove unsafe inline HTML from markdown output", () => {
+    const markdown = `<script>alert("xss")</script>
+
+<a href="javascript:alert('xss')" onclick="alert('xss')">Bad link</a>
+
+Safe content`;
+
+    const result = parseMarkdownWithPreview(markdown);
+
+    expect(result.html).not.toContain("<script");
+    expect(result.html).not.toContain("javascript:");
+    expect(result.html).not.toContain("onclick");
+    expect(result.html).toContain("Safe content");
+  });
 });

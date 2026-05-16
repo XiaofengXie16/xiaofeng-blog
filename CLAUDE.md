@@ -15,18 +15,21 @@ Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.de
 <!--VITE PLUS END-->
 
 <!-- intent-skills:start -->
+
 # Skill mappings - when working in these areas, load the linked skill file into context.
+
 skills:
-  - task: "routing, navigation, links, route configuration"
-    load: "node_modules/@tanstack/router-core/skills/router-core/SKILL.md"
-  - task: "TanStack Start setup, server functions, entry points, middleware"
-    load: "node_modules/@tanstack/start-client-core/skills/start-core/SKILL.md"
-  - task: "React-specific Start bindings, StartClient, StartServer, React imports"
-    load: "node_modules/@tanstack/react-start/skills/react-start/SKILL.md"
-  - task: "router plugin config, code splitting, route generation"
-    load: "node_modules/@tanstack/router-plugin/skills/router-plugin/SKILL.md"
-  - task: "deployment, production builds, SSR, static prerendering"
-    load: "node_modules/@tanstack/start-client-core/skills/start-core/deployment/SKILL.md"
-  - task: "Vite+ dev workflow, dev server, build, test, lint, format"
-    load: "node_modules/vite-plus/skills/vite-plus/SKILL.md"
+
+- task: "routing, navigation, links, route configuration"
+  load: "node_modules/@tanstack/router-core/skills/router-core/SKILL.md"
+- task: "TanStack Start setup, server functions, entry points, middleware"
+  load: "node_modules/@tanstack/start-client-core/skills/start-core/SKILL.md"
+- task: "React-specific Start bindings, StartClient, StartServer, React imports"
+  load: "node_modules/@tanstack/react-start/skills/react-start/SKILL.md"
+- task: "router plugin config, code splitting, route generation"
+  load: "node_modules/@tanstack/router-plugin/skills/router-plugin/SKILL.md"
+- task: "deployment, production builds, SSR, static prerendering"
+  load: "node_modules/@tanstack/start-client-core/skills/start-core/deployment/SKILL.md"
+- task: "Vite+ dev workflow, dev server, build, test, lint, format"
+load: "node_modules/vite-plus/skills/vite-plus/SKILL.md"
 <!-- intent-skills:end -->

@@ -2,6 +2,12 @@
 share: true
 slug: thoughts_on_module_federation_2.0
 title: Thoughts on Module Federation 2.0
+date: 2025-10-13
+description: A practical look at Module Federation 2.0 improvements, including runtime decoupling, type hints, debugging, and loading control.
+tags:
+  - module federation
+  - micro-frontends
+  - frontend tooling
 ---
 
 As someone who's worked extensively with Module Federation 1.0, I can say it's been an incredible tool for sharing modules and enabling micro-frontends. With it, we could split large applications into manageable, collaborative parts, allowing different teams to develop independently while still sharing components seamlessly. But, as with any first version, there were a few sticking points. Module Federation 2.0 aims to tackle these head-on, and as a programmer who's used version 1.0 in production, I'm genuinely excited about what 2.0 brings to the table.
