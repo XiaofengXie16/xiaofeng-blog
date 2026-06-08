@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import invariant from "tiny-invariant";
 
 import { fetchBlogPostBySlug } from "~/server/blog.functions";
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/blog/$slug")({
     const post = await fetchBlogPostBySlug({ data: slug });
 
     if (!post) {
-      throw new Response("Blog post not found", { status: 404 });
+      throw notFound();
     }
 
     return {
@@ -48,7 +48,36 @@ export const Route = createFileRoute("/blog/$slug")({
     ],
   }),
   component: BlogPost,
+  notFoundComponent: PostNotFound,
 });
+
+function PostNotFound() {
+  return (
+    <div className="max-w-4xl mx-auto px-6 py-24 text-center animate-fade-in">
+      <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 border border-secondary/30 bg-secondary/5">
+        <span className="w-2 h-2 bg-secondary animate-pulse" />
+        <span className="terminal-text text-xs text-secondary tracking-wider">ERROR_404</span>
+      </div>
+      <h1 className="text-3xl md:text-5xl font-bold text-text-main mb-4">
+        <span className="text-text-main">POST</span>
+        <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
+          {" "}
+          NOT_FOUND
+        </span>
+      </h1>
+      <p className="text-lg text-text-muted mb-10 terminal-text">
+        <span className="text-primary">&gt;</span> This transmission does not exist in the data
+        stream.
+      </p>
+      <Link
+        to="/blog"
+        className="inline-flex items-center gap-2 px-6 py-3 cyber-card hover:border-primary/30 transition-all terminal-text text-sm text-text-muted hover:text-primary"
+      >
+        <span>&gt;</span> BACK_TO_ARCHIVE
+      </Link>
+    </div>
+  );
+}
 
 function BlogPost() {
   const { title, content, date, tags, slug } = Route.useLoaderData();
