@@ -78,7 +78,7 @@ function Posts() {
         {posts.map(({ date, filename, preview, tags, title, slug }, index) => (
           <Link
             key={filename}
-            to={`/blog/$slug` as "/blog/$slug"}
+            to="/blog/$slug"
             params={{ slug }}
             className="group block relative animate-slide-up"
             style={{ animationDelay: `${index * 0.1}s` }}
