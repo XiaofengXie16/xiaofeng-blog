@@ -161,10 +161,10 @@ export const CommandAgent = () => {
     const items: ResultItem[] = [];
 
     const pages = [
-      { path: "/", label: "HOME", desc: "Go to the landing page" },
-      { path: "/blog", label: "BLOG", desc: "Browse all blog posts" },
-      { path: "/reading-list", label: "READING LIST", desc: "Books and reading recommendations" },
-      { path: "/tool", label: "TOOLS", desc: "Developer tools and utilities" },
+      { path: "/", label: "Home", desc: "Go to the landing page" },
+      { path: "/blog", label: "Blog", desc: "Browse all blog posts" },
+      { path: "/reading-list", label: "Reading list", desc: "Books and reading recommendations" },
+      { path: "/tool", label: "Tools", desc: "Developer tools and utilities" },
     ];
     for (const page of pages) {
       items.push({
@@ -314,41 +314,36 @@ export const CommandAgent = () => {
 
       {/* Modal */}
       <div className="relative w-full max-w-2xl mx-4 animate-scale-in">
-        <div className="absolute -inset-px bg-linear-to-r from-primary/50 via-secondary/30 to-primary/50 opacity-60 blur-[1px]" />
-
-        <div className="relative bg-background border border-primary/20 overflow-hidden">
+        <div className="relative bg-surface border border-border-subtle rounded-lg shadow-2xl overflow-hidden">
           {/* Header bar */}
-          <div className="flex items-center gap-2 px-4 py-2 border-b border-primary/10 bg-surface/50">
-            <span className="terminal-text text-xs text-primary/50">SYSTEM</span>
-            <span className="terminal-text text-xs text-text-muted">//</span>
-            <span className="terminal-text text-xs text-text-muted">COMMAND_AGENT v2.0</span>
+          <div className="flex items-center gap-2 px-4 py-2 border-b border-border-subtle">
+            <span className="text-xs text-text-muted">{mode === "ai" ? "Ask AI" : "Search"}</span>
             <div className="ml-auto flex items-center gap-3">
               {/* Mode toggle */}
-              <div className="flex items-center border border-white/10">
+              <div className="flex items-center border border-border-subtle rounded overflow-hidden">
                 <button
                   type="button"
                   onClick={() => setMode("search")}
-                  className={`terminal-text text-[10px] px-2 py-1 transition-all ${
+                  className={`text-[10px] px-2 py-1 transition-all ${
                     mode === "search"
-                      ? "bg-primary/20 text-primary"
-                      : "text-text-muted hover:text-primary"
+                      ? "bg-primary/15 text-primary"
+                      : "text-text-muted hover:text-text-main"
                   }`}
                 >
-                  SEARCH
+                  Search
                 </button>
                 <button
                   type="button"
                   onClick={() => setMode("ai")}
-                  className={`terminal-text text-[10px] px-2 py-1 transition-all ${
+                  className={`text-[10px] px-2 py-1 transition-all ${
                     mode === "ai"
-                      ? "bg-neon-green/20 text-neon-green"
-                      : "text-text-muted hover:text-neon-green"
+                      ? "bg-neon-green/15 text-neon-green"
+                      : "text-text-muted hover:text-text-main"
                   }`}
                 >
                   AI
                 </button>
               </div>
-              <span className="status-dot w-1.5! h-1.5!" />
             </div>
           </div>
 
@@ -358,8 +353,8 @@ export const CommandAgent = () => {
             <div ref={resultsRef} className="max-h-[50vh] overflow-y-auto">
               {results.length === 0 && query.trim() && (
                 <div className="px-4 py-8 text-center">
-                  <p className="terminal-text text-sm text-text-muted">NO_MATCH_FOUND</p>
-                  <p className="terminal-text text-xs text-neon-green/60 mt-3 animate-pulse">
+                  <p className="text-sm text-text-muted">No matches found</p>
+                  <p className="text-xs text-neon-green/70 mt-3 animate-pulse">
                     Switching to AI mode...
                   </p>
                 </div>
@@ -416,9 +411,8 @@ export const CommandAgent = () => {
             <div ref={chatRef} className="max-h-[50vh] overflow-y-auto">
               {chatHistory.length === 0 && !isLoading && (
                 <div className="px-4 py-6">
-                  <p className="terminal-text text-xs text-text-muted/60 mb-4">
-                    &gt; AI_AGENT_READY // Ask about tools, books, blog posts, or anything about
-                    this site
+                  <p className="text-xs text-text-muted mb-4">
+                    Ask about tools, books, blog posts, or anything about this site
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {[

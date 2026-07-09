@@ -85,7 +85,7 @@ function ErrorBoundary({ error }: { error: unknown }) {
 
           <a
             href="/"
-            className="inline-block bg-primary text-white text-sm font-semibold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 hover:shadow-xl animate-fade-in"
+            className="inline-block bg-primary text-background text-sm font-semibold py-3 px-8 rounded-md hover:bg-primary-hover transition-colors animate-fade-in"
           >
             Take me Home
           </a>
