@@ -1,4 +1,4 @@
-import { defineConfig } from "vite-plus";
+import { defineConfig, lazyPlugins } from "vite-plus";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
 import babel from "@rolldown/plugin-babel";
@@ -16,7 +16,7 @@ export default defineConfig({
     ignorePatterns: ["src/routeTree.gen.ts", ".output/**", "dist/**"],
   },
   staged: {
-    "*.{ts,tsx,js,jsx,mjs,cjs}": ["vp fmt --write", "vp lint --fix"],
+    "*": "vp check --fix",
   },
   server: {
     port: 3000,
@@ -24,7 +24,7 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
-  plugins: [
+  plugins: lazyPlugins(() => [
     tailwindcss(),
     ...(isTest ? [] : [tanstackStart({ srcDirectory: "src" })]),
     viteReact(),
@@ -33,7 +33,7 @@ export default defineConfig({
       presets: [reactCompilerPreset()],
     }),
     ...(isTest ? [] : [nitro()]),
-  ],
+  ]),
   test: {
     environment: "jsdom",
     globals: true,
