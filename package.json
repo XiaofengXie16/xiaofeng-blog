@@ -59,9 +59,7 @@
     "vitest": "4.1.10"
   },
   "overrides": {
-    "typescript": "$typescript",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.4",
-    "vitest": "4.1.10"
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.5"
   },
   "engines": {
     "node": ">=18.0.0"

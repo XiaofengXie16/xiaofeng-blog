@@ -9,25 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ToolRouteImport } from './routes/tool'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ReadingListIndexRouteImport } from './routes/reading-list.index'
+import { Route as ToolRouteImport } from './routes/tool'
 import { Route as BlogIndexRouteImport } from './routes/blog/index'
 import { Route as BlogSlugRouteImport } from './routes/blog/$slug'
+import { Route as ReadingListIndexRouteImport } from './routes/reading-list.index'
 
-const ToolRoute = ToolRouteImport.update({
-  id: '/tool',
-  path: '/tool',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ReadingListIndexRoute = ReadingListIndexRouteImport.update({
-  id: '/reading-list/',
-  path: '/reading-list/',
+const ToolRoute = ToolRouteImport.update({
+  id: '/tool',
+  path: '/tool',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -38,6 +33,11 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReadingListIndexRoute = ReadingListIndexRouteImport.update({
+  id: '/reading-list/',
+  path: '/reading-list/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -81,13 +81,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tool': {
-      id: '/tool'
-      path: '/tool'
-      fullPath: '/tool'
-      preLoaderRoute: typeof ToolRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -95,11 +88,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/reading-list/': {
-      id: '/reading-list/'
-      path: '/reading-list'
-      fullPath: '/reading-list/'
-      preLoaderRoute: typeof ReadingListIndexRouteImport
+    '/tool': {
+      id: '/tool'
+      path: '/tool'
+      fullPath: '/tool'
+      preLoaderRoute: typeof ToolRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -114,6 +107,13 @@ declare module '@tanstack/react-router' {
       path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reading-list/': {
+      id: '/reading-list/'
+      path: '/reading-list'
+      fullPath: '/reading-list/'
+      preLoaderRoute: typeof ReadingListIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
