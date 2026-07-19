@@ -26,7 +26,7 @@
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/react-router": "^1.170.18",
-    "@tanstack/react-start": "^1.168.30",
+    "@tanstack/react-start": "^1.168.32",
     "ai": "^7.0.31",
     "gray-matter": "^4.0.3",
     "isbot": "^5.2.1",
