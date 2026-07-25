@@ -27,11 +27,7 @@ skills:
   load: "node_modules/@tanstack/start-client-core/skills/start-core/SKILL.md"
 - task: "React-specific Start bindings, StartClient, StartServer, React imports"
   load: "node_modules/@tanstack/react-start/skills/react-start/SKILL.md"
-- task: "router plugin config, code splitting, route generation"
-  load: "node_modules/@tanstack/router-plugin/skills/router-plugin/SKILL.md"
 - task: "deployment, production builds, SSR, static prerendering"
   load: "node_modules/@tanstack/start-client-core/skills/start-core/deployment/SKILL.md"
-- task: "Vite+ dev workflow, dev server, build, test, lint, format"
-  load: "node_modules/vite-plus/skills/vite-plus/SKILL.md"
 
 <!-- intent-skills:end -->
