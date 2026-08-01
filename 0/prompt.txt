@@ -1,0 +1,1 @@
+anything we can improve the codebase like the use of gateway from vercel? gatewa.generateText i believe that is that it is
