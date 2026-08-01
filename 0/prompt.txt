@@ -1,0 +1,7 @@
+<task-notification>
+<task-id>bxarnf28g</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-xiaofengxie-Project-xiaofeng-blog/1516d2b5-8cfd-411b-9a04-a0fac7f476ca/tasks/bxarnf28g.output</output-file>
+<status>killed</status>
+<summary>Background command "Locate recent transcript files" was stopped</summary>
+</task-notification>
