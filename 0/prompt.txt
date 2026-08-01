@@ -1,0 +1,1 @@
+upgrade to latest typescript and all other dependencies to the latest version
