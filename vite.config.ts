@@ -9,11 +9,11 @@ const isTest = !!process.env.VITEST;
 
 export default defineConfig({
   fmt: {
-    ignorePatterns: ["src/routeTree.gen.ts", ".output/**", "dist/**"],
+    ignorePatterns: ["src/routeTree.gen.ts", ".output/**", "dist/**", "coverage/**"],
   },
   lint: {
     options: { typeAware: true, typeCheck: true },
-    ignorePatterns: ["src/routeTree.gen.ts", ".output/**", "dist/**"],
+    ignorePatterns: ["src/routeTree.gen.ts", ".output/**", "dist/**", "coverage/**"],
   },
   staged: {
     "*": "vp check --fix",
