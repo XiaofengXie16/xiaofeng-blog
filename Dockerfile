@@ -1,17 +1,13 @@
 # syntax = docker/dockerfile:1
 
-# Adjust NODE_VERSION as desired
+# Node is used only to build; the runtime image is Bun (see BUN_VERSION below)
 ARG NODE_VERSION=24
-FROM node:${NODE_VERSION}-slim as base
-
-LABEL fly_launch_runtime="TanStack Start"
-
-# App lives here
-WORKDIR /app
-
+ARG BUN_VERSION=1.4
 
 # Throw-away build stage to reduce size of final image
-FROM base as build
+FROM node:${NODE_VERSION}-slim AS build
+
+WORKDIR /app
 
 # Install Vite+ CLI (curl needed for installer)
 RUN apt-get update -qq && \
@@ -36,7 +32,12 @@ RUN npm prune --omit=dev
 
 
 # Final stage for app image
-FROM base
+FROM oven/bun:${BUN_VERSION}-slim
+
+LABEL fly_launch_runtime="TanStack Start"
+
+# App lives here
+WORKDIR /app
 
 # Set production environment
 ENV NODE_ENV="production"
@@ -44,6 +45,6 @@ ENV NODE_ENV="production"
 # Copy built application
 COPY --from=build /app /app
 
-# Start the Nitro node-server output
+# Start the Nitro node-server output under Bun
 EXPOSE 3000
-CMD [ "node", "./.output/server/index.mjs" ]
+CMD [ "bun", "./.output/server/index.mjs" ]
