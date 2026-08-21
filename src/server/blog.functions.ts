@@ -13,7 +13,7 @@ export const fetchAllBlogPosts = createServerFn({ method: "GET" }).handler(async
 });
 
 export const fetchBlogPostBySlug = createServerFn({ method: "GET" })
-  .inputValidator(validateSlugInput)
+  .validator(validateSlugInput)
   .handler(async ({ data: slug }) => {
     return getBlogPostBySlug(slug) ?? null;
   });
