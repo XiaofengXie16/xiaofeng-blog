@@ -108,7 +108,7 @@ function normalizeActions(actions: unknown): ActionItem[] {
 }
 
 export const askAI = createServerFn({ method: "POST" })
-  .inputValidator(validateAskAIInput)
+  .validator(validateAskAIInput)
   .handler(async ({ data }) => {
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
