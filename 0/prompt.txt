@@ -1,0 +1,17 @@
+review the code and tell me if there is anything we can do to improve our code , it can be dependency upgrade, it can be like remove old dependencies/libraries with newer one
+
+---
+
+bun 1.4 has markdown native support , and i want u to do web search on latest trend and see if u change ur conclusion
+
+---
+
+give me a list of what should be changed now like a table or something
+
+---
+
+fix everything
+
+---
+
+ai stuff is fine , i dont care
