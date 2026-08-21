@@ -1,0 +1,51 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "01M0H1A06E4X9QXPA3J1XZRY8F",
+  "session_id": "96ffe9a3-e6f9-47e6-abe5-9c43d26021f9",
+  "strategy": "manual-commit",
+  "created_at": "2026-08-21T02:10:03.222492Z",
+  "branch": "feat/bun-1.4-runtime",
+  "checkpoints_count": 1,
+  "save_step_count": 2,
+  "files_touched": [
+    "package-lock.json",
+    "package.json",
+    "src/server/ai.functions.ts",
+    "src/server/blog.functions.ts"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5",
+  "turn_id": "fbd0837d2553",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 104,
+    "cache_creation_tokens": 135395,
+    "cache_read_tokens": 2572588,
+    "output_tokens": 25391,
+    "api_call_count": 51
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-08-21T02:10:03.203964Z",
+    "agent_lines": 6,
+    "agent_removed": 278,
+    "human_added": 2702,
+    "human_modified": 321,
+    "human_removed": 0,
+    "total_committed": 3029,
+    "total_lines_changed": 3307,
+    "agent_percentage": 8.587843967342002,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}

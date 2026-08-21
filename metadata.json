@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.9.0",
+  "checkpoint_id": "01M0H1A06E4X9QXPA3J1XZRY8F",
+  "strategy": "manual-commit",
+  "branch": "feat/bun-1.4-runtime",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "package-lock.json",
+    "package.json",
+    "src/server/ai.functions.ts",
+    "src/server/blog.functions.ts"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 104,
+    "cache_creation_tokens": 135395,
+    "cache_read_tokens": 2572588,
+    "output_tokens": 25391,
+    "api_call_count": 51
+  }
+}
