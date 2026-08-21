@@ -1,7 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { BOOKS } from "~/constants/book";
+import { pageMeta } from "~/constants/site";
 
 export const Route = createFileRoute("/reading-list/")({
+  head: () =>
+    pageMeta({
+      title: "Reading List | Xiaofeng Xie",
+      description:
+        "Books on software design, engineering leadership, and systems that Xiaofeng Xie recommends.",
+      path: "/reading-list",
+    }),
   component: ReadingList,
 });
 

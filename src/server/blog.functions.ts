@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getAllBlogPosts, getBlogPostBySlug } from "~/utils/blogData";
+import { getAllBlogPostSummaries, getBlogPostBySlug } from "~/utils/blogData";
 
 function validateSlugInput(input: unknown): string {
   if (typeof input !== "string" || !input.trim()) {
@@ -9,7 +9,7 @@ function validateSlugInput(input: unknown): string {
 }
 
 export const fetchAllBlogPosts = createServerFn({ method: "GET" }).handler(async () => {
-  return getAllBlogPosts();
+  return getAllBlogPostSummaries();
 });
 
 export const fetchBlogPostBySlug = createServerFn({ method: "GET" })

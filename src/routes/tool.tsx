@@ -1,7 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { TOOLS } from "~/constants/tool";
+import { pageMeta } from "~/constants/site";
 
 export const Route = createFileRoute("/tool")({
+  head: () =>
+    pageMeta({
+      title: "Tools | Xiaofeng Xie",
+      description:
+        "Developer tools, terminal utilities, and productivity software Xiaofeng Xie uses day to day.",
+      path: "/tool",
+    }),
   component: Tool,
 });
 

@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { TOOLS } from "~/constants/tool";
 import { BOOKS } from "~/constants/book";
 import { askAI } from "~/server/ai.functions";
+import { AI_MODEL_LABEL } from "~/constants/ai";
 
 type ResultItem = {
   type: "navigate" | "tool" | "book" | "ai-action";
@@ -43,10 +44,48 @@ export const CommandAgent = () => {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [cursorVisible, setCursorVisible] = useState(true);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  // Drive the native top-layer dialog from `isOpen`. showModal() gives us the
+  // focus trap, inert background and ::backdrop for free.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    if (isOpen && !dialog.open) {
+      dialog.showModal();
+      // showModal() focuses the first focusable descendant (the mode toggle);
+      // the query input is what the user actually wants.
+      inputRef.current?.focus();
+    } else if (!isOpen && dialog.open) {
+      dialog.close();
+    }
+  }, [isOpen]);
+
+  // Escape dismissal happens in the UA, outside React. Only `cancel` fires
+  // reliably here (a `close` listener never runs), and React's synthetic
+  // onCancel/onClose do not fire for <dialog> either — so bind natively.
+  // Cancelling the default keeps a single close path: state flips first, then
+  // the effect above closes the dialog. Without this, isOpen stays true after
+  // Escape and the next Cmd+K appears to do nothing.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const handleCancel = (event: Event) => {
+      event.preventDefault();
+      setIsOpen(false);
+    };
+    const handleClose = () => setIsOpen(false);
+    dialog.addEventListener("cancel", handleCancel);
+    dialog.addEventListener("close", handleClose);
+    return () => {
+      dialog.removeEventListener("cancel", handleCancel);
+      dialog.removeEventListener("close", handleClose);
+    };
+  }, []);
 
   // Cursor blink — only when modal is open
   useEffect(() => {
@@ -61,9 +100,6 @@ export const CommandAgent = () => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setIsOpen((prev) => !prev);
-      }
-      if (e.key === "Escape") {
-        setIsOpen(false);
       }
     };
     const handleToggle = () => setIsOpen((prev) => !prev);
@@ -113,15 +149,13 @@ export const CommandAgent = () => {
     }
   };
 
-  // Send AI query
-  const chatHistoryRef = useRef(chatHistory);
-  chatHistoryRef.current = chatHistory;
-
   const sendAIQuery = async (userQuery: string) => {
     if (!userQuery.trim() || isLoading) return;
 
-    const currentHistory = chatHistoryRef.current;
-    const newHistory: ChatMessage[] = [...currentHistory, { role: "user", content: userQuery }];
+    // `chatHistory` from this render is current: every caller is an event
+    // handler recreated each render, so there is no stale-closure risk and
+    // no need to mirror state into a ref during render.
+    const newHistory: ChatMessage[] = [...chatHistory, { role: "user", content: userQuery }];
     setChatHistory(newHistory);
     setQuery("");
     setIsLoading(true);
@@ -300,263 +334,268 @@ export const CommandAgent = () => {
     "ai-action": "text-neon-green",
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-200 flex items-start justify-center pt-[12vh]">
-      {/* Backdrop */}
-      <button
-        type="button"
-        className="absolute inset-0 bg-black/70 backdrop-blur-md"
-        onClick={close}
-        aria-label="Close command agent"
-      />
+    <dialog
+      ref={dialogRef}
+      aria-label="Command agent"
+      className="m-0 max-w-none max-h-none w-full h-full bg-transparent p-0 text-text-main backdrop:bg-black/70 backdrop:backdrop-blur-md"
+    >
+      {/* Clicking the empty area outside the panel dismisses. */}
+      <div
+        className="flex items-start justify-center w-full h-full pt-[12vh]"
+        onMouseDown={(e) => {
+          if (e.target === e.currentTarget) close();
+        }}
+      >
+        {/* Modal */}
+        <div className="relative w-full max-w-2xl mx-4 animate-scale-in">
+          <div className="absolute -inset-px bg-linear-to-r from-primary/50 via-secondary/30 to-primary/50 opacity-60 blur-[1px]" />
 
-      {/* Modal */}
-      <div className="relative w-full max-w-2xl mx-4 animate-scale-in">
-        <div className="absolute -inset-px bg-linear-to-r from-primary/50 via-secondary/30 to-primary/50 opacity-60 blur-[1px]" />
-
-        <div className="relative bg-background border border-primary/20 overflow-hidden">
-          {/* Header bar */}
-          <div className="flex items-center gap-2 px-4 py-2 border-b border-primary/10 bg-surface/50">
-            <span className="terminal-text text-xs text-primary/50">SYSTEM</span>
-            <span className="terminal-text text-xs text-text-muted">//</span>
-            <span className="terminal-text text-xs text-text-muted">COMMAND_AGENT v2.0</span>
-            <div className="ml-auto flex items-center gap-3">
-              {/* Mode toggle */}
-              <div className="flex items-center border border-white/10">
-                <button
-                  type="button"
-                  onClick={() => setMode("search")}
-                  className={`terminal-text text-[10px] px-2 py-1 transition-all ${
-                    mode === "search"
-                      ? "bg-primary/20 text-primary"
-                      : "text-text-muted hover:text-primary"
-                  }`}
-                >
-                  SEARCH
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMode("ai")}
-                  className={`terminal-text text-[10px] px-2 py-1 transition-all ${
-                    mode === "ai"
-                      ? "bg-neon-green/20 text-neon-green"
-                      : "text-text-muted hover:text-neon-green"
-                  }`}
-                >
-                  AI
-                </button>
-              </div>
-              <span className="status-dot w-1.5! h-1.5!" />
-            </div>
-          </div>
-
-          {/* Content area */}
-          {mode === "search" ? (
-            /* Search results */
-            <div ref={resultsRef} className="max-h-[50vh] overflow-y-auto">
-              {results.length === 0 && query.trim() && (
-                <div className="px-4 py-8 text-center">
-                  <p className="terminal-text text-sm text-text-muted">NO_MATCH_FOUND</p>
-                  <p className="terminal-text text-xs text-neon-green/60 mt-3 animate-pulse">
-                    Switching to AI mode...
-                  </p>
-                </div>
-              )}
-
-              {results.map((item, index) => (
-                <button
-                  type="button"
-                  key={`${item.type}-${item.label}`}
-                  className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all group ${
-                    index === selectedIndex
-                      ? "bg-primary/10 border-l-2 border-l-primary"
-                      : "border-l-2 border-l-transparent hover:bg-surface-hover/50"
-                  }`}
-                  onClick={item.action}
-                  onMouseEnter={() => setSelectedIndex(index)}
-                >
-                  <span
-                    className={`terminal-text text-xs ${typeColors[item.type]} shrink-0 w-5 text-center opacity-70`}
-                  >
-                    {item.icon}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`terminal-text text-sm ${
-                          index === selectedIndex ? "text-primary" : "text-text-main"
-                        } transition-colors truncate`}
-                      >
-                        {item.label}
-                      </span>
-                      <span
-                        className={`terminal-text text-[10px] ${typeColors[item.type]} opacity-60 shrink-0`}
-                      >
-                        [{typeLabels[item.type]}]
-                      </span>
-                    </div>
-                    <p className="terminal-text text-xs text-text-muted/60 truncate mt-0.5">
-                      {item.description}
-                    </p>
-                  </div>
-                  <span
-                    className={`terminal-text text-xs text-primary transition-opacity ${
-                      index === selectedIndex ? "opacity-100" : "opacity-0"
+          <div className="relative bg-background border border-primary/20 overflow-hidden">
+            {/* Header bar */}
+            <div className="flex items-center gap-2 px-4 py-2 border-b border-primary/10 bg-surface/50">
+              <span className="terminal-text text-xs text-primary/50">SYSTEM</span>
+              <span className="terminal-text text-xs text-text-muted">//</span>
+              <span className="terminal-text text-xs text-text-muted">COMMAND_AGENT v2.0</span>
+              <div className="ml-auto flex items-center gap-3">
+                {/* Mode toggle */}
+                <div className="flex items-center border border-white/10">
+                  <button
+                    type="button"
+                    onClick={() => setMode("search")}
+                    className={`terminal-text text-[10px] px-2 py-1 transition-all ${
+                      mode === "search"
+                        ? "bg-primary/20 text-primary"
+                        : "text-text-muted hover:text-primary"
                     }`}
                   >
-                    &#x2192;
-                  </span>
-                </button>
-              ))}
-            </div>
-          ) : (
-            /* AI chat */
-            <div ref={chatRef} className="max-h-[50vh] overflow-y-auto">
-              {chatHistory.length === 0 && !isLoading && (
-                <div className="px-4 py-6">
-                  <p className="terminal-text text-xs text-text-muted/60 mb-4">
-                    &gt; AI_AGENT_READY // Ask about tools, books, blog posts, or anything about
-                    this site
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      "What tools do you recommend for terminal?",
-                      "Tell me about the blog posts",
-                      "What books should I read as an engineer?",
-                      "What is this site about?",
-                    ].map((suggestion) => (
-                      <button
-                        key={suggestion}
-                        type="button"
-                        onClick={async () => {
-                          setQuery(suggestion);
-                          await sendAIQuery(suggestion);
-                        }}
-                        className="terminal-text text-[11px] text-text-muted px-3 py-1.5 border border-white/10 hover:border-neon-green/30 hover:text-neon-green hover:bg-neon-green/5 transition-all"
-                      >
-                        {suggestion}
-                      </button>
-                    ))}
-                  </div>
+                    SEARCH
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMode("ai")}
+                    className={`terminal-text text-[10px] px-2 py-1 transition-all ${
+                      mode === "ai"
+                        ? "bg-neon-green/20 text-neon-green"
+                        : "text-text-muted hover:text-neon-green"
+                    }`}
+                  >
+                    AI
+                  </button>
                 </div>
-              )}
+                <span className="status-dot w-1.5! h-1.5!" />
+              </div>
+            </div>
 
-              {chatHistory.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`px-4 py-3 ${msg.role === "user" ? "border-l-2 border-l-primary/30" : "border-l-2 border-l-neon-green/30 bg-surface/30"}`}
-                >
-                  <div className="flex items-center gap-2 mb-1">
-                    <span
-                      className={`terminal-text text-[10px] ${msg.role === "user" ? "text-primary" : "text-neon-green"}`}
-                    >
-                      {msg.role === "user" ? "YOU" : "AGENT"}
-                    </span>
+            {/* Content area */}
+            {mode === "search" ? (
+              /* Search results */
+              <div ref={resultsRef} className="max-h-[50vh] overflow-y-auto">
+                {results.length === 0 && query.trim() && (
+                  <div className="px-4 py-8 text-center">
+                    <p className="terminal-text text-sm text-text-muted">NO_MATCH_FOUND</p>
+                    <p className="terminal-text text-xs text-neon-green/60 mt-3 animate-pulse">
+                      Switching to AI mode...
+                    </p>
                   </div>
-                  <p className="terminal-text text-sm text-text-main leading-relaxed">
-                    {msg.content}
-                  </p>
+                )}
 
-                  {/* Action buttons from AI */}
-                  {msg.actions && msg.actions.length > 0 && (
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {msg.actions.map((action, j) => (
-                        <button
-                          key={j}
-                          type="button"
-                          onClick={() => handleAction(action)}
-                          className="terminal-text text-xs text-neon-green px-3 py-1.5 border border-neon-green/30 hover:bg-neon-green/10 hover:border-neon-green/60 transition-all flex items-center gap-2"
+                {results.map((item, index) => (
+                  <button
+                    type="button"
+                    key={`${item.type}-${item.label}`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all group ${
+                      index === selectedIndex
+                        ? "bg-primary/10 border-l-2 border-l-primary"
+                        : "border-l-2 border-l-transparent hover:bg-surface-hover/50"
+                    }`}
+                    onClick={item.action}
+                    onMouseEnter={() => setSelectedIndex(index)}
+                  >
+                    <span
+                      className={`terminal-text text-xs ${typeColors[item.type]} shrink-0 w-5 text-center opacity-70`}
+                    >
+                      {item.icon}
+                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span
+                          className={`terminal-text text-sm ${
+                            index === selectedIndex ? "text-primary" : "text-text-main"
+                          } transition-colors truncate`}
                         >
-                          <span>{action.type === "navigate" ? ">_" : "[]"}</span>
-                          <span>{action.label || action.path || action.url}</span>
+                          {item.label}
+                        </span>
+                        <span
+                          className={`terminal-text text-[10px] ${typeColors[item.type]} opacity-60 shrink-0`}
+                        >
+                          [{typeLabels[item.type]}]
+                        </span>
+                      </div>
+                      <p className="terminal-text text-xs text-text-muted/60 truncate mt-0.5">
+                        {item.description}
+                      </p>
+                    </div>
+                    <span
+                      className={`terminal-text text-xs text-primary transition-opacity ${
+                        index === selectedIndex ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      &#x2192;
+                    </span>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              /* AI chat */
+              <div ref={chatRef} className="max-h-[50vh] overflow-y-auto">
+                {chatHistory.length === 0 && !isLoading && (
+                  <div className="px-4 py-6">
+                    <p className="terminal-text text-xs text-text-muted/60 mb-4">
+                      &gt; AI_AGENT_READY // Ask about tools, books, blog posts, or anything about
+                      this site
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        "What tools do you recommend for terminal?",
+                        "Tell me about the blog posts",
+                        "What books should I read as an engineer?",
+                        "What is this site about?",
+                      ].map((suggestion) => (
+                        <button
+                          key={suggestion}
+                          type="button"
+                          onClick={async () => {
+                            setQuery(suggestion);
+                            await sendAIQuery(suggestion);
+                          }}
+                          className="terminal-text text-[11px] text-text-muted px-3 py-1.5 border border-white/10 hover:border-neon-green/30 hover:text-neon-green hover:bg-neon-green/5 transition-all"
+                        >
+                          {suggestion}
                         </button>
                       ))}
                     </div>
-                  )}
-                </div>
-              ))}
-
-              {isLoading && (
-                <div className="px-4 py-3 border-l-2 border-l-neon-green/30 bg-surface/30">
-                  <div className="flex items-center gap-2">
-                    <span className="terminal-text text-[10px] text-neon-green">AGENT</span>
                   </div>
-                  <p className="terminal-text text-sm text-text-muted animate-pulse mt-1">
-                    Processing query...
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
+                )}
 
-          {/* Input area */}
-          <div className="flex items-center gap-3 px-4 py-4 border-t border-primary/10">
-            <span
-              className={`terminal-text text-sm shrink-0 ${mode === "ai" ? "text-neon-green" : "text-primary"}`}
-            >
-              {mode === "ai" ? (cursorVisible ? "?" : "\u00A0") : cursorVisible ? ">" : "\u00A0"}
-            </span>
-            <input
-              ref={inputRef}
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={handleInputKeyDown}
-              placeholder={
-                mode === "ai" ? "Ask me anything about this site..." : "Type a command or search..."
-              }
-              className="flex-1 bg-transparent text-text-main terminal-text text-sm outline-none placeholder:text-text-muted/50"
-              autoComplete="off"
-              spellCheck={false}
-            />
-            {query && (
-              <button
-                type="button"
-                onClick={() => setQuery("")}
-                className="terminal-text text-xs text-text-muted hover:text-primary transition-colors"
-              >
-                CLEAR
-              </button>
+                {chatHistory.map((msg, i) => (
+                  <div
+                    key={i}
+                    className={`px-4 py-3 ${msg.role === "user" ? "border-l-2 border-l-primary/30" : "border-l-2 border-l-neon-green/30 bg-surface/30"}`}
+                  >
+                    <div className="flex items-center gap-2 mb-1">
+                      <span
+                        className={`terminal-text text-[10px] ${msg.role === "user" ? "text-primary" : "text-neon-green"}`}
+                      >
+                        {msg.role === "user" ? "YOU" : "AGENT"}
+                      </span>
+                    </div>
+                    <p className="terminal-text text-sm text-text-main leading-relaxed">
+                      {msg.content}
+                    </p>
+
+                    {/* Action buttons from AI */}
+                    {msg.actions && msg.actions.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {msg.actions.map((action, j) => (
+                          <button
+                            key={j}
+                            type="button"
+                            onClick={() => handleAction(action)}
+                            className="terminal-text text-xs text-neon-green px-3 py-1.5 border border-neon-green/30 hover:bg-neon-green/10 hover:border-neon-green/60 transition-all flex items-center gap-2"
+                          >
+                            <span>{action.type === "navigate" ? ">_" : "[]"}</span>
+                            <span>{action.label || action.path || action.url}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+
+                {isLoading && (
+                  <div className="px-4 py-3 border-l-2 border-l-neon-green/30 bg-surface/30">
+                    <div className="flex items-center gap-2">
+                      <span className="terminal-text text-[10px] text-neon-green">AGENT</span>
+                    </div>
+                    <p className="terminal-text text-sm text-text-muted animate-pulse mt-1">
+                      Processing query...
+                    </p>
+                  </div>
+                )}
+              </div>
             )}
-          </div>
 
-          {/* Footer */}
-          <div className="flex items-center justify-between px-4 py-2 border-t border-primary/10 bg-surface/30">
-            <div className="flex items-center gap-3">
-              <span className="terminal-text text-[10px] text-text-muted/50">
-                <kbd className="px-1 py-0.5 border border-white/10 bg-white/5">tab</kbd>{" "}
-                {mode === "search" ? "AI mode" : "search"}
+            {/* Input area */}
+            <div className="flex items-center gap-3 px-4 py-4 border-t border-primary/10">
+              <span
+                className={`terminal-text text-sm shrink-0 ${mode === "ai" ? "text-neon-green" : "text-primary"}`}
+              >
+                {mode === "ai" ? (cursorVisible ? "?" : "\u00A0") : cursorVisible ? ">" : "\u00A0"}
               </span>
-              {mode === "search" ? (
-                <>
-                  <span className="terminal-text text-[10px] text-text-muted/50">
-                    <kbd className="px-1 py-0.5 border border-white/10 bg-white/5">↑↓</kbd> navigate
-                  </span>
-                  <span className="terminal-text text-[10px] text-text-muted/50">
-                    <kbd className="px-1 py-0.5 border border-white/10 bg-white/5">↵</kbd> select
-                  </span>
-                </>
-              ) : (
-                <span className="terminal-text text-[10px] text-text-muted/50">
-                  <kbd className="px-1 py-0.5 border border-white/10 bg-white/5">↵</kbd> send
-                </span>
+              <input
+                ref={inputRef}
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={handleInputKeyDown}
+                placeholder={
+                  mode === "ai"
+                    ? "Ask me anything about this site..."
+                    : "Type a command or search..."
+                }
+                className="flex-1 bg-transparent text-text-main terminal-text text-sm outline-none placeholder:text-text-muted/50"
+                autoComplete="off"
+                spellCheck={false}
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  className="terminal-text text-xs text-text-muted hover:text-primary transition-colors"
+                >
+                  CLEAR
+                </button>
               )}
-              <span className="terminal-text text-[10px] text-text-muted/50">
-                <kbd className="px-1 py-0.5 border border-white/10 bg-white/5">esc</kbd> close
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-between px-4 py-2 border-t border-primary/10 bg-surface/30">
+              <div className="flex items-center gap-3">
+                <span className="terminal-text text-[10px] text-text-muted/50">
+                  <kbd className="px-1 py-0.5 border border-white/10 bg-white/5">tab</kbd>{" "}
+                  {mode === "search" ? "AI mode" : "search"}
+                </span>
+                {mode === "search" ? (
+                  <>
+                    <span className="terminal-text text-[10px] text-text-muted/50">
+                      <kbd className="px-1 py-0.5 border border-white/10 bg-white/5">↑↓</kbd>{" "}
+                      navigate
+                    </span>
+                    <span className="terminal-text text-[10px] text-text-muted/50">
+                      <kbd className="px-1 py-0.5 border border-white/10 bg-white/5">↵</kbd> select
+                    </span>
+                  </>
+                ) : (
+                  <span className="terminal-text text-[10px] text-text-muted/50">
+                    <kbd className="px-1 py-0.5 border border-white/10 bg-white/5">↵</kbd> send
+                  </span>
+                )}
+                <span className="terminal-text text-[10px] text-text-muted/50">
+                  <kbd className="px-1 py-0.5 border border-white/10 bg-white/5">esc</kbd> close
+                </span>
+              </div>
+              <span
+                className={`terminal-text text-[10px] ${mode === "ai" ? "text-neon-green/40" : "text-text-muted/40"}`}
+              >
+                {mode === "ai"
+                  ? AI_MODEL_LABEL
+                  : `${results.length} result${results.length !== 1 ? "s" : ""}`}
               </span>
             </div>
-            <span
-              className={`terminal-text text-[10px] ${mode === "ai" ? "text-neon-green/40" : "text-text-muted/40"}`}
-            >
-              {mode === "ai"
-                ? "llama-3.1"
-                : `${results.length} result${results.length !== 1 ? "s" : ""}`}
-            </span>
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
   );
 };

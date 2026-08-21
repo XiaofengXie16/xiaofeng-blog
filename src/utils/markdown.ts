@@ -1,22 +1,33 @@
 import matter from "gray-matter";
 import { Marked } from "marked";
 
+const HTML_ESCAPES: Record<string, string> = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+};
+
+const escapeHtml = (value: string) =>
+  value.replace(/[&<>"']/g, (char) => HTML_ESCAPES[char] ?? char);
+
 // Match the options previously passed to Bun.markdown.html:
 //   autolinks      -> GFM autolink extension (on by default in `marked` with gfm:true)
 //   hardSoftBreaks -> treat single newlines as <br>
 const marked = new Marked({ gfm: true, breaks: true });
 
-function sanitizeHtml(html: string): string {
-  return html
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
-    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "")
-    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "")
-    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, "")
-    .replace(/<embed\b[^>]*>/gi, "")
-    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
-    .replace(/\s(href|src)\s*=\s*("|')\s*javascript:[\s\S]*?\2/gi, "")
-    .replace(/\s(href|src)\s*=\s*javascript:[^\s>]+/gi, "");
-}
+// Escape raw HTML at the parser level rather than stripping it afterwards with
+// a blocklist of regexes. The renderer's `html` hook covers both block-level
+// HTML and inline tags, so nothing authored in a post can emit live markup —
+// a guarantee a post-hoc regex pass cannot make.
+marked.use({
+  renderer: {
+    html({ text }) {
+      return escapeHtml(text);
+    },
+  },
+});
 
 export const parseMarkdownWithPreview = (markdownText: string, previewLength = 200) => {
   const { data, content } = matter(markdownText);
@@ -24,8 +35,7 @@ export const parseMarkdownWithPreview = (markdownText: string, previewLength = 2
   // Add newlines before headings for better spacing
   const formattedContent = content.replace(/^(#{1,6})\s/gm, "\n$1 ").replace(/\n\n\n+/g, "\n\n");
 
-  const rawHtml = marked.parse(formattedContent, { async: false }) as string;
-  const html = sanitizeHtml(rawHtml);
+  const html = marked.parse(formattedContent, { async: false }) as string;
 
   const plainText = html.replace(/<[^>]+>/g, "");
   const preview =

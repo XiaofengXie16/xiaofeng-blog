@@ -2,7 +2,8 @@
 
 # Node is used only to build; the runtime image is Bun (see BUN_VERSION below)
 ARG NODE_VERSION=24
-ARG BUN_VERSION=1.4
+# Pinned to a patch: Bun.markdown/Bun APIs used at runtime are version-sensitive.
+ARG BUN_VERSION=1.4.0
 
 # Throw-away build stage to reduce size of final image
 FROM node:${NODE_VERSION}-slim AS build

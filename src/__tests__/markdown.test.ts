@@ -57,7 +57,7 @@ Some text`;
     expect(result.html).toContain("<h2>Heading 2</h2>");
   });
 
-  it("should remove unsafe inline HTML from markdown output", () => {
+  it("should escape raw HTML instead of emitting live markup", () => {
     const markdown = `<script>alert("xss")</script>
 
 <a href="javascript:alert('xss')" onclick="alert('xss')">Bad link</a>
@@ -66,9 +66,20 @@ Safe content`;
 
     const result = parseMarkdownWithPreview(markdown);
 
+    // Nothing authored in a post may become a real tag or attribute...
     expect(result.html).not.toContain("<script");
-    expect(result.html).not.toContain("javascript:");
-    expect(result.html).not.toContain("onclick");
+    expect(result.html).not.toContain("<a href");
+    // An inert `onclick=&quot;...` is fine; a real `onclick="` attribute is not.
+    expect(result.html).not.toContain('onclick="');
+    // ...it survives as inert text instead.
+    expect(result.html).toContain("&lt;script&gt;");
+    expect(result.html).toContain("&lt;a href=");
     expect(result.html).toContain("Safe content");
+  });
+
+  it("should still render markdown-authored links normally", () => {
+    const result = parseMarkdownWithPreview("[Example](https://example.com)");
+
+    expect(result.html).toContain('<a href="https://example.com">Example</a>');
   });
 });

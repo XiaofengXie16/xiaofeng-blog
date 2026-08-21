@@ -1,25 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { fetchAllBlogPosts } from "~/server/blog.functions";
+import { pageMeta } from "~/constants/site";
 
 export const Route = createFileRoute("/blog/")({
   loader: async () => ({ posts: await fetchAllBlogPosts() }),
-  head: () => ({
-    meta: [
-      { title: "Blog | Xiaofeng Xie" },
-      {
-        name: "description",
-        content:
-          "Software engineering articles by Xiaofeng Xie on architecture, frontend systems, and developer tooling.",
-      },
-      { property: "og:title", content: "Blog | Xiaofeng Xie" },
-      {
-        property: "og:description",
-        content:
-          "Software engineering articles by Xiaofeng Xie on architecture, frontend systems, and developer tooling.",
-      },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () =>
+    pageMeta({
+      title: "Blog | Xiaofeng Xie",
+      description:
+        "Software engineering articles by Xiaofeng Xie on architecture, frontend systems, and developer tooling.",
+      path: "/blog",
+    }),
   component: Posts,
 });
 

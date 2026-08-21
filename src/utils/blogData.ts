@@ -73,7 +73,14 @@ function getPosts(): BlogPost[] {
   return _posts;
 }
 
+// The list view never renders `html`, but a loader that returns it ships every
+// post's full article body in the page's hydration payload.
+export type BlogPostSummary = Omit<BlogPost, "html">;
+
 export const getAllBlogPosts = (): BlogPost[] => [...getPosts()];
+
+export const getAllBlogPostSummaries = (): BlogPostSummary[] =>
+  getPosts().map(({ html: _html, ...summary }) => summary);
 
 export const getBlogPostBySlug = (slug: string): BlogPost | undefined =>
   getPosts().find((post) => post.slug === slug);

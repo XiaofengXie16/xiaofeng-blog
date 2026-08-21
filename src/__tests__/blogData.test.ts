@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vite-plus/test";
-import { getAllBlogPosts, getBlogPostBySlug } from "../utils/blogData";
+import { getAllBlogPostSummaries, getAllBlogPosts, getBlogPostBySlug } from "../utils/blogData";
 
 describe("blogData", () => {
   it("should expose normalized metadata for all posts", () => {
@@ -33,5 +33,29 @@ describe("blogData", () => {
     expect(firstPost).toBeDefined();
     expect(getBlogPostBySlug(firstPost.slug)?.title).toBe(firstPost.title);
     expect(getBlogPostBySlug("missing-post")).toBeUndefined();
+  });
+
+  it("should omit rendered html from list summaries", () => {
+    const summaries = getAllBlogPostSummaries();
+    const posts = getAllBlogPosts();
+
+    expect(summaries).toHaveLength(posts.length);
+    for (const summary of summaries) {
+      // The list payload must not carry article bodies.
+      expect(summary).not.toHaveProperty("html");
+    }
+  });
+
+  it("should keep the metadata the list view renders", () => {
+    const [summary] = getAllBlogPostSummaries();
+    const [post] = getAllBlogPosts();
+
+    expect(summary).toBeDefined();
+    expect(post).toBeDefined();
+    expect(summary?.slug).toBe(post?.slug);
+    expect(summary?.title).toBe(post?.title);
+    expect(summary?.preview).toBe(post?.preview);
+    expect(summary?.tags).toEqual(post?.tags);
+    expect(summary?.date).toBe(post?.date);
   });
 });

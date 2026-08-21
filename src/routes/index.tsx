@@ -1,30 +1,50 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageMeta } from "~/constants/site";
 import { Button } from "../components/ui/Button";
 import { GlitchText } from "../components/effects/GlitchText";
 import { FloatingOrbs, GridLines, NoiseOverlay } from "../components/effects/FloatingOrbs";
 import { TiltCard } from "../components/effects/TiltCard";
-import { useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export const Route = createFileRoute("/")({
+  head: () =>
+    pageMeta({
+      title: "Xiaofeng Xie - Software Engineer",
+      description:
+        "Software engineer writing about architecture, frontend systems, and developer tooling.",
+      path: "/",
+    }),
   component: Index,
 });
 
 function Index() {
-  const [_isLoaded, setIsLoaded] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  // Parallax is written straight to CSS custom properties on a ref and
+  // rAF-throttled. Holding it in state re-rendered the whole page on every
+  // pointer move.
+  const parallaxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setIsLoaded(true);
+    const node = parallaxRef.current;
+    if (!node) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    let frame = 0;
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 20;
+        node.style.setProperty("--parallax-x", `${x}px`);
+        node.style.setProperty("--parallax-y", `${y}px`);
       });
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   return (
@@ -40,14 +60,17 @@ function Index() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
         {/* Animated Geometric Background */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          ref={parallaxRef}
+          className="absolute inset-0 pointer-events-none overflow-hidden [--parallax-x:0px] [--parallax-y:0px]"
+        >
           {/* Rotating hexagon */}
           <div
             className="absolute top-1/4 right-1/4 w-64 h-64 border border-primary/10 opacity-30"
             style={{
               clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
               animation: "rotate 30s linear infinite",
-              transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
+              transform: "translate(var(--parallax-x), var(--parallax-y))",
             }}
           />
 
@@ -56,7 +79,8 @@ function Index() {
             className="absolute bottom-1/3 left-1/4 w-48 h-48 border border-secondary/10 rotate-45 opacity-20"
             style={{
               animation: "rotate 25s linear infinite reverse",
-              transform: `translate(${-mousePosition.x}px, ${-mousePosition.y}px) rotate(45deg)`,
+              transform:
+                "translate(calc(-1 * var(--parallax-x)), calc(-1 * var(--parallax-y))) rotate(45deg)",
             }}
           />
 
@@ -64,7 +88,7 @@ function Index() {
           <div
             className="absolute top-1/3 left-1/3 w-96 h-96 rounded-full border border-accent/5 opacity-30"
             style={{
-              transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)`,
+              transform: "translate(calc(0.5 * var(--parallax-x)), calc(0.5 * var(--parallax-y)))",
             }}
           />
         </div>

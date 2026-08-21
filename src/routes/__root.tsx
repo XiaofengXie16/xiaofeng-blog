@@ -3,6 +3,7 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import stylesheet from "../tailwind.css?url";
 import { getRouter } from "../router";
 import { Layout } from "../components/Layout/Layout";
+import { SITE_DESCRIPTION, SITE_TITLE, pageMeta } from "~/constants/site";
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -18,11 +19,11 @@ export const Route = createRootRoute({
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
-      { title: "Xiaofeng's Blog" },
-      { name: "description", content: "Personal blog of Xiaofeng Xie - Software Engineer" },
+      ...pageMeta({ title: SITE_TITLE, description: SITE_DESCRIPTION, path: "/" }).meta,
     ],
     links: [
       { rel: "stylesheet", href: stylesheet },
+      { rel: "alternate", type: "application/rss+xml", title: SITE_TITLE, href: "/rss.xml" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

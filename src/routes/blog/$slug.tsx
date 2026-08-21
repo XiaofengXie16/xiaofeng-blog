@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import invariant from "tiny-invariant";
 
 import { fetchBlogPostBySlug } from "~/server/blog.functions";
+import { pageMeta } from "~/constants/site";
 
 type LoaderData = {
   title: string;
@@ -32,21 +33,13 @@ export const Route = createFileRoute("/blog/$slug")({
       tags: post.tags,
     } satisfies LoaderData;
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData?.title ?? "Blog Post"} | Xiaofeng Xie` },
-      {
-        name: "description",
-        content: loaderData?.description ?? "Software engineering article by Xiaofeng Xie.",
-      },
-      { property: "og:title", content: `${loaderData?.title ?? "Blog Post"} | Xiaofeng Xie` },
-      {
-        property: "og:description",
-        content: loaderData?.description ?? "Software engineering article by Xiaofeng Xie.",
-      },
-      { property: "og:type", content: "article" },
-    ],
-  }),
+  head: ({ loaderData }) =>
+    pageMeta({
+      title: `${loaderData?.title ?? "Blog Post"} | Xiaofeng Xie`,
+      description: loaderData?.description ?? "Software engineering article by Xiaofeng Xie.",
+      path: `/blog/${loaderData?.slug ?? ""}`,
+      type: "article",
+    }),
   component: BlogPost,
   notFoundComponent: PostNotFound,
 });
