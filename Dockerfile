@@ -15,7 +15,9 @@ RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends curl ca-certificates && \
     rm -rf /var/lib/apt/lists/* && \
     curl -fsSL https://vite.plus | bash
-ENV PATH="/root/.vite-plus/bin:$PATH"
+# The installer moved its bin dir (~/.vite-plus/bin -> ~/.local/share/vite-plus/bin);
+# keep both so the build works across installer versions and cached layers.
+ENV PATH="/root/.local/share/vite-plus/bin:/root/.vite-plus/bin:$PATH"
 
 # Install dependencies
 COPY --link package-lock.json package.json ./
