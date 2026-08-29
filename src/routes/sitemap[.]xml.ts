@@ -25,7 +25,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         const origin = getSiteUrl();
         const posts = getAllBlogPostSummaries();
 
-        const staticPaths = ["/", "/blog", "/reading-list", "/tool"];
+        const staticPaths = ["/", "/blog", "/reading-list", "/tool", "/services"];
         const urls = [
           ...staticPaths.map((path) => ({ loc: `${origin}${path}`, lastmod: undefined })),
           ...posts.map((post) => ({

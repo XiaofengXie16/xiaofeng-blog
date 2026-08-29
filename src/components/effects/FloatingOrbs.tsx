@@ -1,3 +1,6 @@
+const particleValue = (index: number, multiplier: number, offset: number) =>
+  ((index + 1) * multiplier + offset) % 997;
+
 export const FloatingOrbs = () => {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
@@ -43,10 +46,10 @@ export const FloatingOrbs = () => {
           key={i}
           className="absolute w-1 h-1 rounded-full bg-primary/50 animate-particle"
           style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${15 + Math.random() * 10}s`,
+            left: `${particleValue(i, 73, 41) / 9.97}%`,
+            top: `${particleValue(i, 193, 127) / 9.97}%`,
+            animationDelay: `${particleValue(i, 307, 17) / 199.4}s`,
+            animationDuration: `${15 + particleValue(i, 449, 263) / 99.7}s`,
           }}
         />
       ))}

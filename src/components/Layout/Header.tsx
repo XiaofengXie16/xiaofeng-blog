@@ -20,6 +20,7 @@ export const Header = () => {
     { to: "/blog", label: "BLOG", code: "01" },
     { to: "/reading-list", label: "READING", code: "02" },
     { to: "/tool", label: "TOOLS", code: "03" },
+    { to: "/services", label: "SERVICES", code: "04" },
   ];
 
   return (
@@ -48,7 +49,7 @@ export const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center">
+          <nav className="hidden lg:flex items-center">
             <div className="flex items-center border border-white/5 bg-surface/30 backdrop-blur-sm">
               {navLinks.map((link) => (
                 <Link
@@ -89,7 +90,7 @@ export const Header = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden relative w-12 h-12 flex items-center justify-center border border-white/10 hover:border-primary/50 hover:bg-primary/5 transition-all"
+            className="lg:hidden relative w-12 h-12 flex items-center justify-center border border-white/10 hover:border-primary/50 hover:bg-primary/5 transition-all"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -110,7 +111,7 @@ export const Header = () => {
 
       {/* Mobile Navigation - fixed overlay so it always appears above page content */}
       <div
-        className={`md:hidden fixed inset-0 z-[120] transition-opacity duration-300 ${isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}
+        className={`lg:hidden fixed inset-0 z-[120] transition-opacity duration-300 ${isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"}`}
         aria-hidden={!isMenuOpen}
       >
         {/* Backdrop */}
