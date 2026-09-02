@@ -1,7 +1,6 @@
 import { defineConfig, lazyPlugins } from "vite-plus";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact, { reactCompilerPreset } from "@vitejs/plugin-react";
-import babel from "@rolldown/plugin-babel";
+import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { nitro } from "nitro/vite";
 
@@ -34,11 +33,7 @@ export default defineConfig({
             prerender: { enabled: true, crawlLinks: true, failOnError: true },
           }),
         ]),
-    viteReact(),
-    babel({
-      parserOpts: { plugins: ["typescript", "jsx"] },
-      presets: [reactCompilerPreset()],
-    }),
+    viteReact({ compiler: true }),
     // NOTE: deliberately not `nitro({ preset: "bun" })`. The prerenderer boots
     // the built server under Node, and a bun-preset output cannot serve it
     // (prerender yields 0 pages / UND_ERR_HEADERS_TIMEOUT). The default
