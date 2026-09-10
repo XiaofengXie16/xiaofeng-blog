@@ -45,11 +45,10 @@ READING LIST:
 ${books}
 
 INSTRUCTIONS:
-- Keep responses SHORT (2-4 sentences max). This is a command palette, not a chat.
+- This is a command palette, not a chat.
 - When relevant, suggest up to 4 actions: "navigate" for an internal page (set "path"), "open" for an external link (set "url").
 - Be helpful: answer questions about the site, recommend tools, suggest blog posts
-- If asked something unrelated to the site, briefly answer but steer back to what's available
-- Never use markdown. Plain text only.`;
+- If asked something unrelated to the site, briefly answer but steer back to what's available`;
   return _systemPrompt;
 }
 
