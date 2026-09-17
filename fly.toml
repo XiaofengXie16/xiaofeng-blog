@@ -17,6 +17,17 @@ auto_start_machines = true
 min_machines_running = 1
 processes = ["app"]
 
+# Application-level liveness probe. Without a service check Fly only knows the
+# process is listening on internal_port, so a release that boots but serves
+# errors is still reported as a successful deploy. `flyctl deploy` smoke-tests
+# this check before completing and fails the deploy when it does not pass.
+[[http_service.checks]]
+interval = "15s"
+timeout = "2s"
+grace_period = "10s"
+method = "GET"
+path = "/robots.txt"
+
 [[vm]]
 cpu_kind = "shared"
 cpus = 1
