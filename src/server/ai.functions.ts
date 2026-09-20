@@ -6,6 +6,7 @@ import { TOOLS } from "~/constants/tool";
 import { BOOKS } from "~/constants/book";
 import { getAllBlogPosts } from "~/utils/blogData";
 import { AI_MODEL } from "~/constants/ai";
+import { logError, logInfo } from "~/utils/logger";
 
 let _systemPrompt: string | null = null;
 function buildSystemPrompt(): string {
@@ -121,8 +122,24 @@ function normalizeActions(actions: unknown): ActionItem[] {
 export const askAI = createServerFn({ method: "POST" })
   .validator(validateAskAIInput)
   .handler(async ({ data }) => {
+    const startedAt = Date.now();
+    // Fields every outcome carries, so the three terminal paths below are one
+    // wide event with a different `outcome` rather than three log shapes.
+    const eventFields = {
+      model: AI_MODEL,
+      queryLength: data.query.length,
+      historyCount: data.history.length,
+    };
+
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
+      // Serving the canned "not configured" answer used to be invisible to
+      // operators: a missing secret looked identical to a healthy assistant.
+      logError("ai.ask", {
+        ...eventFields,
+        outcome: "unconfigured",
+        durationMs: Date.now() - startedAt,
+      });
       return {
         response:
           "AI not configured. Set GROQ_API_KEY environment variable to enable the AI assistant.",
@@ -154,17 +171,33 @@ export const askAI = createServerFn({ method: "POST" })
         }),
       });
 
+      const response = result.output.response.trim();
+      const actions = normalizeActions(result.output.actions);
+
+      // Latency and reply shape per request: enough to see the provider slow
+      // down or start returning empty or unactionable answers before a user does.
+      logInfo("ai.ask", {
+        ...eventFields,
+        outcome: "ok",
+        durationMs: Date.now() - startedAt,
+        responseLength: response.length,
+        actionCount: actions.length,
+      });
+
       // Still normalize: the schema constrains shape, not whether a path is
       // internal or a URL is http(s).
-      return {
-        response: result.output.response.trim(),
-        actions: normalizeActions(result.output.actions),
-      };
+      return { response, actions };
     } catch (err) {
-      // Surface the real cause: a silent catch here is why the llama-3.1
-      // shutdown went unnoticed in production.
+      // The model name and request shape are event fields now, not message
+      // text: interpolating them fragmented the template the llama-3.1
+      // shutdown needed to be found under.
+      logError(
+        "ai.ask",
+        { ...eventFields, outcome: "error", durationMs: Date.now() - startedAt },
+        err,
+      );
+
       const detail = err instanceof Error ? err.message : String(err);
-      console.error(`AI SDK error (model: ${AI_MODEL}):`, err);
       return {
         response: `AI request failed (${detail}). Try again.`,
         actions: [] as ActionItem[],
