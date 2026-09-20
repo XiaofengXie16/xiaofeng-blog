@@ -1,4 +1,4 @@
-import { Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import { Outlet, createRootRoute, HeadContent, Scripts, useLocation } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import stylesheet from "../tailwind.css?url";
 import { getRouter } from "../router";
@@ -41,11 +41,13 @@ function ErrorBoundary({ error }: { error: unknown }) {
   // This used to log only in development, so a render or loader failure in
   // production — where it matters — left no trace anywhere. Log it on every
   // environment, with the route the reader needs to reproduce it.
-  logError(
-    "route.render_error",
-    { path: typeof window === "undefined" ? undefined : window.location.pathname },
-    error,
-  );
+  //
+  // The path comes from router state rather than `window.location`, which is
+  // absent during server rendering: reading `window` there left the field
+  // undefined, and JSON.stringify drops it, so every SSR render and loader
+  // error arrived with no route at all.
+  const path = useLocation({ select: (location) => location.pathname });
+  logError("route.render_error", { path }, error);
 
   const getErrorMessage = (error: unknown): string => {
     if (error instanceof Error) {
