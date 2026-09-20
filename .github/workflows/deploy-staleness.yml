@@ -1,0 +1,71 @@
+name: Deploy staleness
+
+# A failed-run alert with a short lookback window can only see a run that fails
+# right now. It is blind to the failure mode this service actually hits: a
+# pipeline that has stopped producing. When main moves and no deploy succeeds,
+# nothing runs, nothing fails, and the pipeline reads as healthy for days while
+# production stays frozen.
+#
+# This scheduled check fails loudly when the newest commit on the default branch
+# has no successful deploy of the deploy workflow within STALE_HOURS, so a
+# stalled pipeline surfaces on its own instead of waiting to be noticed by hand.
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  staleness:
+    name: Newest main commit has a fresh deploy
+    runs-on: ubuntu-latest
+    env:
+      # How long a commit on the default branch may go without a successful
+      # deploy before the check fails. Deploys take minutes, so this is slack
+      # for a slow run, not a target.
+      STALE_HOURS: "24"
+      DEPLOY_WORKFLOW: fly.yml
+      DEPLOY_JOB: Deploy app
+    steps:
+      - name: Check the deploy is fresh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.event.repository.default_branch || 'main' }}
+        run: |
+          set -euo pipefail
+
+          head_sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$BRANCH" --jq .sha)
+          head_date=$(gh api "repos/$GITHUB_REPOSITORY/commits/$BRANCH" --jq .commit.committer.date)
+
+          run_id=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/$DEPLOY_WORKFLOW/runs?branch=$BRANCH&per_page=100" \
+            --jq "[.workflow_runs[] | select(.head_sha==\"$head_sha\" and .status==\"completed\")][0].id // \"\"")
+
+          deploy_conclusion="none"
+          if [ -n "$run_id" ]; then
+            deploy_conclusion=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/jobs?per_page=100" \
+              --jq "[.jobs[] | select(.name==\"$DEPLOY_JOB\")][0].conclusion // \"none\"")
+          fi
+
+          echo "$BRANCH head $head_sha (committed $head_date)"
+          echo "latest completed $DEPLOY_WORKFLOW run for it: ${run_id:-none}; '$DEPLOY_JOB' job: $deploy_conclusion"
+
+          if [ "$deploy_conclusion" = "success" ]; then
+            echo "Deploy is current for $head_sha."
+            exit 0
+          fi
+
+          now=$(date -u +%s)
+          committed=$(date -u -d "$head_date" +%s)
+          age_hours=$(( (now - committed) / 3600 ))
+          echo "No successful '$DEPLOY_JOB' for $head_sha; newest commit is ${age_hours}h old."
+
+          if [ "$age_hours" -lt "$STALE_HOURS" ]; then
+            echo "Inside the ${STALE_HOURS}h grace window; not failing."
+            exit 0
+          fi
+
+          echo "::error::No successful '$DEPLOY_JOB' deploy of $DEPLOY_WORKFLOW for $BRANCH@$head_sha in ${age_hours}h (job conclusion: $deploy_conclusion). The delivery pipeline looks stopped and production may be frozen."
+          exit 1
