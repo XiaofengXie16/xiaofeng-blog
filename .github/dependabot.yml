@@ -5,3 +5,9 @@ updates:
     directory: "/" # Specify the directory where your dependencies are located
     schedule:
       interval: "daily" # Specify how often Dependabot should check for updates
+  # Keep the commit SHAs pinned in .github/workflows/ current: Dependabot rewrites
+  # the SHA and its trailing version comment when a pinned action releases.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"

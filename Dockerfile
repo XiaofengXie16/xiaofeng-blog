@@ -10,14 +10,9 @@ FROM node:${NODE_VERSION}-slim AS build
 
 WORKDIR /app
 
-# Install Vite+ CLI (curl needed for installer)
-RUN apt-get update -qq && \
-    apt-get install -y --no-install-recommends curl ca-certificates && \
-    rm -rf /var/lib/apt/lists/* && \
-    curl -fsSL https://vite.plus | bash
-# The installer moved its bin dir (~/.vite-plus/bin -> ~/.local/share/vite-plus/bin);
-# keep both so the build works across installer versions and cached layers.
-ENV PATH="/root/.local/share/vite-plus/bin:/root/.vite-plus/bin:$PATH"
+# The Vite+ CLI comes from the pinned `vite-plus` devDependency, so `vp` resolves to the
+# build installed by `npm ci` from package-lock.json (npm verifies each tarball's integrity).
+ENV PATH="/app/node_modules/.bin:$PATH"
 
 # Install dependencies
 COPY --link package-lock.json package.json ./
