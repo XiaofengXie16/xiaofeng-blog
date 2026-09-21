@@ -42,6 +42,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    # Serialize production deploys so two quick pushes to main cannot run
+    # `flyctl deploy` against the app at the same time.
+    concurrency:
+      group: fly-deploy-production
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      issues: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
@@ -53,3 +61,39 @@ jobs:
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      # Fail the run when the freshly deployed app does not answer, so a broken
+      # release is recorded as a failed deploy instead of a silent one.
+      - name: Verify the deployed app is serving
+        run: |
+          set -euo pipefail
+          url="https://xiaofeng-blog.fly.dev/robots.txt"
+          for attempt in $(seq 1 12); do
+            code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 10 "$url" || true)"
+            if [ "$code" = "200" ]; then
+              echo "Deployment verified: $url returned HTTP 200"
+              exit 0
+            fi
+            echo "Attempt $attempt/12: $url returned HTTP ${code:-no response}; retrying in 10s"
+            sleep 10
+          done
+          echo "Deployment verification failed: $url did not return HTTP 200 after 12 attempts"
+          exit 1
+
+      # Raise a failing deploy to a human. Reuses one open issue so repeated
+      # failures do not spam a new issue every run.
+      - name: Report deploy failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          body="$(printf 'The Fly Deploy workflow failed on %s (%s).\n\nProduction was not verified by this run. Investigate the failing step before the next release.\n\nRun: %s' "${GITHUB_REF_NAME}" "${GITHUB_SHA}" "${run_url}")"
+          gh label create deploy-failure --color B60205 --description "Automated: a production deploy did not verify" --force >/dev/null 2>&1 || true
+          existing="$(gh issue list --label deploy-failure --state open --limit 1 --json number --jq '.[0].number // empty')"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body "$body"
+          else
+            gh issue create --title "Fly Deploy workflow failed" --label deploy-failure --body "$body"
+          fi
