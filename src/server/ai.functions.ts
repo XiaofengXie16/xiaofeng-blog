@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { setResponseStatus } from "@tanstack/react-start/server";
 import { Output, generateText } from "ai";
 import { z } from "zod";
 import { groq } from "@ai-sdk/groq";
@@ -123,6 +124,9 @@ export const askAI = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
+      // The assistant is fully unavailable in this state. Mark the response so
+      // the edge status metrics record it (this app has no log sink).
+      setResponseStatus(503, "AI assistant not configured");
       return {
         response:
           "AI not configured. Set GROQ_API_KEY environment variable to enable the AI assistant.",
@@ -132,8 +136,7 @@ export const askAI = createServerFn({ method: "POST" })
 
     const systemPrompt = buildSystemPrompt();
 
-    const messages: Array<{ role: "system" | "user" | "assistant"; content: string }> = [
-      { role: "system", content: systemPrompt },
+    const messages: Array<{ role: "user" | "assistant"; content: string }> = [
       ...data.history.map((msg) => ({
         role: (msg.role === "user" ? "user" : "assistant") as "user" | "assistant",
         content: msg.content,
@@ -144,6 +147,11 @@ export const askAI = createServerFn({ method: "POST" })
     try {
       const result = await generateText({
         model: groq(AI_MODEL),
+        // A "system" message inside `messages` is rejected by this app's `ai`
+        // SDK (v7) with an AI_InvalidPromptError before the provider call, so
+        // every askAI request failed while the catch below answered 200. The
+        // system prompt goes through `instructions` instead.
+        instructions: systemPrompt,
         messages,
         temperature: 0.7,
         maxOutputTokens: 300,
@@ -164,6 +172,11 @@ export const askAI = createServerFn({ method: "POST" })
       // Surface the real cause: a silent catch here is why the llama-3.1
       // shutdown went unnoticed in production.
       const detail = err instanceof Error ? err.message : String(err);
+      // Returning the friendly message as HTTP 200 made a total provider
+      // failure look identical to a healthy request. Mark the response as a
+      // failure so the one telemetry channel this app has (edge HTTP status)
+      // records it. The caller still receives the payload below.
+      setResponseStatus(502, "AI provider request failed");
       console.error(`AI SDK error (model: ${AI_MODEL}):`, err);
       return {
         response: `AI request failed (${detail}). Try again.`,
