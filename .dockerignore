@@ -5,3 +5,6 @@ node_modules
 /.output
 /public/build
 .env
+.env.*
+.dev.vars
+.dev.vars.*
