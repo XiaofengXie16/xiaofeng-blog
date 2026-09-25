@@ -21,8 +21,12 @@ ENV PATH="/root/.local/share/vite-plus/bin:/root/.vite-plus/bin:$PATH"
 
 # Install dependencies
 COPY --link package-lock.json package.json ./
-RUN sed -i 's/"prepare": "vp config"/"prepare": "true"/' package.json && \
-    npm ci
+# Install with the npm version package.json declares in "packageManager" so a
+# newer npm in the base image cannot reject the pin, and skip lifecycle scripts
+# instead of rewriting the shipped manifest during the build.
+RUN NPM_VERSION="$(node -p 'require("./package.json").packageManager.replace(/^npm@/, "")')" && \
+    npm install --global "npm@${NPM_VERSION}" && \
+    npm ci --ignore-scripts
 
 # Copy application code
 COPY --link . .
