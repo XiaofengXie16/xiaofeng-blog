@@ -9,6 +9,11 @@ primary_region = "ewr"
 [build]
 dockerfile = "Dockerfile"
 
+[build.args]
+# Baked into canonical/og/sitemap/RSS URLs at build time. The app is served on
+# this custom domain; keep it in step with README.md and src/constants/site.ts.
+VITE_SITE_URL = "https://www.xiaofengxie.dev"
+
 [http_service]
 internal_port = 3000
 force_https = true

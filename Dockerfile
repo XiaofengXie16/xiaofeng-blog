@@ -27,6 +27,12 @@ RUN sed -i 's/"prepare": "vp config"/"prepare": "true"/' package.json && \
 # Copy application code
 COPY --link . .
 
+# Canonical origin baked into absolute URLs (canonical, og:image, sitemap, RSS).
+# Supplied by [build.args] in fly.toml. Falls back to DEFAULT_SITE_URL in
+# src/constants/site.ts when unset (for example, in local builds).
+ARG VITE_SITE_URL
+ENV VITE_SITE_URL=${VITE_SITE_URL}
+
 # Build application (emits .output/ via Nitro)
 RUN vp build
 
