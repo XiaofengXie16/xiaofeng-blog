@@ -3,6 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { TOOLS } from "~/constants/tool";
 import { BOOKS } from "~/constants/book";
 import { askAI } from "~/server/ai.functions";
+import { buildAskAIHistory } from "./askAIPayload";
 import { AI_MODEL_LABEL } from "~/constants/ai";
 
 type ResultItem = {
@@ -164,10 +165,9 @@ export const CommandAgent = () => {
       const result = await askAI({
         data: {
           query: userQuery,
-          history: newHistory.slice(-6).map((m) => ({
-            role: m.role,
-            content: m.content,
-          })),
+          // `history` carries prior turns only; the handler appends the current
+          // turn from `query`, so it must not be repeated at the tail here.
+          history: buildAskAIHistory(chatHistory),
         },
       });
 
