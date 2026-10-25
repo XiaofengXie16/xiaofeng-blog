@@ -12,7 +12,8 @@ export default defineConfig({
   },
   lint: {
     options: { typeAware: true, typeCheck: true },
-    ignorePatterns: ["src/routeTree.gen.ts", ".output/**", "dist/**", "coverage/**"],
+    // .dagger is the CI module: it has its own tsconfig and Dagger-generated SDK.
+    ignorePatterns: ["src/routeTree.gen.ts", ".output/**", "dist/**", "coverage/**", ".dagger/**"],
   },
   staged: {
     "*": "vp check --fix",

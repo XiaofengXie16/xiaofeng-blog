@@ -1,0 +1,8 @@
+{
+  "name": "xiaofeng-blog",
+  "engineVersion": "v0.21.11",
+  "sdk": {
+    "source": "typescript"
+  },
+  "source": ".dagger"
+}
