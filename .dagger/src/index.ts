@@ -19,7 +19,7 @@ export class XiaofengBlog {
   constructor(
     @argument({
       defaultPath: "/",
-      ignore: ["node_modules", ".git", ".output", "dist", "coverage", ".vitest", ".dagger", ".env"],
+      ignore: ["node_modules", ".git", ".output", "dist", "coverage", ".dagger", ".env"],
     })
     source: Directory,
   ) {

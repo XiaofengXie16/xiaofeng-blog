@@ -2,7 +2,7 @@
 
 # Toolchain
 
-This project uses Bun for installing dependencies, formatting and type checking, Vite for dev and build (TanStack Start), Vitest for tests and Oxlint for linting. The production server runs on Bun (see `Dockerfile`).
+This project uses Bun for installing dependencies, formatting, type checking and tests, Vite for dev and build (TanStack Start), `bun test` for tests and Oxlint for linting. The production server runs on Bun (see `Dockerfile`).
 
 | Task              | Command             | Tool                                  |
 | ----------------- | ------------------- | ------------------------------------- |
@@ -12,11 +12,12 @@ This project uses Bun for installing dependencies, formatting and type checking,
 | Format            | `bun run format`    | `bun fmt` (Prettier-compatible)       |
 | Lint              | `bun run lint`      | Oxlint, type-aware (`.oxlintrc.json`) |
 | Type check        | `bun run typecheck` | `bun check`                           |
-| Test              | `bun run test`      | Vitest                                |
+| Test              | `bun run test`      | `bun test` (config in `bunfig.toml`)  |
 | Full CI pipeline  | `dagger call check` | Dagger module in `.dagger/`           |
 
 - Run project scripts with `bun run <name>`. Don't call `bun fmt` or `bun check` through a script named `fmt` or `check`: Bun runs a same-named script instead of the built-in command.
 - Formatting settings live in `.prettierrc.json` and `.prettierignore`.
+- Tests use `bun:test`. Vite's `import.meta.glob` isn't available under Bun, so `test/import-meta-glob.ts` (preloaded via `bunfig.toml`) expands it for tests.
 - Oxlint stays as the linter until `bun lint` ships in a stable Bun release.
 
 ## Review Checklist
