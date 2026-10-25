@@ -1,37 +1,33 @@
 # syntax = docker/dockerfile:1
 
-# Node is used only to build; the runtime image is Bun (see BUN_VERSION below)
+# Bun installs dependencies and serves the app; Node runs the Vite build,
+# because the TanStack Start prerenderer boots the built server under Node.
 ARG NODE_VERSION=24
-# Pinned to a patch: Bun.markdown/Bun APIs used at runtime are version-sensitive.
-ARG BUN_VERSION=1.4.0
+# Keep in sync with "packageManager" in package.json and the Dagger module.
+ARG BUN_VERSION=1.4.4
+
+FROM oven/bun:${BUN_VERSION}-slim AS bun
 
 # Throw-away build stage to reduce size of final image
 FROM node:${NODE_VERSION}-slim AS build
 
 WORKDIR /app
 
-# Install Vite+ CLI (curl needed for installer)
-RUN apt-get update -qq && \
-    apt-get install -y --no-install-recommends curl ca-certificates && \
-    rm -rf /var/lib/apt/lists/* && \
-    curl -fsSL https://vite.plus | bash
-# The installer moved its bin dir (~/.vite-plus/bin -> ~/.local/share/vite-plus/bin);
-# keep both so the build works across installer versions and cached layers.
-ENV PATH="/root/.local/share/vite-plus/bin:/root/.vite-plus/bin:$PATH"
+COPY --link --from=bun /usr/local/bin/bun /usr/local/bin/bun
 
-# Install dependencies
-COPY --link package-lock.json package.json ./
-RUN sed -i 's/"prepare": "vp config"/"prepare": "true"/' package.json && \
-    npm ci
+# Install dependencies (the `prepare` hook setup is a no-op without git)
+COPY --link package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
 # Copy application code
 COPY --link . .
 
-# Build application (emits .output/ via Nitro)
-RUN vp build
+# Build application (emits .output/ via Nitro). `bun run` honors the vite
+# bin's node shebang, so the build and prerender run under Node.
+RUN bun run build
 
 # Drop dev dependencies for the final image
-RUN npm prune --omit=dev
+RUN rm -rf node_modules && bun install --frozen-lockfile --production
 
 
 # Final stage for app image

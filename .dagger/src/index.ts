@@ -1,14 +1,16 @@
 /**
  * CI pipeline for xiaofeng-blog.
  *
- * Runs the same checks as GitHub Actions — lint, typecheck, tests with
- * coverage, and the prerendered production build — inside a Node container,
- * so `dagger call check` locally gives the same result as CI.
+ * Runs the same checks as GitHub Actions — format, lint, typecheck, tests with
+ * coverage, and the prerendered production build — so `dagger call check`
+ * locally gives the same result as CI.
  */
 import { argument, Container, dag, Directory, func, object } from "@dagger.io/dagger";
 
-// Keep in sync with NODE_VERSION in the Dockerfile.
+// Keep in sync with NODE_VERSION / BUN_VERSION in the Dockerfile and
+// "packageManager" in package.json.
 const NODE_IMAGE = "node:24-slim";
+const BUN_IMAGE = "oven/bun:1.4.4-slim";
 
 @object()
 export class XiaofengBlog {
@@ -25,58 +27,68 @@ export class XiaofengBlog {
   }
 
   /**
-   * Node container with dependencies installed and the source mounted.
+   * Node container with Bun added, dependencies installed and the source
+   * mounted. Bun installs and runs scripts; the Vite build runs under Node
+   * (the TanStack Start prerenderer needs it), matching the Dockerfile.
    *
-   * Lockfile and manifest are copied before the rest of the source so the
-   * `npm ci` layer is reused until dependencies change.
+   * Manifest and lockfile are copied before the rest of the source so the
+   * install layer is reused until dependencies change.
    */
   @func()
   base(): Container {
-    return (
-      dag
-        .container()
-        .from(NODE_IMAGE)
-        .withEnvVariable("CI", "true")
-        // The `prepare` script runs `vp config`, which installs git hooks and
-        // fails without git; the slim image has none and CI doesn't need hooks.
-        .withEnvVariable("VP_GIT_HOOKS", "0")
-        .withMountedCache("/root/.npm", dag.cacheVolume("xiaofeng-blog-npm"))
-        .withWorkdir("/app")
-        .withFile("package.json", this.source.file("package.json"))
-        .withFile("package-lock.json", this.source.file("package-lock.json"))
-        .withExec(["npm", "ci", "--no-audit", "--no-fund"])
-        .withDirectory("/app", this.source)
-    );
+    return dag
+      .container()
+      .from(NODE_IMAGE)
+      .withFile("/usr/local/bin/bun", dag.container().from(BUN_IMAGE).file("/usr/local/bin/bun"))
+      .withEnvVariable("CI", "true")
+      .withMountedCache("/root/.bun/install/cache", dag.cacheVolume("xiaofeng-blog-bun"))
+      .withWorkdir("/app")
+      .withFile("package.json", this.source.file("package.json"))
+      .withFile("bun.lock", this.source.file("bun.lock"))
+      .withExec(["bun", "install", "--frozen-lockfile"])
+      .withDirectory("/app", this.source);
   }
 
-  /** Lint with Oxlint (type-aware) via Vite+. */
+  /** Check formatting with Bun's built-in formatter. */
+  @func()
+  async format(): Promise<string> {
+    return this.base().withExec(["bun", "fmt", "--check"]).stdout();
+  }
+
+  /** Lint with Oxlint (type-aware). */
   @func()
   async lint(): Promise<string> {
-    return this.base().withExec(["npx", "vp", "lint"]).stdout();
+    return this.base().withExec(["bun", "run", "lint"]).stdout();
   }
 
-  /** Type check with tsc. */
+  /** Type check with Bun's built-in checker. */
   @func()
   async typecheck(): Promise<string> {
-    return this.base().withExec(["npm", "run", "typecheck"]).stdout();
+    return this.base().withExec(["bun", "run", "typecheck"]).stdout();
   }
 
   /** Run the test suite with coverage thresholds enforced. */
   @func()
   async test(): Promise<string> {
-    return this.base().withExec(["npx", "vp", "test", "run", "--coverage"]).stdout();
+    return this.base().withExec(["bun", "run", "test:coverage"]).stdout();
   }
 
   /** Build and prerender the site; returns the Nitro `.output` directory. */
   @func()
   build(): Directory {
-    return this.base().withExec(["npx", "vp", "build"]).directory("/app/.output");
+    return this.base().withExec(["bun", "run", "build"]).directory("/app/.output");
   }
 
-  /** Run lint, typecheck, tests and build in parallel. Fails if any step fails. */
+  /** Run format, lint, typecheck, tests and build in parallel. Fails if any step fails. */
   @func()
   async check(): Promise<string> {
-    await Promise.all([this.lint(), this.typecheck(), this.test(), this.build().sync()]);
-    return "lint, typecheck, test and build passed";
+    await Promise.all([
+      this.format(),
+      this.lint(),
+      this.typecheck(),
+      this.test(),
+      this.build().sync(),
+    ]);
+    return "format, lint, typecheck, test and build passed";
   }
 }

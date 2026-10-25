@@ -15,10 +15,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      # Lint, typecheck, tests (with coverage) and build run in the Dagger
-      # module under .dagger/. Run the same pipeline locally with:
+      # Format, lint, typecheck, tests (with coverage) and build run in the
+      # Dagger module under .dagger/. Run the same pipeline locally with:
       #   dagger call check
-      - name: Lint, typecheck, test and build (Dagger)
+      - name: Format, lint, typecheck, test and build (Dagger)
         uses: dagger/dagger-for-github@v8.4.1
         with:
           version: "0.21.11"

@@ -1,4 +1,5 @@
-import { defineConfig, lazyPlugins } from "vite-plus";
+/// <reference types="vitest/config" />
+import { defineConfig } from "vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -7,24 +8,13 @@ import { nitro } from "nitro/vite";
 const isTest = !!process.env.VITEST;
 
 export default defineConfig({
-  fmt: {
-    ignorePatterns: ["src/routeTree.gen.ts", ".output/**", "dist/**", "coverage/**"],
-  },
-  lint: {
-    options: { typeAware: true, typeCheck: true },
-    // .dagger is the CI module: it has its own tsconfig and Dagger-generated SDK.
-    ignorePatterns: ["src/routeTree.gen.ts", ".output/**", "dist/**", "coverage/**", ".dagger/**"],
-  },
-  staged: {
-    "*": "vp check --fix",
-  },
   server: {
     port: 3000,
   },
   resolve: {
     tsconfigPaths: true,
   },
-  plugins: lazyPlugins(() => [
+  plugins: [
     tailwindcss(),
     ...(isTest
       ? []
@@ -40,7 +30,7 @@ export default defineConfig({
     // (prerender yields 0 pages / UND_ERR_HEADERS_TIMEOUT). The default
     // node-server output runs fine under Bun, which is what the Dockerfile does.
     ...(isTest ? [] : [nitro()]),
-  ]),
+  ],
   test: {
     environment: "jsdom",
     globals: true,
