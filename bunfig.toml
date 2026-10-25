@@ -1,0 +1,9 @@
+[test]
+# Bun doesn't implement Vite's import.meta.glob; this plugin expands it for tests.
+preload = ["./test/import-meta-glob.ts"]
+root = "./src"
+
+# Coverage gate for `bun run test:coverage` (Bun reports lines and functions).
+coverageSkipTestFiles = true
+coverageThreshold = { lines = 0.9, functions = 0.9 }
+coveragePathIgnorePatterns = ["src/constants/**", "test/**"]

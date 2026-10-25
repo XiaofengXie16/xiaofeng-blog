@@ -1,0 +1,10 @@
+#!/bin/sh
+# Enabled by the `prepare` script (git config core.hooksPath .githooks).
+# Bypass once with `git commit --no-verify`.
+set -e
+
+# Format staged files with Bun's formatter and re-stage them.
+bun fmt --staged
+
+# Type-aware lint of the project (oxlint until `bun lint` ships in stable Bun).
+bun run lint

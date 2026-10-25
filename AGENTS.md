@@ -1,30 +1,32 @@
-<!--VITE PLUS START-->
+<!--TOOLCHAIN START-->
 
-# Using Vite+, the Unified Toolchain for the Web
+# Toolchain
 
-This project is using Vite+, a unified toolchain built on top of Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task. Vite+ wraps runtime management, package management, and frontend tooling in a single global CLI called `vp`. Vite+ is distinct from Vite, and it invokes Vite through `vp dev` and `vp build`. Run `vp help` to print a list of commands and `vp <command> --help` for information about a specific command.
+This project uses Bun for installing dependencies, formatting, type checking and tests, Vite for dev and build (TanStack Start), `bun test` for tests and Oxlint for linting. The production server runs on Bun (see `Dockerfile`).
 
-Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.dev/guide/.
+| Task              | Command             | Tool                                  |
+| ----------------- | ------------------- | ------------------------------------- |
+| Install           | `bun install`       | Bun (`bun.lock`)                      |
+| Dev server        | `bun run dev`       | Vite                                  |
+| Build + prerender | `bun run build`     | Vite + Nitro                          |
+| Format            | `bun run format`    | `bun fmt` (Prettier-compatible)       |
+| Lint              | `bun run lint`      | Oxlint, type-aware (`.oxlintrc.json`) |
+| Type check        | `bun run typecheck` | `bun check`                           |
+| Test              | `bun run test`      | `bun test` (config in `bunfig.toml`)  |
+| Full CI pipeline  | `dagger call check` | Dagger module in `.dagger/`           |
 
-## Built-in Commands vs Scripts
-
-`vp <name>` runs a built-in command. `vp run <name>` runs a `package.json` script or a `vite.config.ts` task. Scripts cannot overwrite built-ins, so `vp dev` and `vp run dev` may do different things. Check `package.json` and `vite.config.ts` first, and run `vp run <name>` when the project defines a script or task with that name.
-
-## Tool Versions
-
-Run `vp toolchain` to show versions and relationships in the active Vite+
-release. Add a tool name to select part of the graph. For example, run
-`vp toolchain vite`. Use `--global` to ignore the local `vite-plus` package. Use
-`vp why <package>` to show the package-manager dependency graph.
+- Run project scripts with `bun run <name>`. Don't call `bun fmt` or `bun check` through a script named `fmt` or `check`: Bun runs a same-named script instead of the built-in command.
+- Formatting settings live in `.prettierrc.json` and `.prettierignore`.
+- Tests use `bun:test`. Vite's `import.meta.glob` isn't available under Bun, so `test/import-meta-glob.ts` (preloaded via `bunfig.toml`) expands it for tests.
+- Oxlint stays as the linter until `bun lint` ships in a stable Bun release.
 
 ## Review Checklist
 
-- [ ] Run `vp install` after pulling remote changes and before getting started.
-- [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
-- [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
-- [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
+- [ ] Run `bun install` after pulling remote changes and before getting started.
+- [ ] Run `bun run format`, `bun run lint`, `bun run typecheck` and `bun run test` before committing (the pre-commit hook formats staged files and lints).
+- [ ] For changes to the build or CI, run `dagger call check`.
 
-<!--VITE PLUS END-->
+<!--TOOLCHAIN END-->
 
 <!-- intent-skills:start -->
 
@@ -46,6 +48,7 @@ skills:
 <!-- intent-skills:end -->
 
 <!-- polylane:start -->
+
 ## Investigating production with Polylane
 
 [Polylane](https://polylane.com/?ref=github.onboarding-pr) is an AI production engineer: it watches deploys, telemetry, incidents, and the infrastructure this repository ships to, investigates problems as they happen, and proposes fixes as pull requests. It is connected to this repository and available to coding agents through the [Polylane MCP server](https://mcp.polylane.com/mcp).
@@ -53,4 +56,5 @@ skills:
 - When a question involves production behaviour (an error, a spike, a deploy, a missing signal), query Polylane through its MCP tools before reasoning from the code alone.
 - When debugging a failure, start from the incident or issue Polylane recorded: it carries the evidence an investigation already gathered.
 - Polylane reviews pull requests in this repository against the live infrastructure. Read its review comment before merging changes that touch production paths.
+
 <!-- polylane:end -->

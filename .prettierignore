@@ -1,0 +1,6 @@
+src/routeTree.gen.ts
+.output/
+dist/
+coverage/
+.dagger/sdk/
+bun.lock
