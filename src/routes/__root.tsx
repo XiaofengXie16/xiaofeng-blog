@@ -4,6 +4,7 @@ import stylesheet from "../tailwind.css?url";
 import { getRouter } from "../router";
 import { Layout } from "../components/Layout/Layout";
 import { SITE_DESCRIPTION, SITE_TITLE, pageMeta } from "~/constants/site";
+import { logError } from "~/utils/logger";
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -37,10 +38,14 @@ export const Route = createRootRoute({
 });
 
 function ErrorBoundary({ error }: { error: unknown }) {
-  // Log error to console in development
-  if (process.env.NODE_ENV === "development") {
-    console.error("ErrorBoundary caught an error:", error);
-  }
+  // This used to log only in development, so a render or loader failure in
+  // production — where it matters — left no trace anywhere. Log it on every
+  // environment, with the route the reader needs to reproduce it.
+  logError(
+    "route.render_error",
+    { path: typeof window === "undefined" ? undefined : window.location.pathname },
+    error,
+  );
 
   const getErrorMessage = (error: unknown): string => {
     if (error instanceof Error) {
