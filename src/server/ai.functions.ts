@@ -132,8 +132,7 @@ export const askAI = createServerFn({ method: "POST" })
 
     const systemPrompt = buildSystemPrompt();
 
-    const messages: Array<{ role: "system" | "user" | "assistant"; content: string }> = [
-      { role: "system", content: systemPrompt },
+    const messages: Array<{ role: "user" | "assistant"; content: string }> = [
       ...data.history.map((msg) => ({
         role: (msg.role === "user" ? "user" : "assistant") as "user" | "assistant",
         content: msg.content,
@@ -144,6 +143,7 @@ export const askAI = createServerFn({ method: "POST" })
     try {
       const result = await generateText({
         model: groq(AI_MODEL),
+        instructions: systemPrompt,
         messages,
         temperature: 0.7,
         maxOutputTokens: 300,
