@@ -6,6 +6,8 @@ import { TOOLS } from "~/constants/tool";
 import { BOOKS } from "~/constants/book";
 import { getAllBlogPosts } from "~/utils/blogData";
 import { AI_MODEL } from "~/constants/ai";
+import { getRequest, setResponseStatus } from "@tanstack/react-start/server";
+import { consume } from "~/server/rateLimit";
 
 let _systemPrompt: string | null = null;
 function buildSystemPrompt(): string {
@@ -118,9 +120,86 @@ function normalizeActions(actions: unknown): ActionItem[] {
   });
 }
 
+// The AI endpoint is public and every request spends the owner's Groq quota, so
+// it is bounded here rather than left open. The blog serves from a single Fly
+// machine (see fly.toml), which makes an in-process limiter effective; if the
+// app is ever scaled out this must become a shared store instead.
+const ASK_AI_PER_IP = { limit: 10, windowMs: 60_000 };
+const ASK_AI_GLOBAL = { limit: 60, windowMs: 60_000 };
+
+// Behind Fly's proxy the client address arrives in `fly-client-ip`; the other
+// headers cover Cloudflare or a generic reverse proxy.
+function clientIp(request: Request): string {
+  for (const header of ["fly-client-ip", "cf-connecting-ip", "x-forwarded-for"]) {
+    const value = request.headers.get(header);
+    const first = value?.split(",")[0]?.trim();
+    if (first) return first;
+  }
+  return "unknown";
+}
+
+// A mismatched Origin means a browser on another site is invoking this endpoint
+// (browsers cannot forge it). Non-browser clients send no Origin and are still
+// bounded by the rate limiter.
+function isCrossOrigin(request: Request): boolean {
+  const origin = request.headers.get("origin");
+  if (!origin) return false;
+
+  let originHost: string;
+  try {
+    originHost = new URL(origin).host;
+  } catch {
+    return true;
+  }
+
+  const allowed = new Set<string>();
+  const host = request.headers.get("host");
+  if (host) allowed.add(host);
+  const forwardedHost = request.headers.get("x-forwarded-host")?.split(",")[0]?.trim();
+  if (forwardedHost) allowed.add(forwardedHost);
+
+  return !allowed.has(originHost);
+}
+
 export const askAI = createServerFn({ method: "POST" })
   .validator(validateAskAIInput)
   .handler(async ({ data }) => {
+    const request = getRequest();
+
+    if (isCrossOrigin(request)) {
+      setResponseStatus(403);
+      return {
+        response: "The AI assistant is only available from this site.",
+        actions: [] as ActionItem[],
+      };
+    }
+
+    const perIp = consume(
+      `askAI:ip:${clientIp(request)}`,
+      ASK_AI_PER_IP.limit,
+      ASK_AI_PER_IP.windowMs,
+    );
+    if (!perIp.allowed) {
+      console.warn(`askAI rate limit: per-IP limit ${ASK_AI_PER_IP.limit}/min reached`);
+      setResponseStatus(429);
+      return {
+        response: `Too many AI requests. Try again in ${perIp.retryAfterSeconds}s.`,
+        actions: [] as ActionItem[],
+      };
+    }
+
+    // Checked after the per-IP limiter so a single abusive client cannot drain
+    // the shared global budget by tripping its own limit first.
+    const global = consume("askAI:global", ASK_AI_GLOBAL.limit, ASK_AI_GLOBAL.windowMs);
+    if (!global.allowed) {
+      console.warn(`askAI rate limit: global limit ${ASK_AI_GLOBAL.limit}/min reached`);
+      setResponseStatus(429);
+      return {
+        response: `Too many AI requests. Try again in ${global.retryAfterSeconds}s.`,
+        actions: [] as ActionItem[],
+      };
+    }
+
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
       return {
@@ -161,12 +240,13 @@ export const askAI = createServerFn({ method: "POST" })
         actions: normalizeActions(result.output.actions),
       };
     } catch (err) {
-      // Surface the real cause: a silent catch here is why the llama-3.1
-      // shutdown went unnoticed in production.
+      // Surface the real cause in the logs: a silent catch here is why the
+      // llama-3.1 shutdown went unnoticed in production. The caller gets a
+      // generic message so provider internals are not leaked to the public.
       const detail = err instanceof Error ? err.message : String(err);
-      console.error(`AI SDK error (model: ${AI_MODEL}):`, err);
+      console.error(`AI SDK error (model: ${AI_MODEL}): ${detail}`, err);
       return {
-        response: `AI request failed (${detail}). Try again.`,
+        response: "The AI assistant is temporarily unavailable. Please try again later.",
         actions: [] as ActionItem[],
       };
     }
