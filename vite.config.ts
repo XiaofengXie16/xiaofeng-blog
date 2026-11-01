@@ -10,7 +10,8 @@ export default defineConfig({
     port: 3000,
   },
   // Bundle server dependencies so Redact can redirect their React imports.
-  ssr: { noExternal: true },
+  // Keep the CommonJS markdown parser external so dev SSR loads it natively.
+  ssr: { noExternal: true, external: ["gray-matter"] },
   resolve: {
     tsconfigPaths: true,
   },
