@@ -61,9 +61,9 @@ function ReadingList() {
         // Ranges keep each walker in a stretch of ribbon the content doesn't
         // cover, so they stay visible and hoverable wherever they stop.
         walkers={[
-          { at: 0.08, range: [0.08, 0.17], color: "#2F5BD3", opacity: 0.7 },
-          { at: 0.11, range: [0.08, 0.17], color: "#E07A3F", size: 20, opacity: 0.7 },
-          { at: 0.7, range: [0.58, 0.92], color: "#C94F6D", size: 20, opacity: 0.7 },
+          { at: 0.08, range: [0.08, 0.17], color: "#2F5BD3", opacity: 0.9 },
+          { at: 0.11, range: [0.08, 0.17], color: "#E07A3F", size: 20, opacity: 0.9 },
+          { at: 0.7, range: [0.58, 0.92], color: "#C94F6D", size: 20, opacity: 0.9 },
         ]}
       />
       <RibbonWalkers
@@ -71,8 +71,8 @@ function ReadingList() {
         viewBox="0 0 1440 1500"
         className="absolute inset-0 z-[1] hidden h-full w-full md:block"
         walkers={[
-          { at: 0.72, range: [0.67, 0.77], color: "#F4F7FF", size: 20, opacity: 0.7 },
-          { at: 0.86, range: [0.81, 0.93], color: "#7DA453", opacity: 0.7 },
+          { at: 0.72, range: [0.67, 0.77], color: "#F4F7FF", size: 20, opacity: 0.9 },
+          { at: 0.86, range: [0.81, 0.93], color: "#7DA453", opacity: 0.9 },
         ]}
       />
 
