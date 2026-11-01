@@ -1,22 +1,37 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+type Figure = "writer" | "builder";
+
+const loaders: Record<Figure, () => Promise<(canvas: HTMLCanvasElement) => () => void>> = {
+  writer: () => import("./plushWriter").then((m) => m.mountPlushWriter),
+  builder: () => import("./plushBuilder").then((m) => m.mountPlushBuilder),
+};
+
 /**
- * The hero writer as a cute plush 3D figure. three.js is loaded lazily after
- * hydration so it never blocks the first paint; until then (and if WebGL is
- * unavailable) `fallback` is shown.
+ * A cute plush 3D figure. three.js is loaded lazily after hydration so it
+ * never blocks the first paint; until then (and if WebGL is unavailable)
+ * `fallback` is shown.
  */
-export function PlushWriter({ className, fallback }: { className?: string; fallback: ReactNode }) {
+export function PlushFigure({
+  figure,
+  className,
+  fallback,
+}: {
+  figure: Figure;
+  className?: string;
+  fallback: ReactNode;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [state, setState] = useState<"loading" | "ready" | "failed">("loading");
 
   useEffect(() => {
     let cancelled = false;
     let cleanup: (() => void) | undefined;
-    import("./plushWriter")
-      .then(({ mountPlushWriter }) => {
+    loaders[figure]()
+      .then((mount) => {
         const canvas = canvasRef.current;
         if (cancelled || !canvas) return;
-        cleanup = mountPlushWriter(canvas);
+        cleanup = mount(canvas);
         setState("ready");
       })
       .catch(() => {
@@ -26,7 +41,7 @@ export function PlushWriter({ className, fallback }: { className?: string; fallb
       cancelled = true;
       cleanup?.();
     };
-  }, []);
+  }, [figure]);
 
   if (state === "failed") return fallback;
   return (
