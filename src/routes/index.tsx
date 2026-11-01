@@ -314,9 +314,10 @@ function Hero() {
        * with the copy. The stage is above the copy (z-[3]) so the writer can be
        * hovered; it ignores pointer events everywhere else.
        */}
-      <div className="pointer-events-none absolute top-0 left-1/2 z-[3] hidden h-[820px] w-[1440px] -translate-x-1/2 lg:block">
+      <div className="sky-writer-scene pointer-events-none absolute top-0 left-1/2 z-[3] hidden h-[820px] w-[1440px] -translate-x-1/2 lg:block">
         <svg viewBox="0 0 1440 820" className="absolute inset-0 h-full w-full" aria-hidden="true">
           <path
+            className="sw-trail-glow"
             d="M336 262 C 400 200, 470 300, 548 232"
             fill="none"
             stroke="#B9CAFF"
@@ -326,6 +327,7 @@ function Hero() {
             filter="url(#softglow)"
           />
           <path
+            className="sw-trail"
             d="M336 262 C 400 200, 470 300, 548 232"
             fill="none"
             stroke="#fff"
