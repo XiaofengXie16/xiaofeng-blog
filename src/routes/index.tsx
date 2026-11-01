@@ -1,15 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { pageMeta } from "~/constants/site";
-import { BOOKS } from "~/constants/book";
+import { BOOKS, BOOK_TAGS } from "~/constants/book";
 import { fetchAllBlogPosts } from "~/server/blog.functions";
 import { Cloud, Grain } from "~/components/design/Atmosphere";
 import { ArrowRight, SectionHeading, Tag } from "~/components/design/Section";
+import { Bookshelf } from "~/components/design/Bookshelf";
+import { RibbonWalkers } from "~/components/design/RibbonWalkers";
 import { DeskWriter, SkyWriter } from "~/components/figures/Figures";
 import { Makers } from "~/components/figures/Makers";
 import { WishSky } from "~/components/home/WishSky";
 import { SearchIcon } from "~/components/Layout/Header";
 import { openCommandAgent } from "~/components/CommandAgent/events";
-import { formatPostDate, shortTitle } from "~/utils/format";
+import { formatPostDate } from "~/utils/format";
 
 export const Route = createFileRoute("/")({
   loader: async () => ({ posts: (await fetchAllBlogPosts()).slice(0, 2) }),
@@ -23,9 +25,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const BOOK_TAGS = ["history", "career", "leadership", "design", "craft", "systems"];
-const BOOK_HEIGHTS = [330, 280, 320, 300, 290, 340];
-const TAG_COLORS = ["text-moss", "text-rust", "text-violet"];
+const HERO_RIBBON = "M-40 690 C 260 560, 520 760, 820 640 S 1300 480, 1500 560";
 
 function Index() {
   const { posts } = Route.useLoaderData();
@@ -143,36 +143,7 @@ function Index() {
             title="On the shelf"
             link={{ to: "/reading-list", label: "Full reading list" }}
           />
-          <ul className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(150px,1fr))] items-end gap-5 p-0">
-            {BOOKS.map((book, i) => (
-              <li key={book.name}>
-                <a
-                  href={book.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="glass animate-bob flex flex-col items-center justify-end gap-2 rounded-full px-[22px] py-10 text-center text-ink no-underline"
-                  style={{
-                    height: BOOK_HEIGHTS[i % BOOK_HEIGHTS.length],
-                    animationDelay: `-${i}s`,
-                  }}
-                >
-                  <img
-                    src={book.icon}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    className="mb-2 h-16 w-12 rounded-md object-cover shadow-md"
-                  />
-                  <span className={`font-hand text-xl ${TAG_COLORS[i % TAG_COLORS.length]}`}>
-                    {BOOK_TAGS[i % BOOK_TAGS.length]}
-                  </span>
-                  <span className="text-[17px] leading-tight font-medium">
-                    {shortTitle(book.name)}
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
+          <Bookshelf mode="link" books={BOOKS} tags={BOOK_TAGS} />
         </div>
       </section>
 
@@ -301,7 +272,7 @@ function Hero() {
           </linearGradient>
         </defs>
         <path
-          d="M-40 690 C 260 560, 520 760, 820 640 S 1300 480, 1500 560"
+          d={HERO_RIBBON}
           fill="none"
           stroke="url(#ribbonB)"
           strokeWidth="34"
@@ -322,36 +293,21 @@ function Hero() {
           strokeLinecap="round"
           opacity=".7"
         />
-        <use
-          href="#walker"
-          opacity=".75"
-          x="980"
-          y="588"
-          width="22"
-          height="55"
-          style={{ color: "#E07A3F" }}
-        />
-        <use
-          href="#walker"
-          opacity=".75"
-          x="1006"
-          y="584"
-          width="22"
-          height="55"
-          style={{ color: "#7DA453" }}
-        />
-        <use
-          href="#walker"
-          opacity=".6"
-          x="1262"
-          y="508"
-          width="18"
-          height="45"
-          style={{ color: "#F4F7FF" }}
-        />
       </svg>
 
       <Grain opacity={0.22} />
+
+      {/* Above the hero copy (z-[3]) so they can be hovered; only the walkers take pointer events. */}
+      <RibbonWalkers
+        d={HERO_RIBBON}
+        viewBox="0 0 1440 820"
+        className="absolute inset-0 z-[3] hidden h-full w-full md:block"
+        walkers={[
+          { at: 0.66, color: "#E07A3F" },
+          { at: 0.68, color: "#7DA453" },
+          { at: 0.85, color: "#F4F7FF", size: 18, opacity: 0.6 },
+        ]}
+      />
 
       {/*
        * The writer and his light trail sit on a centered 1440px stage so they line up

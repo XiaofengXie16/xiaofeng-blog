@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { BOOKS } from "~/constants/book";
+import { BOOKS, BOOK_TAGS } from "~/constants/book";
 import { pageMeta } from "~/constants/site";
 import { Grain } from "~/components/design/Atmosphere";
 import { PageTitle } from "~/components/design/Section";
+import { Bookshelf } from "~/components/design/Bookshelf";
+import { RibbonWalkers } from "~/components/design/RibbonWalkers";
 import { shortTitle } from "~/utils/format";
 
 export const Route = createFileRoute("/reading-list/")({
@@ -17,8 +19,8 @@ export const Route = createFileRoute("/reading-list/")({
   component: ReadingList,
 });
 
-const HEIGHTS = [320, 280, 330, 300, 290, 350];
-const COLORS = ["text-moss", "text-rust", "text-violet"];
+const UPPER_RIBBON = "M-80 640 C 260 520, 520 760, 820 620 S 1300 460, 1540 560";
+const LOWER_RIBBON = "M-80 1180 C 300 1040, 640 1300, 980 1120 S 1360 980, 1540 1060";
 
 function ReadingList() {
   const [picked, setPicked] = useState(0);
@@ -33,122 +35,67 @@ function ReadingList() {
         aria-hidden="true"
       >
         <path
-          d="M-80 640 C 260 520, 520 760, 820 620 S 1300 460, 1540 560"
+          d={UPPER_RIBBON}
           fill="none"
           stroke="#fff"
           strokeWidth="120"
           strokeLinecap="round"
           opacity=".38"
         />
+        <path d={UPPER_RIBBON} fill="none" stroke="#fff" strokeWidth="3" opacity=".9" />
         <path
-          d="M-80 640 C 260 520, 520 760, 820 620 S 1300 460, 1540 560"
-          fill="none"
-          stroke="#fff"
-          strokeWidth="3"
-          opacity=".9"
-        />
-        <path
-          d="M-80 1180 C 300 1040, 640 1300, 980 1120 S 1360 980, 1540 1060"
+          d={LOWER_RIBBON}
           fill="none"
           stroke="#D9C2EE"
           strokeWidth="140"
           strokeLinecap="round"
           opacity=".45"
         />
-        <path
-          d="M-80 1180 C 300 1040, 640 1300, 980 1120 S 1360 980, 1540 1060"
-          fill="none"
-          stroke="#fff"
-          strokeWidth="3"
-          opacity=".8"
-        />
-      </svg>
-      <svg
-        viewBox="0 0 1440 1500"
-        preserveAspectRatio="none"
-        className="absolute inset-0 hidden h-full w-full md:block"
-        aria-hidden="true"
-      >
-        <use
-          href="#walker"
-          opacity=".7"
-          x="210"
-          y="560"
-          width="22"
-          height="55"
-          style={{ color: "#2F5BD3" }}
-        />
-        <use
-          href="#walker"
-          opacity=".7"
-          x="236"
-          y="566"
-          width="20"
-          height="50"
-          style={{ color: "#E07A3F" }}
-        />
-        <use
-          href="#walker"
-          opacity=".7"
-          x="1180"
-          y="980"
-          width="22"
-          height="55"
-          style={{ color: "#7DA453" }}
-        />
-        <use
-          href="#walker"
-          opacity=".7"
-          x="640"
-          y="1170"
-          width="20"
-          height="50"
-          style={{ color: "#F4F7FF" }}
-        />
+        <path d={LOWER_RIBBON} fill="none" stroke="#fff" strokeWidth="3" opacity=".8" />
       </svg>
       <Grain />
+      <RibbonWalkers
+        d={UPPER_RIBBON}
+        viewBox="0 0 1440 1500"
+        className="absolute inset-0 z-[1] hidden h-full w-full md:block"
+        // Ranges keep each walker in a stretch of ribbon the content doesn't
+        // cover, so they stay visible and hoverable wherever they stop.
+        walkers={[
+          { at: 0.08, range: [0.08, 0.17], color: "#2F5BD3", opacity: 0.7 },
+          { at: 0.11, range: [0.08, 0.17], color: "#E07A3F", size: 20, opacity: 0.7 },
+          { at: 0.7, range: [0.58, 0.92], color: "#C94F6D", size: 20, opacity: 0.7 },
+        ]}
+      />
+      <RibbonWalkers
+        d={LOWER_RIBBON}
+        viewBox="0 0 1440 1500"
+        className="absolute inset-0 z-[1] hidden h-full w-full md:block"
+        walkers={[
+          { at: 0.72, range: [0.67, 0.77], color: "#F4F7FF", size: 20, opacity: 0.7 },
+          { at: 0.86, range: [0.81, 0.93], color: "#7DA453", opacity: 0.7 },
+        ]}
+      />
 
-      <div className="relative z-[2] mx-auto flex max-w-[1240px] flex-col gap-14 px-5 pt-44 pb-30 sm:px-8">
+      {/*
+       * Content sits above the walkers so they pass behind the shelf. The
+       * container ignores the pointer so walkers stay hoverable in the gaps;
+       * its children take pointer events as usual.
+       */}
+      <div className="pointer-events-none relative z-[2] mx-auto flex max-w-[1240px] flex-col gap-14 px-5 pt-44 pb-30 sm:px-8 [&>*]:pointer-events-auto">
         <PageTitle
           kicker="books that changed how I build"
           kickerClass="text-rust"
           title="Reading list"
-          intro={`${BOOKS.length} books I keep recommending. Pick a capsule to open it.`}
+          intro={`${BOOKS.length} books I keep recommending. Pick one off the shelf.`}
         />
 
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] items-end gap-7">
-          {BOOKS.map((book, i) => {
-            const on = i === picked;
-            return (
-              <button
-                key={book.name}
-                type="button"
-                aria-pressed={on}
-                onClick={() => setPicked(i)}
-                className={`glass animate-bob flex cursor-pointer flex-col items-center justify-end gap-2.5 rounded-full px-5 pt-9 pb-11 text-center font-sans transition-[transform,box-shadow] duration-500 ${
-                  on
-                    ? "-translate-y-4 bg-white/70 shadow-[0_0_0_2px_#fff,0_0_46px_6px_rgba(140,165,255,.75),0_30px_50px_-20px_rgba(53,48,110,.5)]"
-                    : "hover:-translate-y-2"
-                }`}
-                style={{ height: HEIGHTS[i % HEIGHTS.length], animationDelay: `-${i}s` }}
-              >
-                <img
-                  src={book.icon}
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                  className="mb-1 h-20 w-14 rounded-md object-cover shadow-md"
-                />
-                <span className="text-[17px] leading-tight font-medium text-ink">
-                  {shortTitle(book.name)}
-                </span>
-                <span className={`font-hand text-lg ${COLORS[i % COLORS.length]}`}>
-                  {on ? "open" : "tap to open"}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+        <Bookshelf
+          mode="select"
+          books={BOOKS}
+          tags={BOOK_TAGS}
+          picked={picked}
+          onPick={setPicked}
+        />
 
         <div
           className="glass flex flex-wrap items-center gap-x-12 gap-y-8 rounded-[36px] p-8 sm:p-10"
