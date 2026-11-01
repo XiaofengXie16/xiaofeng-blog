@@ -33,7 +33,8 @@ export function WishSky({ className, children }: { className?: string; children:
   };
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
-    if ((event.target as HTMLElement).closest("a, button")) return;
+    // Links, buttons and the 3D figures (which have their own click) are left alone.
+    if ((event.target as HTMLElement).closest("a, button, canvas")) return;
     const rect = event.currentTarget.getBoundingClientRect();
     addWish(`${event.clientX - rect.left}px`, `${event.clientY - rect.top}px`);
   };
@@ -43,6 +44,8 @@ export function WishSky({ className, children }: { className?: string; children:
     // keyboard equivalent on purpose; nothing here carries content.
     // oxlint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
     <section onClick={handleClick} className={className}>
+      {children}
+      {/* After the children, so adding a wish never shifts (and remounts) them. */}
       {wishes.map((w) => (
         <span key={w.id} aria-hidden="true">
           <span className="wish glow" style={{ left: w.left, top: w.top }}>
@@ -51,7 +54,6 @@ export function WishSky({ className, children }: { className?: string; children:
           <span className="wish-spark" style={{ left: w.left, top: w.top }} />
         </span>
       ))}
-      {children}
     </section>
   );
 }
