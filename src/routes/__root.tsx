@@ -27,7 +27,7 @@ export const Route = createRootRoute({
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap",
         rel: "stylesheet",
       },
     ],
@@ -63,22 +63,25 @@ function ErrorBoundary({ error }: { error: unknown }) {
   const errorStack = getErrorStack(error);
 
   return (
-    <html lang="en" className="h-full bg-background text-text-main">
+    <html lang="en" className="h-full">
       <head>
         <title>Oh no!</title>
         <HeadContent />
       </head>
-      <body className="flex justify-center items-center min-h-screen">
-        <div className="relative p-8 max-w-xl mx-4 text-center">
-          <h1 className="text-3xl font-bold text-primary mb-6 max-w-full">
-            Oops! Something went wrong...
+      <body className="flex min-h-screen items-center justify-center bg-linear-to-b from-[#A3ADEC] to-[#F5D2B5] font-sans text-ink">
+        <div className="mx-4 flex max-w-xl flex-col items-center gap-6 p-8 text-center">
+          <p className="glow m-0 -rotate-2 font-hand text-4xl text-[#F4F7FF]">
+            a cloud got in the way
+          </p>
+          <h1 className="m-0 text-4xl font-medium tracking-[-0.04em] text-olive">
+            Something went wrong
           </h1>
-          <p className="text-lg text-text-muted mb-6">{errorMessage}</p>
+          <p className="m-0 text-lg text-ink-soft">{errorMessage}</p>
 
           {errorStack && (
-            <details className="mb-6">
-              <summary className="cursor-pointer text-text-main mb-2">Show Error Details</summary>
-              <pre className="bg-surface p-4 rounded-lg text-sm text-text-muted overflow-x-auto max-h-32 border border-surface-hover animate-fade-in text-left">
+            <details className="w-full text-left">
+              <summary className="cursor-pointer text-ink">Show error details</summary>
+              <pre className="mt-2 max-h-32 overflow-x-auto rounded-2xl bg-[#14152E] p-4 text-sm text-[#DCE2FF]">
                 {errorStack}
               </pre>
             </details>
@@ -86,9 +89,9 @@ function ErrorBoundary({ error }: { error: unknown }) {
 
           <a
             href="/"
-            className="inline-block bg-primary text-white text-sm font-semibold py-3 px-8 rounded-full shadow-lg transition-transform transform hover:scale-105 hover:shadow-xl animate-fade-in"
+            className="inline-flex min-h-[52px] items-center rounded-full bg-ink px-8 font-medium text-white no-underline hover:bg-indigo-deep"
           >
-            Take me Home
+            Take me home
           </a>
         </div>
         <Scripts />

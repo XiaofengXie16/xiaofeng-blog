@@ -1,12 +1,19 @@
+import type { ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { pageMeta } from "~/constants/site";
-import { Button } from "../components/ui/Button";
-import { GlitchText } from "../components/effects/GlitchText";
-import { FloatingOrbs, GridLines, NoiseOverlay } from "../components/effects/FloatingOrbs";
-import { TiltCard } from "../components/effects/TiltCard";
-import { useEffect, useRef } from "react";
+import { BOOKS } from "~/constants/book";
+import { fetchAllBlogPosts } from "~/server/blog.functions";
+import { Cloud, Grain } from "~/components/design/Atmosphere";
+import { ArrowRight, SectionHeading, Tag } from "~/components/design/Section";
+import { DeskWriter, SkyWriter } from "~/components/figures/Figures";
+import { Makers } from "~/components/figures/Makers";
+import { WishSky } from "~/components/home/WishSky";
+import { SearchIcon } from "~/components/Layout/Header";
+import { openCommandAgent } from "~/components/CommandAgent/events";
+import { formatPostDate, shortTitle } from "~/utils/format";
 
 export const Route = createFileRoute("/")({
+  loader: async () => ({ posts: (await fetchAllBlogPosts()).slice(0, 2) }),
   head: () =>
     pageMeta({
       title: "Xiaofeng Xie - Software Engineer",
@@ -17,412 +24,444 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const BOOK_TAGS = ["history", "career", "leadership", "design", "craft", "systems"];
+const BOOK_HEIGHTS = [330, 280, 320, 300, 290, 340];
+const TAG_COLORS = ["text-moss", "text-rust", "text-violet"];
+
 function Index() {
-  // Parallax is written straight to CSS custom properties on a ref and
-  // rAF-throttled. Holding it in state re-rendered the whole page on every
-  // pointer move.
-  const parallaxRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const node = parallaxRef.current;
-    if (!node) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let frame = 0;
-    const handleMouseMove = (e: MouseEvent) => {
-      if (frame) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        const x = (e.clientX / window.innerWidth - 0.5) * 20;
-        const y = (e.clientY / window.innerHeight - 0.5) * 20;
-        node.style.setProperty("--parallax-x", `${x}px`);
-        node.style.setProperty("--parallax-y", `${y}px`);
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    return () => {
-      if (frame) cancelAnimationFrame(frame);
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+  const { posts } = Route.useLoaderData();
 
   return (
-    <div className="relative">
-      {/* Background Effects */}
-      <FloatingOrbs />
-      <GridLines />
-      <NoiseOverlay />
+    <>
+      <Hero />
 
-      {/* Scan Line */}
-      <div className="scan-line" />
-
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
-        {/* Animated Geometric Background */}
-        <div
-          ref={parallaxRef}
-          className="absolute inset-0 pointer-events-none overflow-hidden [--parallax-x:0px] [--parallax-y:0px]"
+      {/* Latest writing */}
+      <section className="relative overflow-hidden bg-cream pt-28 pb-24">
+        <svg
+          viewBox="0 0 1440 600"
+          preserveAspectRatio="none"
+          className="absolute top-10 left-0 h-[600px] w-full"
+          aria-hidden="true"
         >
-          {/* Rotating hexagon */}
-          <div
-            className="absolute top-1/4 right-1/4 w-64 h-64 border border-primary/10 opacity-30"
-            style={{
-              clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-              animation: "rotate 30s linear infinite",
-              transform: "translate(var(--parallax-x), var(--parallax-y))",
-            }}
+          <path
+            d="M-40 420 C 300 260, 700 520, 1040 330 S 1400 220, 1500 260"
+            fill="none"
+            stroke="#C9C4EE"
+            strokeWidth="90"
+            strokeLinecap="round"
+            opacity=".35"
           />
-
-          {/* Diamond shape */}
-          <div
-            className="absolute bottom-1/3 left-1/4 w-48 h-48 border border-secondary/10 rotate-45 opacity-20"
-            style={{
-              animation: "rotate 25s linear infinite reverse",
-              transform:
-                "translate(calc(-1 * var(--parallax-x)), calc(-1 * var(--parallax-y))) rotate(45deg)",
-            }}
+          <path
+            d="M-40 420 C 300 260, 700 520, 1040 330 S 1400 220, 1500 260"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="3"
+            opacity=".9"
           />
-
-          {/* Circle ring */}
-          <div
-            className="absolute top-1/3 left-1/3 w-96 h-96 rounded-full border border-accent/5 opacity-30"
-            style={{
-              transform: "translate(calc(0.5 * var(--parallax-x)), calc(0.5 * var(--parallax-y)))",
-            }}
+        </svg>
+        <Grain opacity={0.14} />
+        <div className="relative mx-auto flex max-w-[1240px] flex-col gap-12 px-5 sm:px-8">
+          <SectionHeading
+            kicker="fresh from the desk"
+            title="Latest writing"
+            link={{ to: "/blog", label: "All posts" }}
           />
-        </div>
-
-        {/* Main Content */}
-        <div className="relative z-10 max-w-5xl mx-auto text-center">
-          {/* Status Badge */}
-          <div className="inline-flex items-center gap-3 px-5 py-2.5 mb-8 border border-primary/30 bg-surface/50 backdrop-blur-xl animate-fade-in">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-green opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-neon-green"></span>
-            </span>
-            <span className="terminal-text text-sm text-primary tracking-widest">
-              FOUNDING PILOTS OPEN
-            </span>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,480px),1fr))] gap-7">
+            {posts.map((post) => (
+              <Link
+                key={post.slug}
+                to="/blog/$slug"
+                params={{ slug: post.slug }}
+                className="glass lift flex flex-col gap-[18px] rounded-[32px] p-9 text-ink no-underline"
+              >
+                {post.date && (
+                  <time dateTime={post.date} className="text-[13px] text-muted">
+                    {formatPostDate(post.date)}
+                  </time>
+                )}
+                <h3 className="m-0 text-[32px] leading-[1.12] font-medium tracking-[-0.025em]">
+                  {post.title}
+                </h3>
+                <p className="m-0 font-serif text-[19px] leading-relaxed text-ink-soft">
+                  {post.description ?? post.preview}
+                </p>
+                {post.tags.length > 0 && (
+                  <div className="mt-auto flex flex-wrap gap-2">
+                    {post.tags.slice(0, 3).map((tag) => (
+                      <Tag key={tag}>{tag}</Tag>
+                    ))}
+                  </div>
+                )}
+              </Link>
+            ))}
           </div>
+        </div>
+      </section>
 
-          {/* Main Title */}
-          <h1 className="mb-6">
-            <span className="block text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-text-main">
-              READ
-            </span>
-            <span className="block text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter text-text-main">
-              THINK
-            </span>
-            <span className="block text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter">
-              <span className="glitch-text shimmer-text" data-text="CODE">
-                CODE
-              </span>
-            </span>
-          </h1>
-
-          {/* Tagline */}
-          <div className="mb-12">
-            <p className="text-xl md:text-2xl text-text-muted max-w-2xl mx-auto">
-              Software Engineer crafting digital experiences
+      {/* Makers */}
+      <section className="relative overflow-hidden bg-linear-to-b from-cream to-[#F4E6E3] pt-26 pb-28">
+        <svg
+          viewBox="0 0 1440 500"
+          preserveAspectRatio="none"
+          className="absolute bottom-8 left-0 h-[300px] w-full"
+          aria-hidden="true"
+        >
+          <path
+            d="M-40 260 C 300 160, 640 330, 980 200 S 1380 120, 1500 160"
+            fill="none"
+            stroke="#F3C29C"
+            strokeWidth="80"
+            strokeLinecap="round"
+            opacity=".35"
+          />
+          <path
+            d="M-40 260 C 300 160, 640 330, 980 200 S 1380 120, 1500 160"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="3"
+            opacity=".9"
+          />
+        </svg>
+        <Grain opacity={0.14} />
+        <div className="relative mx-auto flex max-w-[1240px] flex-col gap-11 px-5 sm:px-8">
+          <div className="flex max-w-[640px] flex-col gap-2.5">
+            <SectionHeading kicker="everyone's making something" title="A small world of makers" />
+            <p className="m-0 text-lg leading-relaxed text-ink-soft">
+              Hover over anyone, or tab to them, to watch them get to work.
             </p>
           </div>
-
-          {/* Terminal Window */}
-          <div className="max-w-2xl mx-auto mb-12">
-            <div className="cyber-card hud-corners overflow-hidden">
-              {/* Terminal Header */}
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/5 bg-surface/50">
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-accent/80 hover:bg-accent transition-colors cursor-pointer" />
-                  <div className="w-3 h-3 rounded-full bg-neon-yellow/80 hover:bg-neon-yellow transition-colors cursor-pointer" />
-                  <div className="w-3 h-3 rounded-full bg-neon-green/80 hover:bg-neon-green transition-colors cursor-pointer" />
-                </div>
-                <span className="ml-4 terminal-text text-xs text-text-muted">xiaofeng@dev ~ </span>
-              </div>
-
-              {/* Terminal Body */}
-              <div className="p-6 text-left terminal-text text-sm leading-relaxed">
-                <div className="mb-3">
-                  <span className="text-neon-green">➜</span>
-                  <span className="text-primary ml-2">~</span>
-                  <span className="text-text-muted ml-2">whoami</span>
-                </div>
-                <div className="text-text-main mb-4 pl-4 border-l-2 border-primary/30">
-                  <span className="text-primary font-bold">Xiaofeng Xie</span>
-                  <span className="text-text-muted"> // Full-Stack Engineer</span>
-                </div>
-                <div className="mb-3">
-                  <span className="text-neon-green">➜</span>
-                  <span className="text-primary ml-2">~</span>
-                  <span className="text-text-muted ml-2">cat interests.json</span>
-                </div>
-                <div className="text-text-muted pl-4">
-                  <span className="text-secondary">{"{"}</span>
-                  <br />
-                  <span className="ml-4">"focus": </span>
-                  <span className="text-accent">"React, TypeScript, System Design"</span>,
-                  <br />
-                  <span className="ml-4">"passion": </span>
-                  <span className="text-accent">"Building elegant solutions"</span>
-                  <br />
-                  <span className="text-secondary">{"}"}</span>
-                </div>
-                <div className="mt-4 flex items-center">
-                  <span className="text-neon-green">➜</span>
-                  <span className="text-primary ml-2">~</span>
-                  <span className="typing-cursor ml-2"></span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/services">
-              <button className="neon-button group">
-                <span className="flex items-center gap-2">
-                  <span className="text-xs opacity-50 group-hover:opacity-100 transition-opacity">
-                    01
-                  </span>
-                  FIX MY TEST SUITE
-                  <svg
-                    className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
-                </span>
-              </button>
-            </Link>
-            <a
-              href="https://github.com/XiaofengXie16/ryzer"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button variant="outline" className="w-full sm:w-auto">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                </svg>
-                VIEW RYZER
-              </Button>
-            </a>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-float">
-          <div className="flex flex-col items-center gap-3">
-            <span className="terminal-text text-xs text-text-muted tracking-[0.3em]">SCROLL</span>
-            <div className="w-6 h-10 border-2 border-primary/30 rounded-full flex justify-center p-2">
-              <div className="w-1 h-2 bg-primary rounded-full animate-pulse" />
-            </div>
-          </div>
-        </div>
-
-        {/* Corner Decorations */}
-        <div
-          className="absolute top-20 left-6 md:left-20 terminal-text text-xs text-text-muted/50 animate-fade-in"
-          style={{ animationDelay: "1.5s" }}
-        >
-          <div>LAT: 37.7749° N</div>
-          <div>LON: 122.4194° W</div>
-        </div>
-        <div
-          className="absolute top-20 right-6 md:right-20 terminal-text text-xs text-text-muted/50 text-right animate-fade-in"
-          style={{ animationDelay: "1.5s" }}
-        >
-          <div>SYS.VERSION: 2.0.0</div>
-          <div>STATUS: ACTIVE</div>
+          <Makers />
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="relative py-32 px-6">
-        {/* Section Divider */}
-        <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent" />
-
-        <div className="max-w-7xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-4 mb-6">
-              <div className="h-px w-12 bg-linear-to-r from-transparent to-primary" />
-              <span className="terminal-text text-sm text-primary tracking-[0.3em]">EXPLORE</span>
-              <div className="h-px w-12 bg-linear-to-l from-transparent to-primary" />
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold">
-              <GlitchText text="SELECT MODULE" className="text-text-main" glitchOnHover />
-            </h2>
-          </div>
-
-          {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-8">
-            <FeatureCard
-              to="/blog"
-              number="01"
-              title="DATA_STREAM"
-              subtitle="Blog"
-              description="Thoughts on software engineering, architecture patterns, and tech insights."
-              accentColor="primary"
-              delay={0}
-            />
-            <FeatureCard
-              to="/reading-list"
-              number="02"
-              title="KNOWLEDGE_BASE"
-              subtitle="Reading List"
-              description="Curated collection of books that shaped my engineering perspective."
-              accentColor="secondary"
-              delay={100}
-            />
-            <FeatureCard
-              to="/tool"
-              number="03"
-              title="ARSENAL"
-              subtitle="Tools"
-              description="My handpicked developer tools and productivity stack."
-              accentColor="accent"
-              delay={200}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="relative py-20 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="cyber-card p-8 md:p-12">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              <StatItem value="500+" label="COMMITS" color="primary" />
-              <StatItem value="20+" label="PROJECTS" color="secondary" />
-              <StatItem value="50+" label="BOOKS" color="accent" />
-              <StatItem value="∞" label="COFFEE" color="neon-green" />
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
-}
-
-interface FeatureCardProps {
-  to: string;
-  number: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  accentColor: "primary" | "secondary" | "accent";
-  delay: number;
-}
-
-function FeatureCard({
-  to,
-  number,
-  title,
-  subtitle,
-  description,
-  accentColor,
-  delay,
-}: FeatureCardProps) {
-  const colorClasses = {
-    primary: "group-hover:border-primary/50 group-hover:shadow-primary/20",
-    secondary: "group-hover:border-secondary/50 group-hover:shadow-secondary/20",
-    accent: "group-hover:border-accent/50 group-hover:shadow-accent/20",
-  };
-
-  const textColors = {
-    primary: "text-primary",
-    secondary: "text-secondary",
-    accent: "text-accent",
-  };
-
-  return (
-    <Link to={to} className="group block animate-slide-up" style={{ animationDelay: `${delay}ms` }}>
-      <TiltCard className="h-full">
-        <div
-          className={`relative h-full cyber-card hud-corners p-8 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ${colorClasses[accentColor]}`}
-        >
-          {/* Number */}
-          <div
-            className={`absolute top-6 right-6 terminal-text text-4xl font-bold ${textColors[accentColor]} opacity-20 group-hover:opacity-40 transition-opacity`}
-          >
-            {number}
-          </div>
-
-          {/* Content */}
-          <div className="relative z-10">
-            {/* Title Label */}
-            <div
-              className={`inline-flex items-center gap-2 mb-4 px-3 py-1 border ${accentColor === "primary" ? "border-primary/30 bg-primary/5" : accentColor === "secondary" ? "border-secondary/30 bg-secondary/5" : "border-accent/30 bg-accent/5"}`}
-            >
-              <span
-                className={`w-1.5 h-1.5 ${accentColor === "primary" ? "bg-primary" : accentColor === "secondary" ? "bg-secondary" : "bg-accent"}`}
-              />
-              <span
-                className={`terminal-text text-[10px] tracking-widest ${textColors[accentColor]}`}
-              >
-                {title}
-              </span>
-            </div>
-
-            {/* Main Title */}
-            <h3
-              className={`text-3xl font-bold mb-4 text-text-main group-hover:${textColors[accentColor]} transition-colors`}
-            >
-              {subtitle}
-            </h3>
-
-            {/* Description */}
-            <p className="text-text-muted leading-relaxed mb-8">{description}</p>
-
-            {/* Action */}
-            <div className={`flex items-center terminal-text text-sm ${textColors[accentColor]}`}>
-              <span className="mr-2 opacity-50 group-hover:opacity-100 transition-opacity">
-                &gt;
-              </span>
-              <span className="group-hover:tracking-wider transition-all">ACCESS</span>
-              <svg
-                className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </div>
-          </div>
-
-          {/* Bottom Glow Line */}
-          <div
-            className={`absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-500 ${accentColor === "primary" ? "bg-linear-to-r from-primary to-primary/50" : accentColor === "secondary" ? "bg-linear-to-r from-secondary to-secondary/50" : "bg-linear-to-r from-accent to-accent/50"}`}
+      {/* On the shelf */}
+      <section className="relative overflow-hidden bg-linear-to-b from-[#F4E6E3] via-[#EFE3F0] to-lilac py-28">
+        <Grain opacity={0.16} />
+        <div className="relative mx-auto flex max-w-[1240px] flex-col gap-12 px-5 sm:px-8">
+          <SectionHeading
+            kicker="ideas I keep returning to"
+            kickerClass="text-violet"
+            title="On the shelf"
+            link={{ to: "/reading-list", label: "Full reading list" }}
           />
+          <ul className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(150px,1fr))] items-end gap-5 p-0">
+            {BOOKS.map((book, i) => (
+              <li key={book.name}>
+                <a
+                  href={book.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass animate-bob flex flex-col items-center justify-end gap-2 rounded-full px-[22px] py-10 text-center text-ink no-underline"
+                  style={{
+                    height: BOOK_HEIGHTS[i % BOOK_HEIGHTS.length],
+                    animationDelay: `-${i}s`,
+                  }}
+                >
+                  <img
+                    src={book.icon}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="mb-2 h-16 w-12 rounded-md object-cover shadow-md"
+                  />
+                  <span className={`font-hand text-xl ${TAG_COLORS[i % TAG_COLORS.length]}`}>
+                    {BOOK_TAGS[i % BOOK_TAGS.length]}
+                  </span>
+                  <span className="text-[17px] leading-tight font-medium">
+                    {shortTitle(book.name)}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-      </TiltCard>
-    </Link>
+      </section>
+
+      {/* Services teaser */}
+      <section className="bg-lilac py-28">
+        <div className="mx-auto grid max-w-[1240px] grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-center gap-12 px-5 sm:px-8">
+          <div className="flex flex-col gap-[18px]">
+            <p className="m-0 font-hand text-[28px] text-rust">founding pilot · one slot</p>
+            <h2 className="m-0 text-[40px] leading-[1.02] font-medium tracking-[-0.035em] sm:text-[56px]">
+              Stop paying for slow, flaky E2E feedback.
+            </h2>
+            <p className="m-0 text-[19px] leading-relaxed text-ink-soft">
+              A five-day Playwright speed and flake audit: I measure your suite, isolate its most
+              expensive failure modes, and deliver a focused pull request with verified
+              improvements.
+            </p>
+            <div>
+              <Link
+                to="/services"
+                className="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-ink px-[26px] text-base font-medium text-white no-underline hover:bg-indigo-deep"
+              >
+                See how the audit works <ArrowRight />
+              </Link>
+            </div>
+          </div>
+          <div className="glass flex flex-col gap-5 rounded-[36px] p-9">
+            <p className="m-0 text-[13px] font-semibold tracking-[0.12em] text-muted uppercase">
+              Good fit when
+            </p>
+            <p className="m-0 text-[19px] leading-normal">
+              Your Playwright suite takes long enough that engineers avoid running it.
+            </p>
+            <p className="m-0 text-[19px] leading-normal">
+              Retries keep CI green, but nobody trusts what they are hiding.
+            </p>
+            <p className="m-0 text-[19px] leading-normal">
+              A handful of tests fail only under load, in parallel, or in CI.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Night: ask the site */}
+      <section className="relative overflow-hidden bg-[radial-gradient(ellipse_at_60%_20%,#262A5C_0%,#11122A_55%,#08081A_100%)] pt-36 pb-32 text-moon">
+        <svg
+          viewBox="0 0 1440 700"
+          preserveAspectRatio="none"
+          className="absolute inset-0 h-full w-full"
+          aria-hidden="true"
+        >
+          <path
+            d="M-60 560 C 280 380, 620 640, 960 420 S 1380 260, 1520 330"
+            fill="none"
+            stroke="#9FB4FF"
+            strokeWidth="1.5"
+            opacity=".55"
+          />
+          <path
+            d="M-60 590 C 300 420, 640 670, 980 450 S 1390 300, 1520 370"
+            fill="none"
+            stroke="#C7B5FF"
+            strokeWidth="1"
+            opacity=".4"
+          />
+          <path
+            d="M-60 620 C 320 460, 660 700, 1000 480 S 1400 340, 1520 410"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="2.5"
+            opacity=".7"
+          />
+        </svg>
+        <Grain opacity={0.08} screen />
+        <div className="pointer-events-none absolute bottom-0 left-[5%] hidden lg:block">
+          <DeskWriter className="h-[290px] w-[320px]" />
+        </div>
+        <div className="relative mx-auto flex max-w-[900px] flex-col items-center gap-7 px-5 text-center sm:px-8">
+          <p className="glow m-0 -rotate-2 font-hand text-5xl leading-none text-[#F4F7FF] sm:text-[64px]">
+            ask me what I'd build next
+          </p>
+          <p className="m-0 max-w-[560px] text-[19px] leading-relaxed text-moon-muted">
+            The site has a built-in assistant. Search posts, books and tools, or ask a question in
+            plain words.
+          </p>
+          <button
+            type="button"
+            onClick={openCommandAgent}
+            className="flex min-h-16 w-full max-w-[620px] cursor-pointer items-center gap-3.5 rounded-[22px] border border-[rgba(190,205,255,.35)] bg-white/6 px-[22px] text-left font-sans text-[17px] text-moon-muted shadow-[0_0_40px_-8px_rgba(120,150,255,.5)] hover:bg-white/10"
+          >
+            <SearchIcon size={20} />
+            <span className="flex-1">Which book should I read first?</span>
+            <kbd className="rounded-lg bg-white/10 px-2 py-1 font-sans text-[13px] text-moon">
+              ⌘K
+            </kbd>
+          </button>
+        </div>
+      </section>
+    </>
   );
 }
 
-function StatItem({ value, label, color }: { value: string; label: string; color: string }) {
+function Hero() {
   return (
-    <div className="text-center group">
-      <div
-        className={`text-4xl md:text-5xl font-bold mb-2 text-${color} glow-text-subtle transition-all group-hover:scale-110`}
+    <WishSky className="relative min-h-[820px] cursor-crosshair overflow-hidden bg-linear-to-b from-[#8E9BE6] via-[#B4BCF0] via-35% to-[#F6CFAE]">
+      <Cloud
+        style={{
+          width: 520,
+          height: 180,
+          left: -80,
+          top: 120,
+          background: "#F9D9BC",
+          opacity: 0.85,
+        }}
+      />
+      <Cloud
+        style={{
+          width: 460,
+          height: 150,
+          right: -60,
+          top: 70,
+          background: "#FBE3CC",
+          opacity: 0.8,
+          animationDuration: "32s",
+        }}
+      />
+      <Cloud
+        style={{
+          width: 640,
+          height: 200,
+          left: "30%",
+          top: 520,
+          background: "#FFE9D6",
+          opacity: 0.7,
+          animationDuration: "38s",
+        }}
+      />
+      <Cloud
+        style={{
+          width: 380,
+          height: 140,
+          right: "12%",
+          top: 380,
+          background: "#C9B8EC",
+          opacity: 0.7,
+          animationDuration: "29s",
+        }}
+      />
+
+      <svg
+        viewBox="0 0 1440 820"
+        preserveAspectRatio="none"
+        className="absolute inset-0 hidden h-full w-full md:block"
+        aria-hidden="true"
       >
-        {value}
+        <defs>
+          <linearGradient id="ribbonA" x1="0" x2="1">
+            <stop offset="0" style={{ stopColor: "#fff", stopOpacity: 0 }} />
+            <stop offset=".45" style={{ stopColor: "#fff", stopOpacity: 0.85 }} />
+            <stop offset="1" style={{ stopColor: "#F3B98D", stopOpacity: 0.2 }} />
+          </linearGradient>
+          <linearGradient id="ribbonB" x1="0" x2="1">
+            <stop offset="0" style={{ stopColor: "#E88A4F", stopOpacity: 0 }} />
+            <stop offset=".5" style={{ stopColor: "#E88A4F", stopOpacity: 0.75 }} />
+            <stop offset="1" style={{ stopColor: "#7DA453", stopOpacity: 0.4 }} />
+          </linearGradient>
+        </defs>
+        <path
+          d="M-40 690 C 260 560, 520 760, 820 640 S 1300 480, 1500 560"
+          fill="none"
+          stroke="url(#ribbonB)"
+          strokeWidth="34"
+          strokeLinecap="round"
+        />
+        <path
+          d="M-40 720 C 280 600, 540 790, 840 670 S 1310 520, 1500 600"
+          fill="none"
+          stroke="url(#ribbonA)"
+          strokeWidth="5"
+          strokeLinecap="round"
+        />
+        <path
+          d="M-60 300 C 300 220, 600 360, 980 250 S 1380 150, 1520 200"
+          fill="none"
+          stroke="url(#ribbonA)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          opacity=".7"
+        />
+        <use href="#walker" x="980" y="588" width="22" height="55" style={{ color: "#E07A3F" }} />
+        <use href="#walker" x="1006" y="584" width="22" height="55" style={{ color: "#7DA453" }} />
+        <use href="#walker" x="1262" y="508" width="18" height="45" style={{ color: "#F4F7FF" }} />
+      </svg>
+
+      <Grain opacity={0.22} />
+
+      {/* Figure, light trail and capsules are laid out on a centered 1440px stage so they line up with the copy. */}
+      <div className="pointer-events-none absolute top-0 left-1/2 hidden h-[820px] w-[1440px] -translate-x-1/2 lg:block">
+        <svg viewBox="0 0 1440 820" className="absolute inset-0 h-full w-full" aria-hidden="true">
+          <path
+            d="M336 262 C 400 200, 470 300, 548 232"
+            fill="none"
+            stroke="#B9CAFF"
+            strokeWidth="7"
+            strokeLinecap="round"
+            opacity=".55"
+            filter="url(#softglow)"
+          />
+          <path
+            d="M336 262 C 400 200, 470 300, 548 232"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeDasharray="2 7"
+            opacity=".95"
+          />
+        </svg>
+        <SkyWriter className="absolute top-[226px] left-[150px] h-[412px] w-[190px]" />
+        <Capsule className="top-[250px] right-[8%] h-[200px] w-[104px] text-rust" delay="-3s">
+          <path d="m8 7-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16" />
+        </Capsule>
+        <Capsule className="top-[590px] left-[24%] h-[150px] w-20 text-violet" delay="0s">
+          <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" />
+          <path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5" />
+        </Capsule>
+        <Capsule className="top-[600px] right-[22%] h-[132px] w-[72px] text-moss" delay="-5s">
+          <path d="M4 17l6-6-6-6M12 19h8" />
+        </Capsule>
       </div>
-      <div className="terminal-text text-xs text-text-main/60 tracking-widest">{label}</div>
+
+      <div className="relative z-[2] mx-auto flex max-w-[1240px] flex-col items-center gap-7 px-5 pt-44 pb-16 text-center sm:px-8 sm:pt-52">
+        <p className="glow m-0 -rotate-3 font-hand text-[34px] text-[#F4F7FF]">
+          a future worth building
+        </p>
+        <h1 className="m-0 text-[56px] leading-[0.98] font-medium tracking-[-0.045em] text-olive sm:text-[104px]">
+          Read. Think. Code.
+        </h1>
+        <p className="m-0 max-w-[620px] text-xl leading-relaxed text-ink-soft">
+          Software engineer crafting digital experiences. Notes on frontend architecture, developer
+          tooling, and the books that shape how I build.
+        </p>
+        <div className="mt-2 flex flex-wrap justify-center gap-3">
+          <Link
+            to="/blog"
+            className="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-ink px-[26px] text-base font-medium text-white no-underline hover:bg-indigo-deep"
+          >
+            Read the writing <ArrowRight />
+          </Link>
+          <button
+            type="button"
+            onClick={openCommandAgent}
+            className="glass inline-flex min-h-[52px] cursor-pointer items-center rounded-full px-6 font-sans text-base font-medium text-ink"
+          >
+            Ask the site anything
+          </button>
+        </div>
+      </div>
+    </WishSky>
+  );
+}
+
+function Capsule({
+  className,
+  delay,
+  children,
+}: {
+  className: string;
+  delay: string;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className={`glass animate-bob absolute flex items-center justify-center rounded-full ${className}`}
+      style={{ animationDelay: delay }}
+      aria-hidden="true"
+    >
+      <svg
+        width="34"
+        height="34"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        {children}
+      </svg>
     </div>
   );
 }

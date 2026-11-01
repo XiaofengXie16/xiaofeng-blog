@@ -1,6 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
 import { BOOKS } from "~/constants/book";
 import { pageMeta } from "~/constants/site";
+import { Grain } from "~/components/design/Atmosphere";
+import { PageTitle } from "~/components/design/Section";
+import { shortTitle } from "~/utils/format";
 
 export const Route = createFileRoute("/reading-list/")({
   head: () =>
@@ -13,164 +17,144 @@ export const Route = createFileRoute("/reading-list/")({
   component: ReadingList,
 });
 
+const HEIGHTS = [320, 280, 330, 300, 290, 350];
+const COLORS = ["text-moss", "text-rust", "text-violet"];
+
 function ReadingList() {
+  const [picked, setPicked] = useState(0);
+  const current = BOOKS[picked];
+
   return (
-    <div className="relative max-w-7xl mx-auto px-6 py-12 animate-fade-in">
-      {/* Header Section */}
-      <div className="mb-16">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 mb-8 terminal-text text-sm text-text-muted">
-          <Link to="/" className="hover:text-primary transition-colors">
-            HOME
-          </Link>
-          <span className="text-secondary">/</span>
-          <span className="text-secondary">READING</span>
+    <div className="relative overflow-hidden bg-linear-to-b from-[#F3D9C6] via-[#EADCEB] via-35% to-[#B9C0EE]">
+      <svg
+        viewBox="0 0 1440 1500"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+        aria-hidden="true"
+      >
+        <path
+          d="M-80 640 C 260 520, 520 760, 820 620 S 1300 460, 1540 560"
+          fill="none"
+          stroke="#fff"
+          strokeWidth="120"
+          strokeLinecap="round"
+          opacity=".38"
+        />
+        <path
+          d="M-80 640 C 260 520, 520 760, 820 620 S 1300 460, 1540 560"
+          fill="none"
+          stroke="#fff"
+          strokeWidth="3"
+          opacity=".9"
+        />
+        <path
+          d="M-80 1180 C 300 1040, 640 1300, 980 1120 S 1360 980, 1540 1060"
+          fill="none"
+          stroke="#D9C2EE"
+          strokeWidth="140"
+          strokeLinecap="round"
+          opacity=".45"
+        />
+        <path
+          d="M-80 1180 C 300 1040, 640 1300, 980 1120 S 1360 980, 1540 1060"
+          fill="none"
+          stroke="#fff"
+          strokeWidth="3"
+          opacity=".8"
+        />
+      </svg>
+      <svg
+        viewBox="0 0 1440 1500"
+        preserveAspectRatio="none"
+        className="absolute inset-0 hidden h-full w-full md:block"
+        aria-hidden="true"
+      >
+        <use href="#walker" x="210" y="560" width="22" height="55" style={{ color: "#2F5BD3" }} />
+        <use href="#walker" x="236" y="566" width="20" height="50" style={{ color: "#E07A3F" }} />
+        <use href="#walker" x="1180" y="980" width="22" height="55" style={{ color: "#7DA453" }} />
+        <use href="#walker" x="640" y="1170" width="20" height="50" style={{ color: "#F4F7FF" }} />
+      </svg>
+      <Grain />
+
+      <div className="relative z-[2] mx-auto flex max-w-[1240px] flex-col gap-14 px-5 pt-44 pb-30 sm:px-8">
+        <PageTitle
+          kicker="books that changed how I build"
+          kickerClass="text-rust"
+          title="Reading list"
+          intro={`${BOOKS.length} books I keep recommending. Pick a capsule to open it.`}
+        />
+
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] items-end gap-7">
+          {BOOKS.map((book, i) => {
+            const on = i === picked;
+            return (
+              <button
+                key={book.name}
+                type="button"
+                aria-pressed={on}
+                onClick={() => setPicked(i)}
+                className={`glass animate-bob flex cursor-pointer flex-col items-center justify-end gap-2.5 rounded-full px-5 pt-9 pb-11 text-center font-sans transition-[transform,box-shadow] duration-500 ${
+                  on
+                    ? "-translate-y-4 bg-white/70 shadow-[0_0_0_2px_#fff,0_0_46px_6px_rgba(140,165,255,.75),0_30px_50px_-20px_rgba(53,48,110,.5)]"
+                    : "hover:-translate-y-2"
+                }`}
+                style={{ height: HEIGHTS[i % HEIGHTS.length], animationDelay: `-${i}s` }}
+              >
+                <img
+                  src={book.icon}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="mb-1 h-20 w-14 rounded-md object-cover shadow-md"
+                />
+                <span className="text-[17px] leading-tight font-medium text-ink">
+                  {shortTitle(book.name)}
+                </span>
+                <span className={`font-hand text-lg ${COLORS[i % COLORS.length]}`}>
+                  {on ? "open" : "tap to open"}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Title */}
-        <div className="relative inline-block">
-          <div className="absolute -left-4 top-0 w-1 h-full bg-linear-to-b from-secondary to-transparent" />
-          <h1 className="text-4xl md:text-6xl font-bold">
-            <span className="text-text-main">Knowledge</span>
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-secondary to-accent">
-              {" "}
-              Archive
-            </span>
-          </h1>
-        </div>
-
-        <p className="mt-6 text-lg text-text-muted max-w-2xl terminal-text">
-          <span className="text-secondary">&gt;</span> Books and resources that have shaped my
-          perspective on software, leadership, and life...
-        </p>
-
-        {/* Stats bar */}
-        <div className="mt-8 flex flex-wrap items-center gap-6 p-4 border border-white/5 bg-surface/30 backdrop-blur-sm">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-secondary animate-pulse" />
-            <span className="terminal-text text-xs text-text-muted">ARCHIVE_ACTIVE</span>
+        <div
+          className="glass flex flex-wrap items-center gap-x-12 gap-y-8 rounded-[36px] p-8 sm:p-10"
+          aria-live="polite"
+        >
+          <img
+            src={current.icon}
+            alt={`Cover of ${shortTitle(current.name)}`}
+            className="h-36 w-24 rounded-lg object-cover shadow-lg"
+          />
+          <div className="flex min-w-0 flex-[999_1_360px] flex-col gap-3">
+            <span className="font-hand text-[26px] text-violet">on the shelf</span>
+            <h2 className="m-0 text-3xl leading-[1.1] font-medium tracking-[-0.03em] sm:text-[40px]">
+              {current.name}
+            </h2>
           </div>
-          <div className="h-4 w-px bg-white/10" />
-          <div className="terminal-text text-xs text-text-muted">
-            VOLUMES: <span className="text-secondary">{BOOKS.length}</span>
-          </div>
-          <div className="h-4 w-px bg-white/10" />
-          <div className="terminal-text text-xs text-text-muted">
-            STATUS: <span className="text-neon-green">INDEXED</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Books Grid */}
-      <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {BOOKS.map(({ name, icon, link }, index) => (
-          <li
-            key={name}
-            className="group list-none animate-slide-up"
-            style={{ animationDelay: `${index * 0.1}s` }}
+          <a
+            href={current.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[52px] flex-none items-center gap-2.5 rounded-full bg-ink px-6 font-medium text-white no-underline hover:bg-indigo-deep"
           >
-            <a
-              href={link}
-              className="block h-full relative"
-              target="_blank"
-              rel="noopener noreferrer"
+            Visit the book
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
             >
-              {/* Main Card */}
-              <div className="relative h-full cyber-card overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:border-secondary/30">
-                {/* Index Number */}
-                <div className="absolute top-4 left-4 z-20 terminal-text text-xs text-white/50 group-hover:text-secondary transition-colors">
-                  [{String(index + 1).padStart(2, "0")}]
-                </div>
-
-                {/* External Link Indicator */}
-                <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <svg
-                    className="w-5 h-5 text-secondary"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    />
-                  </svg>
-                </div>
-
-                {/* Book Cover */}
-                <div className="aspect-[3/4] relative overflow-hidden">
-                  {/* Holographic Overlay */}
-                  <div className="absolute inset-0 holographic opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-
-                  {/* Scan Line Effect on Hover */}
-                  <div className="absolute inset-0 bg-linear-to-b from-transparent via-secondary/20 to-transparent translate-y-full group-hover:translate-y-[-100%] transition-transform duration-1000 z-10" />
-
-                  {/* Image */}
-                  <img
-                    src={icon}
-                    alt={name}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    loading="lazy"
-                    decoding="async"
-                  />
-
-                  {/* Bottom Gradient */}
-                  <div className="absolute inset-0 bg-linear-to-t from-background via-background/50 to-transparent z-10" />
-                </div>
-
-                {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                  {/* Category Tag */}
-                  <div className="inline-flex items-center gap-2 mb-3 px-2 py-1 border border-secondary/30 bg-surface/80 backdrop-blur-sm">
-                    <span className="w-1.5 h-1.5 bg-secondary" />
-                    <span className="terminal-text text-[10px] text-secondary tracking-wider">
-                      VOLUME
-                    </span>
-                  </div>
-
-                  <h2 className="text-lg font-bold text-white group-hover:text-secondary transition-colors leading-tight">
-                    {name}
-                  </h2>
-
-                  {/* Access Indicator */}
-                  <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                    <span className="terminal-text text-xs text-text-muted">READY</span>
-                    <span className="terminal-text text-xs text-secondary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                      ACCESS
-                      <svg
-                        className="w-3 h-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-
-                {/* Corner Brackets */}
-                <div className="absolute top-0 left-0 w-6 h-6 border-l-2 border-t-2 border-secondary/30 group-hover:border-secondary/60 group-hover:w-8 group-hover:h-8 transition-all duration-300 z-20" />
-                <div className="absolute bottom-0 right-0 w-6 h-6 border-r-2 border-b-2 border-accent/30 group-hover:border-accent/60 group-hover:w-8 group-hover:h-8 transition-all duration-300 z-20" />
-
-                {/* Bottom Glow */}
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-linear-to-r from-secondary to-accent group-hover:w-full transition-all duration-500 z-20" />
-              </div>
-            </a>
-          </li>
-        ))}
-      </ul>
-
-      {/* Decorative Element */}
-      <div className="fixed bottom-10 left-10 pointer-events-none opacity-20">
-        <div className="w-32 h-32 border border-secondary/50 rotate-45 animate-float" />
+              <path d="M7 17 17 7M9 7h8v8" />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   );

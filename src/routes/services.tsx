@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FloatingOrbs, GridLines, NoiseOverlay } from "~/components/effects/FloatingOrbs";
 import { pageMeta } from "~/constants/site";
+import { Cloud, Grain } from "~/components/design/Atmosphere";
+import { ArrowRight } from "~/components/design/Section";
 
 const LINKEDIN_URL = "https://www.linkedin.com/in/xiaofengxie16/";
 const RYZER_URL = "https://github.com/XiaofengXie16/ryzer";
@@ -46,122 +47,126 @@ const fitSignals = [
   "You want evidence before considering a runner or architecture change.",
 ];
 
+const primaryButton =
+  "inline-flex min-h-[52px] items-center justify-center gap-2.5 rounded-full bg-ink px-[26px] font-medium text-white no-underline hover:bg-indigo-deep";
+
 function Services() {
   return (
-    <div className="relative overflow-hidden">
-      <FloatingOrbs />
-      <GridLines />
-      <NoiseOverlay />
-      <div className="scan-line" />
-
-      <section className="relative px-6 pb-24 pt-24 md:pb-32 md:pt-32">
-        <div className="relative z-10 mx-auto max-w-6xl">
-          <div className="mb-8 inline-flex items-center gap-3 border border-neon-green/30 bg-neon-green/5 px-4 py-2">
-            <span className="status-dot" />
-            <span className="terminal-text text-xs tracking-[0.22em] text-neon-green">
-              FOUNDING PILOT // ONE SLOT
-            </span>
+    <>
+      <section className="relative overflow-hidden bg-linear-to-b from-[#8E9BE6] via-[#C9C2EC] via-45% to-[#F6CFAE] pb-24">
+        <Cloud
+          style={{
+            width: 560,
+            height: 180,
+            left: -80,
+            top: 160,
+            background: "#F9D9BC",
+            opacity: 0.85,
+          }}
+        />
+        <Cloud
+          style={{
+            width: 460,
+            height: 150,
+            right: -60,
+            top: 300,
+            background: "#FBE3CC",
+            opacity: 0.75,
+            animationDuration: "33s",
+          }}
+        />
+        <Grain />
+        <div className="relative z-[2] mx-auto grid max-w-[1240px] items-end gap-12 px-5 pt-44 sm:px-8 lg:grid-cols-[1.35fr_0.65fr]">
+          <div className="flex flex-col gap-5">
+            <p className="glow m-0 -rotate-2 self-start font-hand text-[30px] text-[#F4F7FF]">
+              founding pilot · one slot
+            </p>
+            <p className="m-0 text-[13px] font-semibold tracking-[0.18em] text-indigo uppercase">
+              Playwright speed + flake audit
+            </p>
+            <h1 className="m-0 text-[48px] leading-[1.02] font-medium tracking-[-0.045em] text-olive sm:text-[76px]">
+              Stop paying for slow, flaky E2E feedback.
+            </h1>
+            <p className="m-0 max-w-[640px] text-xl leading-relaxed text-ink-soft">
+              In five business days, I will measure your Playwright suite, isolate its most
+              expensive failure modes, and deliver a focused pull request with verified
+              improvements.
+            </p>
           </div>
-
-          <div className="grid items-end gap-12 lg:grid-cols-[1.35fr_0.65fr]">
-            <div>
-              <p className="terminal-text mb-5 text-sm tracking-[0.28em] text-primary">
-                PLAYWRIGHT SPEED + FLAKE AUDIT
-              </p>
-              <h1 className="max-w-4xl text-5xl font-black tracking-tight text-text-main sm:text-6xl md:text-7xl">
-                Stop paying for slow, flaky E2E feedback.
-              </h1>
-              <p className="mt-7 max-w-3xl text-lg leading-8 text-text-muted md:text-xl">
-                In five business days, I will measure your Playwright suite, isolate its most
-                expensive failure modes, and deliver a focused pull request with verified
-                improvements.
-              </p>
-            </div>
-
-            <div className="cyber-card hud-corners p-6">
-              <p className="terminal-text text-xs tracking-[0.22em] text-primary">PILOT SCOPE</p>
-              <div className="mt-5 text-4xl font-black text-text-main">$1,500</div>
-              <p className="mt-2 text-sm leading-6 text-text-muted">
-                Fixed fee · one repository · up to 25 representative tests · five business days
-              </p>
-              <div className="my-6 h-px bg-linear-to-r from-primary/50 to-transparent" />
-              <a
-                href={LINKEDIN_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="neon-button block w-full text-center"
-              >
-                MESSAGE ME ON LINKEDIN
-              </a>
-              <p className="terminal-text mt-4 text-center text-[10px] tracking-wider text-text-muted">
-                START WITH A 15-MINUTE FIT CHECK
-              </p>
-            </div>
+          <div className="glass flex flex-col gap-4 rounded-[36px] p-8">
+            <p className="m-0 text-[13px] font-semibold tracking-[0.12em] text-muted uppercase">
+              Pilot scope
+            </p>
+            <p className="m-0 text-5xl font-medium tracking-[-0.03em]">$1,500</p>
+            <p className="m-0 text-[15px] leading-relaxed text-ink-soft">
+              Fixed fee · one repository · up to 25 representative tests · five business days
+            </p>
+            <a
+              href={LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${primaryButton} mt-2`}
+            >
+              Message me on LinkedIn
+            </a>
+            <p className="m-0 text-center font-hand text-xl text-violet">
+              start with a 15-minute fit check
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="relative border-y border-primary/10 bg-surface/30 px-6 py-20">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-12 max-w-2xl">
-            <p className="terminal-text text-xs tracking-[0.25em] text-secondary">
-              WHAT YOU RECEIVE
-            </p>
-            <h2 className="mt-4 text-3xl font-bold text-text-main md:text-4xl">
+      <section className="relative overflow-hidden bg-cream py-24">
+        <Grain opacity={0.12} />
+        <div className="relative mx-auto flex max-w-[1240px] flex-col gap-12 px-5 sm:px-8">
+          <div className="flex max-w-2xl flex-col gap-2.5">
+            <p className="m-0 font-hand text-[28px] text-rust">what you receive</p>
+            <h2 className="m-0 text-[40px] leading-none font-medium tracking-[-0.035em] sm:text-[56px]">
               Evidence first. Changes second.
             </h2>
           </div>
-
-          <div className="grid gap-5 md:grid-cols-2">
+          <ul className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-5 p-0">
             {deliverables.map((item) => (
-              <article
-                key={item.code}
-                className="cyber-card group p-7 transition-colors hover:border-primary/40"
-              >
-                <div className="flex items-start gap-5">
-                  <span className="terminal-text text-sm text-primary/60">[{item.code}]</span>
-                  <div>
-                    <h3 className="text-xl font-bold text-text-main group-hover:text-primary">
-                      {item.title}
-                    </h3>
-                    <p className="mt-3 leading-7 text-text-muted">{item.body}</p>
-                  </div>
-                </div>
-              </article>
+              <li key={item.code} className="glass lift flex flex-col gap-3 rounded-[28px] p-7">
+                <span className="font-hand text-[26px] text-rust">{item.code}</span>
+                <h3 className="m-0 text-[22px] font-medium tracking-[-0.02em]">{item.title}</h3>
+                <p className="m-0 leading-relaxed text-ink-soft">{item.body}</p>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      <section className="relative px-6 py-24">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2">
-          <div>
-            <p className="terminal-text text-xs tracking-[0.25em] text-accent">GOOD FIT WHEN</p>
-            <h2 className="mt-4 text-3xl font-bold text-text-main">The suite is costing trust.</h2>
-            <ul className="mt-8 space-y-4">
+      <section className="bg-linear-to-b from-cream to-lilac py-24">
+        <div className="mx-auto grid max-w-[1240px] gap-12 px-5 sm:px-8 lg:grid-cols-2">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2.5">
+              <p className="m-0 font-hand text-[28px] text-violet">good fit when</p>
+              <h2 className="m-0 text-4xl font-medium tracking-[-0.03em]">
+                The suite is costing trust.
+              </h2>
+            </div>
+            <ul className="m-0 flex list-none flex-col gap-4 p-0">
               {fitSignals.map((signal) => (
-                <li
-                  key={signal}
-                  className="flex gap-4 border-l border-accent/30 pl-5 text-text-muted"
-                >
-                  <span className="terminal-text text-accent">&gt;</span>
-                  <span className="leading-7">{signal}</span>
+                <li key={signal} className="glass rounded-[22px] px-6 py-5 text-lg leading-normal">
+                  {signal}
                 </li>
               ))}
             </ul>
           </div>
-
-          <div className="cyber-card hud-corners p-8 md:p-10">
-            <p className="terminal-text text-xs tracking-[0.25em] text-primary">WHY I CAN HELP</p>
-            <h2 className="mt-4 text-3xl font-bold text-text-main">
-              I built the runner to test the assumptions.
-            </h2>
-            <p className="mt-6 leading-7 text-text-muted">
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-2.5">
+              <p className="m-0 font-hand text-[28px] text-moss">why I can help</p>
+              <h2 className="m-0 text-4xl font-medium tracking-[-0.03em]">
+                I built the runner to test the assumptions.
+              </h2>
+            </div>
+            <p className="m-0 font-serif text-xl leading-relaxed text-ink-soft">
               I am the author of Ryzer, an open-source Chromium test runner built around
               renderer-side waits, deterministic isolation, compiled browser transactions, and
               dependency-aware incremental execution.
             </p>
-            <p className="mt-4 leading-7 text-text-muted">
+            <p className="m-0 font-serif text-xl leading-relaxed text-ink-soft">
               Its published matched harness measured a 2.43× cold-run median and a 3.27× warm-run
               median versus Playwright on the development machine. Those are workload-specific
               results—not a promise about your suite. The audit exists to find out what your
@@ -171,21 +176,22 @@ function Services() {
               href={RYZER_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="terminal-text mt-7 inline-flex items-center gap-2 text-sm text-primary hover:text-primary-hover"
+              className="inline-flex items-center gap-2 self-start py-2 font-medium text-indigo hover:text-indigo-deep"
             >
-              INSPECT THE SOURCE + BENCHMARKS <span aria-hidden="true">→</span>
+              Inspect the source and benchmarks <ArrowRight />
             </a>
           </div>
         </div>
       </section>
 
-      <section className="relative px-6 pb-28">
-        <div className="mx-auto max-w-6xl border border-primary/20 bg-primary/5 p-8 text-center md:p-12">
-          <p className="terminal-text text-xs tracking-[0.25em] text-primary">NEXT STEP</p>
-          <h2 className="mt-4 text-3xl font-bold text-text-main md:text-4xl">
+      <section className="relative overflow-hidden bg-[radial-gradient(ellipse_at_50%_20%,#262A5C_0%,#11122A_60%,#08081A_100%)] py-28 text-center text-moon">
+        <Grain opacity={0.08} screen />
+        <div className="relative mx-auto flex max-w-2xl flex-col items-center gap-6 px-5">
+          <p className="glow m-0 -rotate-2 font-hand text-5xl text-[#F4F7FF]">next step</p>
+          <h2 className="m-0 text-4xl font-medium tracking-[-0.03em] text-white sm:text-5xl">
             Bring one CI run and one test you do not trust.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl leading-7 text-text-muted">
+          <p className="m-0 text-lg leading-relaxed text-moon-muted">
             I will tell you whether a focused five-day audit is likely to pay for itself. If the
             evidence says no, I will say so.
           </p>
@@ -193,12 +199,12 @@ function Services() {
             href={LINKEDIN_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="neon-button mt-8 inline-block"
+            className="inline-flex min-h-[52px] items-center rounded-full bg-moon px-[26px] font-medium text-night no-underline hover:bg-white"
           >
-            REQUEST THE FOUNDING PILOT
+            Request the founding pilot
           </a>
         </div>
       </section>
-    </div>
+    </>
   );
 }

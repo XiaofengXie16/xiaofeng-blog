@@ -1,6 +1,10 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { fetchAllBlogPosts } from "~/server/blog.functions";
 import { pageMeta } from "~/constants/site";
+import { Cloud, Grain } from "~/components/design/Atmosphere";
+import { PageTitle, Tag } from "~/components/design/Section";
+import { formatPostDate } from "~/utils/format";
 
 export const Route = createFileRoute("/blog/")({
   loader: async () => ({ posts: await fetchAllBlogPosts() }),
@@ -14,154 +18,141 @@ export const Route = createFileRoute("/blog/")({
   component: Posts,
 });
 
+const ALL = "all";
+
 function Posts() {
   const { posts } = Route.useLoaderData();
+  const [topic, setTopic] = useState<string>(ALL);
+
+  const topics = [ALL, ...new Set(posts.flatMap((p) => p.tags))];
+  const visible = topic === ALL ? posts : posts.filter((p) => p.tags.includes(topic));
 
   return (
-    <div className="relative max-w-5xl mx-auto px-6 py-12 animate-fade-in">
-      {/* Header Section */}
-      <div className="mb-16">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 mb-8 terminal-text text-sm text-text-muted">
-          <Link to="/" className="hover:text-primary transition-colors">
-            HOME
-          </Link>
-          <span className="text-primary">/</span>
-          <span className="text-primary">BLOG</span>
+    <>
+      <section className="relative overflow-hidden bg-linear-to-b from-[#A3ADEC] via-[#D7C6E4] via-60% to-[#F5D2B5] pb-32">
+        <Cloud
+          style={{
+            width: 520,
+            height: 170,
+            left: -60,
+            top: 160,
+            background: "#FBDCC0",
+            opacity: 0.85,
+          }}
+        />
+        <Cloud
+          style={{
+            width: 420,
+            height: 150,
+            right: -40,
+            top: 90,
+            background: "#FFE8D4",
+            opacity: 0.75,
+            animationDuration: "33s",
+          }}
+        />
+        <Grain />
+        <div className="relative z-[2] mx-auto max-w-[1240px] px-5 pt-44 sm:px-8">
+          <PageTitle
+            kicker="notes from the workbench"
+            title="Writing"
+            intro="Long-form notes on frontend architecture, micro-frontends and the tools I lean on every day."
+          />
         </div>
+      </section>
 
-        {/* Title with HUD styling */}
-        <div className="relative inline-block">
-          <div className="absolute -left-4 top-0 w-1 h-full bg-linear-to-b from-primary to-transparent" />
-          <h1 className="text-4xl md:text-6xl font-bold">
-            <span className="text-text-main">Data</span>
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
-              {" "}
-              Stream
-            </span>
-          </h1>
-        </div>
+      <section className="relative -mt-16 overflow-hidden pb-30">
+        <svg
+          viewBox="0 0 1440 900"
+          preserveAspectRatio="none"
+          className="absolute top-30 left-0 h-[900px] w-full"
+          aria-hidden="true"
+        >
+          <path
+            d="M1500 120 C 1120 260, 840 40, 520 260 S 80 520, -60 460"
+            fill="none"
+            stroke="#C9C4EE"
+            strokeWidth="110"
+            strokeLinecap="round"
+            opacity=".3"
+          />
+          <path
+            d="M1500 120 C 1120 260, 840 40, 520 260 S 80 520, -60 460"
+            fill="none"
+            stroke="#fff"
+            strokeWidth="3"
+          />
+        </svg>
+        <div className="relative mx-auto flex max-w-[1240px] flex-col gap-9 px-5 sm:px-8">
+          {topics.length > 1 && (
+            <div
+              role="group"
+              aria-label="Filter by topic"
+              className="glass flex flex-wrap gap-1.5 self-start rounded-[28px] p-1.5"
+            >
+              {topics.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  aria-pressed={topic === t}
+                  onClick={() => setTopic(t)}
+                  className={`min-h-11 cursor-pointer rounded-full border-0 px-[18px] font-sans text-sm font-medium ${
+                    topic === t
+                      ? "bg-ink text-white"
+                      : "bg-transparent text-ink-soft hover:bg-white/40"
+                  }`}
+                >
+                  {t === ALL ? "All posts" : t}
+                </button>
+              ))}
+            </div>
+          )}
 
-        <p className="mt-6 text-lg text-text-muted max-w-2xl terminal-text">
-          <span className="text-primary">&gt;</span> Transmitting thoughts on software engineering,
-          architecture, and innovation...
-        </p>
-
-        {/* Stats bar */}
-        <div className="mt-8 flex flex-wrap items-center gap-6 p-4 border border-white/5 bg-surface/30 backdrop-blur-sm">
-          <div className="flex items-center gap-2">
-            <span className="status-dot" />
-            <span className="terminal-text text-xs text-text-muted">FEED_ACTIVE</span>
-          </div>
-          <div className="h-4 w-px bg-white/10" />
-          <div className="terminal-text text-xs text-text-muted">
-            ENTRIES: <span className="text-primary">{posts.length}</span>
-          </div>
-          <div className="h-4 w-px bg-white/10" />
-          <div className="terminal-text text-xs text-text-muted">
-            STATUS: <span className="text-neon-green">TRANSMITTING</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Blog Posts */}
-      <div className="space-y-6">
-        {posts.map(({ date, filename, preview, tags, title, slug }, index) => (
-          <Link
-            key={filename}
-            to="/blog/$slug"
-            params={{ slug }}
-            className="group block relative animate-slide-up"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            <article className="relative cyber-card p-8 transition-all duration-500 hover:-translate-y-1 hover:border-primary/30">
-              {/* Post Number */}
-              <div className="absolute top-4 right-4 terminal-text text-xs text-text-muted opacity-50 group-hover:opacity-100 group-hover:text-primary transition-all">
-                [{String(index + 1).padStart(2, "0")}]
-              </div>
-
-              {/* Corner Brackets */}
-              <div className="absolute top-0 left-0 w-6 h-6 border-l-2 border-t-2 border-primary/30 group-hover:border-primary/60 group-hover:w-8 group-hover:h-8 transition-all duration-300" />
-              <div className="absolute bottom-0 right-0 w-6 h-6 border-r-2 border-b-2 border-secondary/30 group-hover:border-secondary/60 group-hover:w-8 group-hover:h-8 transition-all duration-300" />
-
-              {/* Content */}
-              <div className="relative">
-                {/* Category Tag */}
-                <div className="inline-flex items-center gap-2 mb-4 px-3 py-1 border border-primary/20 bg-primary/5">
-                  <span className="w-2 h-2 bg-primary animate-pulse" />
-                  <span className="terminal-text text-xs text-primary tracking-wider">ARTICLE</span>
-                </div>
-
-                <h2 className="text-2xl md:text-3xl font-bold text-text-main mb-4 group-hover:text-primary transition-colors leading-tight">
-                  {title}
-                </h2>
-
-                <p className="text-text-muted leading-relaxed mb-6 line-clamp-3">{preview}</p>
-
-                {tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="terminal-text text-[10px] tracking-wider px-2 py-1 border border-secondary/20 text-secondary/80 bg-secondary/5"
-                      >
-                        #{tag.toUpperCase()}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {/* Footer */}
-                <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                  <div className="flex flex-wrap items-center gap-4">
-                    <span className="terminal-text text-xs text-text-muted">
-                      ID: <span className="text-primary">{slug.slice(0, 8).toUpperCase()}</span>
+          <ol className="m-0 flex list-none flex-col gap-5 p-0">
+            {visible.map((post, index) => (
+              <li key={post.slug}>
+                <Link
+                  to="/blog/$slug"
+                  params={{ slug: post.slug }}
+                  className="glass grid grid-cols-[repeat(auto-fit,minmax(min(100%,280px),1fr))] gap-x-12 gap-y-6 rounded-[32px] p-8 text-ink no-underline transition-transform duration-300 hover:translate-x-1.5 sm:p-10"
+                >
+                  <div className="flex flex-col gap-2.5">
+                    <span className="font-hand text-[26px] text-rust">
+                      {String(index + 1).padStart(2, "0")}
                     </span>
-                    {date && (
-                      <span className="terminal-text text-xs text-text-muted">
-                        DATE: <span className="text-primary">{date}</span>
-                      </span>
+                    {post.date && (
+                      <time dateTime={post.date} className="text-sm text-muted">
+                        {formatPostDate(post.date)}
+                      </time>
                     )}
                   </div>
-
-                  <div className="flex items-center gap-2 terminal-text text-sm text-text-muted group-hover:text-primary transition-colors">
-                    <span>&gt;</span>
-                    <span>ACCESS_DATA</span>
-                    <svg
-                      className="w-4 h-4 transform group-hover:translate-x-2 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
+                  <div className="flex min-w-0 flex-col gap-3.5 sm:col-span-2">
+                    <h2 className="m-0 text-[28px] leading-[1.1] font-medium tracking-[-0.03em] sm:text-4xl">
+                      {post.title}
+                    </h2>
+                    <p className="m-0 font-serif text-xl leading-relaxed text-ink-soft">
+                      {post.description ?? post.preview}
+                    </p>
+                    {post.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {post.tags.map((tag) => (
+                          <Tag key={tag}>{tag}</Tag>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </div>
-              </div>
+                </Link>
+              </li>
+            ))}
+          </ol>
 
-              {/* Bottom Glow Line */}
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-linear-to-r from-primary to-secondary group-hover:w-full transition-all duration-500" />
-            </article>
-          </Link>
-        ))}
-      </div>
-
-      {/* Empty State */}
-      {posts.length === 0 && (
-        <div className="text-center py-20 cyber-card">
-          <div className="terminal-text text-lg text-text-muted mb-4">
-            <span className="text-primary">&gt;</span> NO_DATA_FOUND
-          </div>
-          <p className="text-text-muted">
-            The data stream is currently empty. Check back soon for new transmissions.
-          </p>
+          {visible.length === 0 && (
+            <p className="m-0 p-10 text-center font-hand text-3xl text-violet">
+              nothing here yet — this future is still being written
+            </p>
+          )}
         </div>
-      )}
-    </div>
+      </section>
+    </>
   );
 }

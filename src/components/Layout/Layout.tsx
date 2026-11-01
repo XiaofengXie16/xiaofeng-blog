@@ -1,19 +1,15 @@
-import React from "react";
+import type { ReactNode } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { CommandAgent } from "../CommandAgent/CommandAgent";
+import { SvgDefs } from "../design/Atmosphere";
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  return (
-    <div className="min-h-screen flex flex-col bg-background text-text-main">
-      <Header />
-      <main className="flex-1">{children}</main>
-      <Footer />
-      <CommandAgent />
-    </div>
-  );
-};
+export const Layout = ({ children }: { children: ReactNode }) => (
+  <div className="relative flex min-h-screen flex-col bg-cream text-ink">
+    <SvgDefs />
+    <Header />
+    <main className="flex-1">{children}</main>
+    <Footer />
+    <CommandAgent />
+  </div>
+);
