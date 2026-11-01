@@ -1,60 +1,47 @@
 import type { ReactNode } from "react";
 
 /**
- * A row of illustrated makers who idle gently and start working when hovered
- * or focused (styles in tailwind.css under "Makers"). Purely ornamental, but
- * real buttons so keyboard users can wake them too.
+ * Illustrated makers standing along the ribbon as part of the scenery. They
+ * idle gently and start working when hovered or focused (styles in
+ * tailwind.css under "Makers"). Purely ornamental, but real buttons so
+ * keyboard users can wake them too.
  */
+const MAKERS: Array<{ label: string; action: string; lift: string; Figure: () => ReactNode }> = [
+  { label: "the painter", action: "watch them paint", lift: "sm:mb-2", Figure: Painter },
+  { label: "the cook", action: "watch them flip a pancake", lift: "sm:mb-10", Figure: Cook },
+  { label: "the coder", action: "watch them type", lift: "sm:mb-5", Figure: Coder },
+  { label: "the gardener", action: "watch them water a plant", lift: "sm:mb-14", Figure: Gardener },
+  { label: "the musician", action: "hear them strum", lift: "sm:mb-6", Figure: Musician },
+  {
+    label: "the photographer",
+    action: "watch them take a photo",
+    lift: "sm:mb-12",
+    Figure: Photographer,
+  },
+];
+
 export function Makers() {
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-5">
-      <Maker label="the painter" action="watch them paint">
-        <Painter />
-      </Maker>
-      <Maker label="the cook" action="watch them flip a pancake">
-        <Cook />
-      </Maker>
-      <Maker label="the coder" action="watch them type">
-        <Coder />
-      </Maker>
-      <Maker label="the gardener" action="watch them water a plant">
-        <Gardener />
-      </Maker>
-      <Maker label="the musician" action="hear them strum">
-        <Musician />
-      </Maker>
-      <Maker label="the photographer" action="watch them take a photo">
-        <Photographer />
-      </Maker>
+    <div className="grid grid-cols-2 items-end gap-x-2 gap-y-4 sm:grid-cols-3 lg:flex lg:justify-between">
+      {MAKERS.map(({ label, action, lift, Figure }) => (
+        <button
+          key={label}
+          type="button"
+          aria-label={`${label}: hover or focus to ${action}`}
+          className={`maker flex cursor-pointer flex-col items-center gap-0.5 rounded-[28px] border-0 bg-transparent p-2 font-sans ${lift}`}
+        >
+          <svg
+            viewBox="0 0 160 200"
+            className="decor h-auto w-full max-w-[150px]"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <Figure />
+          </svg>
+          <span className="font-hand text-xl text-rust/75">{label}</span>
+        </button>
+      ))}
     </div>
-  );
-}
-
-function Maker({
-  label,
-  action,
-  children,
-}: {
-  label: string;
-  action: string;
-  children: ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      aria-label={`${label}: hover or focus to ${action}`}
-      className="maker glass flex cursor-pointer flex-col items-center gap-1.5 rounded-[999px_999px_36px_36px] px-3.5 pt-[18px] pb-5 font-sans text-ink"
-    >
-      <svg
-        viewBox="0 0 160 200"
-        className="h-auto w-full max-w-[150px]"
-        aria-hidden="true"
-        focusable="false"
-      >
-        {children}
-      </svg>
-      <span className="font-hand text-2xl text-rust">{label}</span>
-    </button>
   );
 }
 

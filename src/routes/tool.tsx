@@ -60,7 +60,7 @@ function Tool() {
             />
           </div>
           <div className="pointer-events-none hidden flex-[1_1_240px] justify-center md:flex">
-            <BlockBuilder className="h-[394px] w-[230px]" />
+            <BlockBuilder className="decor h-[394px] w-[230px]" />
           </div>
         </div>
       </section>

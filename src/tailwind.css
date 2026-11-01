@@ -127,6 +127,19 @@
     animation: var(--animate-drift);
   }
 
+  /*
+   * Illustrated people are decoration: grain painted into them, colors
+   * softened toward the background, slightly translucent.
+   */
+  .decor {
+    filter: url(#paint) saturate(0.72) contrast(0.88) brightness(1.04);
+    opacity: 0.86;
+  }
+  .decor-night {
+    filter: url(#paint) saturate(0.7) brightness(0.86);
+    opacity: 0.72;
+  }
+
   .lift {
     transition:
       transform 0.35s ease,
@@ -200,19 +213,36 @@
 /* Makers: illustrated people who start working on hover or focus     */
 /* ------------------------------------------------------------------ */
 
+/* Makers stand in the scene with no card; waking one adds a soft glow. */
 .maker {
-  transition:
-    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.4s ease;
+  position: relative;
+  isolation: isolate;
 }
-.maker:hover,
-.maker:focus-visible {
-  transform: translateY(-8px);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.9),
-    0 0 0 2px #fff,
-    0 0 40px 4px rgb(150 170 255 / 0.55),
-    0 30px 50px -24px rgb(53 48 110 / 0.5);
+.maker::before {
+  content: "";
+  position: absolute;
+  inset: 8% 4% 14%;
+  z-index: -1;
+  border-radius: 9999px;
+  background: radial-gradient(closest-side, rgb(255 255 255 / 0.75), rgb(255 236 214 / 0));
+  opacity: 0;
+  transform: scale(0.85);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+.maker:is(:hover, :focus-visible)::before {
+  opacity: 1;
+  transform: scale(1);
+}
+.maker .decor {
+  transition:
+    opacity 0.5s ease,
+    filter 0.5s ease;
+}
+.maker:is(:hover, :focus-visible) .decor {
+  opacity: 0.98;
+  filter: url(#paint) saturate(0.95) contrast(0.95);
 }
 .maker svg * {
   transform-box: view-box;

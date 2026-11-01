@@ -20,6 +20,29 @@ export function SvgDefs() {
       <filter id="softglow" x="-200%" y="-200%" width="500%" height="500%">
         <feGaussianBlur stdDeviation="3" />
       </filter>
+      {/*
+       * Paints grain into a figure's own pixels (not its bounding box) so
+       * illustrated people read as part of the painting rather than stickers.
+       * Used through the `.decor` class.
+       */}
+      <filter id="paint" x="0" y="0" width="100%" height="100%">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.9"
+          numOctaves="2"
+          stitchTiles="stitch"
+          result="noise"
+        />
+        <feColorMatrix in="noise" type="saturate" values="0" result="gray" />
+        <feComponentTransfer in="gray" result="speckle">
+          <feFuncR type="linear" slope="0.4" intercept="0.66" />
+          <feFuncG type="linear" slope="0.4" intercept="0.66" />
+          <feFuncB type="linear" slope="0.4" intercept="0.66" />
+          <feFuncA type="linear" slope="0" intercept="1" />
+        </feComponentTransfer>
+        <feBlend in="SourceGraphic" in2="speckle" mode="multiply" result="grained" />
+        <feComposite in="grained" in2="SourceGraphic" operator="in" />
+      </filter>
       <symbol id="walker" viewBox="0 0 20 50">
         <ellipse cx="10" cy="48" rx="8" ry="2" fill="#3A2F7A" opacity=".22" />
         <rect x="5.5" y="29" width="3.6" height="17" rx="1.8" fill="#2E2A5A" />

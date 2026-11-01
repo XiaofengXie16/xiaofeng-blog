@@ -69,10 +69,42 @@ function ReadingList() {
         className="absolute inset-0 hidden h-full w-full md:block"
         aria-hidden="true"
       >
-        <use href="#walker" x="210" y="560" width="22" height="55" style={{ color: "#2F5BD3" }} />
-        <use href="#walker" x="236" y="566" width="20" height="50" style={{ color: "#E07A3F" }} />
-        <use href="#walker" x="1180" y="980" width="22" height="55" style={{ color: "#7DA453" }} />
-        <use href="#walker" x="640" y="1170" width="20" height="50" style={{ color: "#F4F7FF" }} />
+        <use
+          href="#walker"
+          opacity=".7"
+          x="210"
+          y="560"
+          width="22"
+          height="55"
+          style={{ color: "#2F5BD3" }}
+        />
+        <use
+          href="#walker"
+          opacity=".7"
+          x="236"
+          y="566"
+          width="20"
+          height="50"
+          style={{ color: "#E07A3F" }}
+        />
+        <use
+          href="#walker"
+          opacity=".7"
+          x="1180"
+          y="980"
+          width="22"
+          height="55"
+          style={{ color: "#7DA453" }}
+        />
+        <use
+          href="#walker"
+          opacity=".7"
+          x="640"
+          y="1170"
+          width="20"
+          height="50"
+          style={{ color: "#F4F7FF" }}
+        />
       </svg>
       <Grain />
 

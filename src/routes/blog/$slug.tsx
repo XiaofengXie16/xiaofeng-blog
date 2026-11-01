@@ -137,7 +137,7 @@ function BlogPost() {
             </div>
           </div>
           <div className="pointer-events-none hidden flex-[1_1_260px] justify-center md:flex">
-            <CapsuleReader className="h-[330px] w-[300px]" />
+            <CapsuleReader className="decor h-[330px] w-[300px]" />
           </div>
         </div>
       </section>

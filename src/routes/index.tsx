@@ -99,7 +99,10 @@ function Index() {
       </section>
 
       {/* Makers */}
-      <section className="relative overflow-hidden bg-linear-to-b from-cream to-[#F4E6E3] pt-26 pb-28">
+      <section
+        aria-label="Decorative scene: makers at work"
+        className="relative overflow-hidden bg-linear-to-b from-cream to-[#F4E6E3] pt-10 pb-16"
+      >
         <svg
           viewBox="0 0 1440 500"
           preserveAspectRatio="none"
@@ -123,13 +126,10 @@ function Index() {
           />
         </svg>
         <Grain opacity={0.14} />
-        <div className="relative mx-auto flex max-w-[1240px] flex-col gap-11 px-5 sm:px-8">
-          <div className="flex max-w-[640px] flex-col gap-2.5">
-            <SectionHeading kicker="everyone's making something" title="A small world of makers" />
-            <p className="m-0 text-lg leading-relaxed text-ink-soft">
-              Hover over anyone, or tab to them, to watch them get to work.
-            </p>
-          </div>
+        <div className="relative mx-auto flex max-w-[1240px] flex-col gap-2 px-5 sm:px-8">
+          <p className="m-0 -rotate-1 self-end font-hand text-[22px] text-rust/70">
+            everyone's making something — hover to wake them
+          </p>
           <Makers />
         </div>
       </section>
@@ -248,7 +248,7 @@ function Index() {
         </svg>
         <Grain opacity={0.08} screen />
         <div className="pointer-events-none absolute bottom-0 left-[5%] hidden lg:block">
-          <DeskWriter className="h-[290px] w-[320px]" />
+          <DeskWriter className="decor-night h-[290px] w-[320px]" />
         </div>
         <div className="relative mx-auto flex max-w-[900px] flex-col items-center gap-7 px-5 text-center sm:px-8">
           <p className="glow m-0 -rotate-2 font-hand text-5xl leading-none text-[#F4F7FF] sm:text-[64px]">
@@ -362,9 +362,33 @@ function Hero() {
           strokeLinecap="round"
           opacity=".7"
         />
-        <use href="#walker" x="980" y="588" width="22" height="55" style={{ color: "#E07A3F" }} />
-        <use href="#walker" x="1006" y="584" width="22" height="55" style={{ color: "#7DA453" }} />
-        <use href="#walker" x="1262" y="508" width="18" height="45" style={{ color: "#F4F7FF" }} />
+        <use
+          href="#walker"
+          opacity=".75"
+          x="980"
+          y="588"
+          width="22"
+          height="55"
+          style={{ color: "#E07A3F" }}
+        />
+        <use
+          href="#walker"
+          opacity=".75"
+          x="1006"
+          y="584"
+          width="22"
+          height="55"
+          style={{ color: "#7DA453" }}
+        />
+        <use
+          href="#walker"
+          opacity=".6"
+          x="1262"
+          y="508"
+          width="18"
+          height="45"
+          style={{ color: "#F4F7FF" }}
+        />
       </svg>
 
       <Grain opacity={0.22} />
@@ -391,7 +415,7 @@ function Hero() {
             opacity=".95"
           />
         </svg>
-        <SkyWriter className="absolute top-[226px] left-[150px] h-[412px] w-[190px]" />
+        <SkyWriter className="decor absolute top-[226px] left-[150px] h-[412px] w-[190px]" />
         <Capsule className="top-[250px] right-[8%] h-[200px] w-[104px] text-rust" delay="-3s">
           <path d="m8 7-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16" />
         </Capsule>
