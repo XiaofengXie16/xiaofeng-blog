@@ -3,7 +3,7 @@ import { pageMeta } from "~/constants/site";
 import { BOOKS, BOOK_TAGS } from "~/constants/book";
 import { fetchAllBlogPosts } from "~/server/blog.functions";
 import { Cloud, Grain } from "~/components/design/Atmosphere";
-import { ArrowRight, SectionHeading, Tag } from "~/components/design/Section";
+import { SectionHeading, Tag } from "~/components/design/Section";
 import { RibbonWalkers } from "~/components/design/RibbonWalkers";
 import { DeskWriter, SkyWriter } from "~/components/figures/Figures";
 import { PlushWriter } from "~/components/three/PlushWriter";
@@ -317,7 +317,7 @@ function Hero() {
        */}
       <div className="pointer-events-none absolute top-0 left-1/2 z-[3] hidden h-[820px] w-[1440px] -translate-x-1/2 lg:block">
         <PlushWriter
-          className="pointer-events-auto absolute top-[190px] left-[40px] h-[440px] w-[300px]"
+          className="pointer-events-auto absolute top-[190px] left-[8px] h-[440px] w-[300px]"
           fallback={
             <SkyWriter className="decor pointer-events-auto absolute top-[147px] left-[134px] h-[491px] w-[222px]" />
           }
@@ -335,21 +335,6 @@ function Hero() {
           Software engineer crafting digital experiences. Notes on frontend architecture, developer
           tooling, and the books that shape how I build.
         </p>
-        <div className="mt-2 flex flex-wrap justify-center gap-3">
-          <Link
-            to="/blog"
-            className="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-ink px-[26px] text-base font-medium text-white no-underline hover:bg-indigo-deep"
-          >
-            Read the writing <ArrowRight />
-          </Link>
-          <button
-            type="button"
-            onClick={openCommandAgent}
-            className="glass inline-flex min-h-[52px] cursor-pointer items-center rounded-full px-6 font-sans text-base font-medium text-ink"
-          >
-            Ask the site anything
-          </button>
-        </div>
       </div>
     </WishSky>
   );
