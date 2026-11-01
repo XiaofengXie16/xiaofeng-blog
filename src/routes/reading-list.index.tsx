@@ -4,7 +4,7 @@ import { BOOKS, BOOK_TAGS } from "~/constants/book";
 import { pageMeta } from "~/constants/site";
 import { Grain } from "~/components/design/Atmosphere";
 import { PageTitle } from "~/components/design/Section";
-import { Bookshelf } from "~/components/design/Bookshelf";
+import { Shelf3D } from "~/components/three/Shelf3D";
 import { RibbonWalkers } from "~/components/design/RibbonWalkers";
 import { shortTitle } from "~/utils/format";
 
@@ -89,13 +89,7 @@ function ReadingList() {
           intro={`${BOOKS.length} books I keep recommending. Pick one off the shelf.`}
         />
 
-        <Bookshelf
-          mode="select"
-          books={BOOKS}
-          tags={BOOK_TAGS}
-          picked={picked}
-          onPick={setPicked}
-        />
+        <Shelf3D mode="select" books={BOOKS} tags={BOOK_TAGS} picked={picked} onPick={setPicked} />
 
         <div
           className="glass flex flex-wrap items-center gap-x-12 gap-y-8 rounded-[36px] p-8 sm:p-10"

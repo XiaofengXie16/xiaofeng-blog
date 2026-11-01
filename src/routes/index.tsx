@@ -4,9 +4,10 @@ import { BOOKS, BOOK_TAGS } from "~/constants/book";
 import { fetchAllBlogPosts } from "~/server/blog.functions";
 import { Cloud, Grain } from "~/components/design/Atmosphere";
 import { ArrowRight, SectionHeading, Tag } from "~/components/design/Section";
-import { Bookshelf } from "~/components/design/Bookshelf";
 import { RibbonWalkers } from "~/components/design/RibbonWalkers";
 import { DeskWriter, SkyWriter } from "~/components/figures/Figures";
+import { PlushWriter } from "~/components/three/PlushWriter";
+import { Shelf3D } from "~/components/three/Shelf3D";
 import { Makers } from "~/components/figures/Makers";
 import { WishSky } from "~/components/home/WishSky";
 import { SearchIcon } from "~/components/Layout/Header";
@@ -143,7 +144,7 @@ function Index() {
             title="On the shelf"
             link={{ to: "/reading-list", label: "Full reading list" }}
           />
-          <Bookshelf mode="link" books={BOOKS} tags={BOOK_TAGS} />
+          <Shelf3D mode="link" books={BOOKS} tags={BOOK_TAGS} />
         </div>
       </section>
 
@@ -310,34 +311,17 @@ function Hero() {
       />
 
       {/*
-       * The writer and his light trail sit on a centered 1440px stage so they line up
-       * with the copy. The stage is above the copy (z-[3]) so the writer can be
-       * hovered; it ignores pointer events everywhere else.
+       * The writer sits on a centered 1440px stage so he lines up with the copy.
+       * The stage is above the copy (z-[3]) so he can be hovered and clicked;
+       * it ignores pointer events everywhere else.
        */}
-      <div className="sky-writer-scene pointer-events-none absolute top-0 left-1/2 z-[3] hidden h-[820px] w-[1440px] -translate-x-1/2 lg:block">
-        <svg viewBox="0 0 1440 820" className="absolute inset-0 h-full w-full" aria-hidden="true">
-          <path
-            className="sw-trail-glow"
-            d="M336 262 C 400 200, 470 300, 548 232"
-            fill="none"
-            stroke="#B9CAFF"
-            strokeWidth="7"
-            strokeLinecap="round"
-            opacity=".55"
-            filter="url(#softglow)"
-          />
-          <path
-            className="sw-trail"
-            d="M336 262 C 400 200, 470 300, 548 232"
-            fill="none"
-            stroke="#fff"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeDasharray="2 7"
-            opacity=".95"
-          />
-        </svg>
-        <SkyWriter className="decor pointer-events-auto absolute top-[147px] left-[134px] h-[491px] w-[222px]" />
+      <div className="pointer-events-none absolute top-0 left-1/2 z-[3] hidden h-[820px] w-[1440px] -translate-x-1/2 lg:block">
+        <PlushWriter
+          className="pointer-events-auto absolute top-[190px] left-[40px] h-[440px] w-[300px]"
+          fallback={
+            <SkyWriter className="decor pointer-events-auto absolute top-[147px] left-[134px] h-[491px] w-[222px]" />
+          }
+        />
       </div>
 
       <div className="relative z-[2] mx-auto flex max-w-[1240px] flex-col items-center gap-7 px-5 pt-44 pb-16 text-center sm:px-8 sm:pt-52">
