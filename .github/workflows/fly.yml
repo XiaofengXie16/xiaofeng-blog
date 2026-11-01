@@ -15,14 +15,47 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
-      # Format, lint, typecheck, tests (with coverage) and build run in the
-      # Dagger module under .dagger/. Run the same pipeline locally with:
-      #   dagger call check
-      - name: Format, lint, typecheck, test and build (Dagger)
-        uses: dagger/dagger-for-github@v8.4.1
+      # Plain steps instead of Dagger: on fresh hosted runners Dagger spent
+      # ~43s per run starting its engine and loading its module, more than the
+      # checks themselves. The .dagger/ module still runs the same pipeline
+      # locally with `dagger call check`.
+
+      # Node runs the Vite build (the TanStack Start prerenderer needs it),
+      # matching the Dockerfile and the Dagger module.
+      - name: Setup Node
+        uses: actions/setup-node@v7
         with:
-          version: "0.21.11"
-          call: check
+          node-version: 24
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+
+      - name: Cache Bun packages
+        uses: actions/cache@v6
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check formatting
+        run: bun fmt --check
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Type check
+        run: bun run typecheck
+
+      - name: Test with coverage
+        run: bun run test:coverage
+
+      - name: Build and prerender
+        run: bun run build
 
   deploy:
     name: Deploy app

@@ -1,9 +1,11 @@
 /**
  * CI pipeline for xiaofeng-blog.
  *
- * Runs the same checks as GitHub Actions — format, lint, typecheck, tests with
- * coverage, and the prerendered production build — so `dagger call check`
- * locally gives the same result as CI.
+ * Runs the same checks as the GitHub Actions workflow (.github/workflows/fly.yml)
+ * — format, lint, typecheck, tests with coverage, and the prerendered
+ * production build — so `dagger call check` locally gives the same result as
+ * CI. CI itself runs those steps directly: on fresh hosted runners the Dagger
+ * engine start and module load cost more than the checks.
  */
 import { argument, Container, dag, Directory, func, object } from "@dagger.io/dagger";
 

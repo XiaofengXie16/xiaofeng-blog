@@ -13,7 +13,8 @@ This project uses Bun for installing dependencies, formatting, type checking and
 | Lint              | `bun run lint`      | Oxlint, type-aware (`.oxlintrc.json`) |
 | Type check        | `bun run typecheck` | `bun check`                           |
 | Test              | `bun run test`      | `bun test` (config in `bunfig.toml`)  |
-| Full CI pipeline  | `dagger call check` | Dagger module in `.dagger/`           |
+| CI                | GitHub Actions      | `.github/workflows/fly.yml`           |
+| Local CI pipeline | `dagger call check` | Dagger module in `.dagger/`, optional |
 
 - Run project scripts with `bun run <name>`. Don't call `bun fmt` or `bun check` through a script named `fmt` or `check`: Bun runs a same-named script instead of the built-in command.
 - Formatting settings live in `.prettierrc.json` and `.prettierignore`.
@@ -24,7 +25,7 @@ This project uses Bun for installing dependencies, formatting, type checking and
 
 - [ ] Run `bun install` after pulling remote changes and before getting started.
 - [ ] Run `bun run format`, `bun run lint`, `bun run typecheck` and `bun run test` before committing (the pre-commit hook formats staged files and lints).
-- [ ] For changes to the build or CI, run `dagger call check`.
+- [ ] For changes to the build or CI, keep `.github/workflows/fly.yml` and the `.dagger/` module running the same steps; `dagger call check` reproduces CI locally.
 
 <!--TOOLCHAIN END-->
 
