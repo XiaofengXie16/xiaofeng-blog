@@ -5,7 +5,6 @@ const NAV_LINKS = [
   { to: "/blog", label: "Writing" },
   { to: "/reading-list", label: "Reading" },
   { to: "/tool", label: "Toolkit" },
-  { to: "/services", label: "Services" },
 ] as const;
 
 const linkClass =

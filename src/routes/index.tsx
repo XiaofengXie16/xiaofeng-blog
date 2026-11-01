@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { pageMeta } from "~/constants/site";
 import { BOOKS } from "~/constants/book";
@@ -174,45 +173,6 @@ function Index() {
               </li>
             ))}
           </ul>
-        </div>
-      </section>
-
-      {/* Services teaser */}
-      <section className="bg-lilac py-28">
-        <div className="mx-auto grid max-w-[1240px] grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-center gap-12 px-5 sm:px-8">
-          <div className="flex flex-col gap-[18px]">
-            <p className="m-0 font-hand text-[28px] text-rust">founding pilot · one slot</p>
-            <h2 className="m-0 text-[40px] leading-[1.02] font-medium tracking-[-0.035em] sm:text-[56px]">
-              Stop paying for slow, flaky E2E feedback.
-            </h2>
-            <p className="m-0 text-[19px] leading-relaxed text-ink-soft">
-              A five-day Playwright speed and flake audit: I measure your suite, isolate its most
-              expensive failure modes, and deliver a focused pull request with verified
-              improvements.
-            </p>
-            <div>
-              <Link
-                to="/services"
-                className="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-ink px-[26px] text-base font-medium text-white no-underline hover:bg-indigo-deep"
-              >
-                See how the audit works <ArrowRight />
-              </Link>
-            </div>
-          </div>
-          <div className="glass flex flex-col gap-5 rounded-[36px] p-9">
-            <p className="m-0 text-[13px] font-semibold tracking-[0.12em] text-muted uppercase">
-              Good fit when
-            </p>
-            <p className="m-0 text-[19px] leading-normal">
-              Your Playwright suite takes long enough that engineers avoid running it.
-            </p>
-            <p className="m-0 text-[19px] leading-normal">
-              Retries keep CI green, but nobody trusts what they are hiding.
-            </p>
-            <p className="m-0 text-[19px] leading-normal">
-              A handful of tests fail only under load, in parallel, or in CI.
-            </p>
-          </div>
         </div>
       </section>
 
@@ -393,8 +353,12 @@ function Hero() {
 
       <Grain opacity={0.22} />
 
-      {/* Figure, light trail and capsules are laid out on a centered 1440px stage so they line up with the copy. */}
-      <div className="pointer-events-none absolute top-0 left-1/2 hidden h-[820px] w-[1440px] -translate-x-1/2 lg:block">
+      {/*
+       * The writer and his light trail sit on a centered 1440px stage so they line up
+       * with the copy. The stage is above the copy (z-[3]) so the writer can be
+       * hovered; it ignores pointer events everywhere else.
+       */}
+      <div className="pointer-events-none absolute top-0 left-1/2 z-[3] hidden h-[820px] w-[1440px] -translate-x-1/2 lg:block">
         <svg viewBox="0 0 1440 820" className="absolute inset-0 h-full w-full" aria-hidden="true">
           <path
             d="M336 262 C 400 200, 470 300, 548 232"
@@ -415,17 +379,7 @@ function Hero() {
             opacity=".95"
           />
         </svg>
-        <SkyWriter className="decor absolute top-[226px] left-[150px] h-[412px] w-[190px]" />
-        <Capsule className="top-[250px] right-[8%] h-[200px] w-[104px] text-rust" delay="-3s">
-          <path d="m8 7-5 5 5 5M16 7l5 5-5 5M13.5 4l-3 16" />
-        </Capsule>
-        <Capsule className="top-[590px] left-[24%] h-[150px] w-20 text-violet" delay="0s">
-          <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" />
-          <path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5" />
-        </Capsule>
-        <Capsule className="top-[600px] right-[22%] h-[132px] w-[72px] text-moss" delay="-5s">
-          <path d="M4 17l6-6-6-6M12 19h8" />
-        </Capsule>
+        <SkyWriter className="decor pointer-events-auto absolute top-[147px] left-[134px] h-[491px] w-[222px]" />
       </div>
 
       <div className="relative z-[2] mx-auto flex max-w-[1240px] flex-col items-center gap-7 px-5 pt-44 pb-16 text-center sm:px-8 sm:pt-52">
@@ -456,36 +410,5 @@ function Hero() {
         </div>
       </div>
     </WishSky>
-  );
-}
-
-function Capsule({
-  className,
-  delay,
-  children,
-}: {
-  className: string;
-  delay: string;
-  children: ReactNode;
-}) {
-  return (
-    <div
-      className={`glass animate-bob absolute flex items-center justify-center rounded-full ${className}`}
-      style={{ animationDelay: delay }}
-      aria-hidden="true"
-    >
-      <svg
-        width="34"
-        height="34"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        {children}
-      </svg>
-    </div>
   );
 }
