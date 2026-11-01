@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { useHotkey } from "@tanstack/react-hotkeys";
+import { useAsyncRateLimitedCallback } from "@tanstack/react-pacer";
 import { TOOLS } from "~/constants/tool";
 import { BOOKS } from "~/constants/book";
-import { askAI } from "~/server/ai.functions";
+import { askAI, type AskAIInput } from "~/server/ai.functions";
 import { AI_MODEL_LABEL } from "~/constants/ai";
 
 type ResultItem = {
@@ -18,6 +20,9 @@ type ChatMessage = {
   content: string;
   actions?: Array<{ type: string; path?: string; url?: string; label?: string }>;
 };
+
+const AI_RATE_LIMIT = 5;
+const AI_RATE_WINDOW_MS = 60_000;
 
 function fuzzyMatch(query: string, target: string): number {
   const q = query.toLowerCase();
@@ -94,22 +99,30 @@ export const CommandAgent = () => {
     return () => clearInterval(interval);
   }, [isOpen]);
 
-  // Keyboard shortcut and custom event to open
+  // Cmd+K (Ctrl+K off macOS) toggles the palette. Mod chords still fire while
+  // typing in the query input, and the browser default is prevented.
+  // requireReset stops a held chord from flickering the dialog.
+  useHotkey("Mod+K", () => setIsOpen((prev) => !prev), {
+    requireReset: true,
+    meta: { name: "Toggle command agent" },
+  });
+
+  // The header's SEARCH button opens the palette through a custom event.
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        setIsOpen((prev) => !prev);
-      }
-    };
     const handleToggle = () => setIsOpen((prev) => !prev);
-    window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("toggle-command-agent", handleToggle);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("toggle-command-agent", handleToggle);
-    };
+    return () => window.removeEventListener("toggle-command-agent", handleToggle);
   }, []);
+
+  // Cap AI queries per visitor so a stuck Enter key or rapid retries can't
+  // drain the Groq quota. Over the limit, the call resolves to undefined
+  // without hitting the server. Client-side only: a UX guard, not abuse
+  // protection.
+  const rateLimitedAskAI = useAsyncRateLimitedCallback((data: AskAIInput) => askAI({ data }), {
+    limit: AI_RATE_LIMIT,
+    window: AI_RATE_WINDOW_MS,
+    windowType: "sliding",
+  });
 
   // Focus input when opened
   useEffect(() => {
@@ -161,15 +174,24 @@ export const CommandAgent = () => {
     setIsLoading(true);
 
     try {
-      const result = await askAI({
-        data: {
-          query: userQuery,
-          history: newHistory.slice(-6).map((m) => ({
-            role: m.role,
-            content: m.content,
-          })),
-        },
+      const result = await rateLimitedAskAI({
+        query: userQuery,
+        history: newHistory.slice(-6).map((m) => ({
+          role: m.role,
+          content: m.content,
+        })),
       });
+
+      if (!result) {
+        setChatHistory((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: `RATE_LIMITED: max ${AI_RATE_LIMIT} queries per minute. Try again shortly.`,
+          },
+        ]);
+        return;
+      }
 
       setChatHistory((prev) => [
         ...prev,
