@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
-import { Output, generateText } from "ai";
-import { z } from "zod";
-import { groq } from "@ai-sdk/groq";
+import { chat } from "@tanstack/ai";
+import { askAISchema, createSiteAssistantAdapter } from "~/server/assistant";
 import { TOOLS } from "~/constants/tool";
 import { BOOKS } from "~/constants/book";
 import { getAllBlogPosts } from "~/utils/blogData";
@@ -52,22 +51,10 @@ INSTRUCTIONS:
   return _systemPrompt;
 }
 
-type AskAIInput = {
+export type AskAIInput = {
   query: string;
   history: Array<{ role: "user" | "assistant"; content: string }>;
 };
-
-const actionSchema = z.object({
-  type: z.enum(["navigate", "open"]).describe("navigate = internal page, open = external link"),
-  path: z.string().optional().describe("Internal route starting with / (navigate only)"),
-  url: z.string().optional().describe("Absolute http(s) URL (open only)"),
-  label: z.string().optional().describe("Short button label"),
-});
-
-const askAISchema = z.object({
-  response: z.string().describe("Plain-text answer, 2-4 sentences. No markdown."),
-  actions: z.array(actionSchema).max(4).describe("Suggested follow-up actions; may be empty."),
-});
 
 type ActionItem = { type: "navigate" | "open"; path?: string; url?: string; label?: string };
 
@@ -130,41 +117,34 @@ export const askAI = createServerFn({ method: "POST" })
       };
     }
 
-    const systemPrompt = buildSystemPrompt();
-
-    const messages: Array<{ role: "system" | "user" | "assistant"; content: string }> = [
-      { role: "system", content: systemPrompt },
-      ...data.history.map((msg) => ({
-        role: (msg.role === "user" ? "user" : "assistant") as "user" | "assistant",
-        content: msg.content,
-      })),
-      { role: "user", content: data.query },
+    const messages = [
+      ...data.history.map((msg) => ({ role: msg.role, content: msg.content })),
+      { role: "user" as const, content: data.query },
     ];
 
     try {
-      const result = await generateText({
-        model: groq(AI_MODEL),
+      // With an outputSchema and no tools, TanStack AI skips the agent loop
+      // and makes a single schema-constrained Groq request.
+      const output = await chat({
+        adapter: createSiteAssistantAdapter(apiKey),
+        threadId: crypto.randomUUID(),
+        systemPrompts: [buildSystemPrompt()],
         messages,
-        temperature: 0.7,
-        maxOutputTokens: 300,
-        output: Output.object({
-          schema: askAISchema,
-          name: "site_assistant_reply",
-          description: "A short reply plus optional navigation actions.",
-        }),
+        modelOptions: { temperature: 0.7, max_completion_tokens: 300 },
+        outputSchema: askAISchema,
       });
 
       // Still normalize: the schema constrains shape, not whether a path is
       // internal or a URL is http(s).
       return {
-        response: result.output.response.trim(),
-        actions: normalizeActions(result.output.actions),
+        response: output.response.trim(),
+        actions: normalizeActions(output.actions),
       };
     } catch (err) {
       // Surface the real cause: a silent catch here is why the llama-3.1
       // shutdown went unnoticed in production.
       const detail = err instanceof Error ? err.message : String(err);
-      console.error(`AI SDK error (model: ${AI_MODEL}):`, err);
+      console.error(`TanStack AI error (model: ${AI_MODEL}):`, err);
       return {
         response: `AI request failed (${detail}). Try again.`,
         actions: [] as ActionItem[],
