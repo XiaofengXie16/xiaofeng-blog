@@ -6,9 +6,8 @@ import { Cloud, Grain } from "~/components/design/Atmosphere";
 import { SectionHeading, Tag } from "~/components/design/Section";
 import { RibbonWalkers } from "~/components/design/RibbonWalkers";
 import { DeskWriter, SkyWriter } from "~/components/figures/Figures";
-import { PlushWriter } from "~/components/three/PlushWriter";
+import { PlushFigure } from "~/components/three/PlushFigure";
 import { Shelf3D } from "~/components/three/Shelf3D";
-import { Makers } from "~/components/figures/Makers";
 import { WishSky } from "~/components/home/WishSky";
 import { SearchIcon } from "~/components/Layout/Header";
 import { openCommandAgent } from "~/components/CommandAgent/events";
@@ -98,44 +97,8 @@ function Index() {
         </div>
       </section>
 
-      {/* Makers */}
-      <section
-        aria-label="Decorative scene: makers at work"
-        className="relative overflow-hidden bg-linear-to-b from-cream to-[#F4E6E3] pt-10 pb-16"
-      >
-        <svg
-          viewBox="0 0 1440 500"
-          preserveAspectRatio="none"
-          className="absolute bottom-8 left-0 h-[300px] w-full"
-          aria-hidden="true"
-        >
-          <path
-            d="M-40 260 C 300 160, 640 330, 980 200 S 1380 120, 1500 160"
-            fill="none"
-            stroke="#F3C29C"
-            strokeWidth="80"
-            strokeLinecap="round"
-            opacity=".35"
-          />
-          <path
-            d="M-40 260 C 300 160, 640 330, 980 200 S 1380 120, 1500 160"
-            fill="none"
-            stroke="#fff"
-            strokeWidth="3"
-            opacity=".9"
-          />
-        </svg>
-        <Grain opacity={0.14} />
-        <div className="relative mx-auto flex max-w-[1240px] flex-col gap-2 px-5 sm:px-8">
-          <p className="m-0 -rotate-1 self-end font-hand text-[22px] text-rust/70">
-            everyone's making something — hover to wake them
-          </p>
-          <Makers />
-        </div>
-      </section>
-
       {/* On the shelf */}
-      <section className="relative overflow-hidden bg-linear-to-b from-[#F4E6E3] via-[#EFE3F0] to-lilac py-28">
+      <section className="relative overflow-hidden bg-linear-to-b from-cream via-[#EFE3F0] to-lilac py-28">
         <Grain opacity={0.16} />
         <div className="relative mx-auto flex max-w-[1240px] flex-col gap-12 px-5 sm:px-8">
           <SectionHeading
@@ -316,7 +279,8 @@ function Hero() {
        * it ignores pointer events everywhere else.
        */}
       <div className="pointer-events-none absolute top-0 left-1/2 z-[3] hidden h-[820px] w-[1440px] -translate-x-1/2 lg:block">
-        <PlushWriter
+        <PlushFigure
+          figure="writer"
           className="pointer-events-auto absolute top-[190px] left-[8px] h-[440px] w-[300px]"
           fallback={
             <SkyWriter className="decor pointer-events-auto absolute top-[147px] left-[134px] h-[491px] w-[222px]" />

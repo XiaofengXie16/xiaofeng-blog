@@ -29,7 +29,7 @@ function Posts() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-linear-to-b from-[#A3ADEC] via-[#D7C6E4] via-60% to-[#F5D2B5] pb-32">
+      <section className="relative overflow-hidden bg-linear-to-b from-[#A3ADEC] via-[#D7C6E4] via-60% to-[#F5D2B5] pb-24">
         <Cloud
           style={{
             width: 520,
@@ -61,7 +61,7 @@ function Posts() {
         </div>
       </section>
 
-      <section className="relative -mt-16 overflow-hidden pb-30">
+      <section className="relative overflow-hidden pt-14 pb-30">
         <svg
           viewBox="0 0 1440 900"
           preserveAspectRatio="none"
@@ -88,7 +88,7 @@ function Posts() {
             <div
               role="group"
               aria-label="Filter by topic"
-              className="glass flex flex-wrap gap-1.5 self-start rounded-[28px] p-1.5"
+              className="glass flex flex-wrap gap-2 self-start rounded-[30px] p-2"
             >
               {topics.map((t) => (
                 <button

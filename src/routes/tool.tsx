@@ -6,6 +6,7 @@ import { pageMeta } from "~/constants/site";
 import { Cloud, Grain } from "~/components/design/Atmosphere";
 import { PageTitle } from "~/components/design/Section";
 import { BlockBuilder } from "~/components/figures/Figures";
+import { PlushFigure } from "~/components/three/PlushFigure";
 
 export const Route = createFileRoute("/tool")({
   head: () =>
@@ -73,8 +74,12 @@ function Tool() {
               intro="The editors, terminals, runtimes and small utilities I reach for every day."
             />
           </div>
-          <div className="pointer-events-none hidden flex-[1_1_240px] justify-center md:flex">
-            <BlockBuilder className="decor h-[394px] w-[230px]" />
+          <div className="hidden flex-[1_1_240px] justify-center md:flex">
+            <PlushFigure
+              figure="builder"
+              className="h-[420px] w-[300px]"
+              fallback={<BlockBuilder className="decor h-[394px] w-[230px]" />}
+            />
           </div>
         </div>
       </section>
@@ -83,7 +88,7 @@ function Tool() {
         <div
           role="group"
           aria-label="Filter by category"
-          className="glass flex max-w-full flex-nowrap gap-1 self-start overflow-x-auto rounded-full p-1.5"
+          className="glass flex max-w-full flex-nowrap gap-1.5 self-start overflow-x-auto rounded-full p-2"
         >
           {[ALL, ...categories].map((c) => (
             <button
