@@ -33,7 +33,6 @@ SITE PAGES:
 - /blog (BLOG) — Blog posts about software engineering
 - /reading-list (READING LIST) — Book recommendations
 - /tool (TOOLKIT) — Developer tools and utilities Xiaofeng uses
-- /services (SERVICES) — A fixed-scope Playwright speed and flake audit Xiaofeng offers
 
 BLOG POSTS:
 ${blogInfo}

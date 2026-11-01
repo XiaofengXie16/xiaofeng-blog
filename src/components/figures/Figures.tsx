@@ -4,98 +4,169 @@
  * caller.
  */
 
-/** Stands on a ribbon of light and writes glowing words into the sky. */
+/**
+ * Stands on a ribbon of light with a light-pen. Hovering him (the
+ * `.sky-writer` styles in tailwind.css) sets his arm writing and draws
+ * glowing letters in the air above the pen.
+ */
 export function SkyWriter({ className }: { className?: string }) {
   return (
     <svg
-      viewBox="0 0 120 260"
-      className={className}
+      viewBox="-10 -50 140 310"
+      className={`sky-writer ${className ?? ""}`}
       role="img"
-      aria-label="Illustrated person standing on a ribbon of light, writing glowing words into the sky"
+      aria-label="Illustrated man standing on a ribbon of light, writing glowing words into the sky"
     >
       <defs>
         <linearGradient id="sw-sweater" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" style={{ stopColor: "#5683EE" }} />
-          <stop offset="1" style={{ stopColor: "#2346B0" }} />
+          <stop offset="0" style={{ stopColor: "#5FA08A" }} />
+          <stop offset="1" style={{ stopColor: "#33705E" }} />
         </linearGradient>
         <linearGradient id="sw-pants" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" style={{ stopColor: "#7464C6" }} />
-          <stop offset="1" style={{ stopColor: "#3C3384" }} />
+          <stop offset="0" style={{ stopColor: "#4A4F86" }} />
+          <stop offset="1" style={{ stopColor: "#2A2E5C" }} />
         </linearGradient>
         <radialGradient id="sw-skin" cx=".7" cy=".35" r=".8">
-          <stop offset="0" style={{ stopColor: "#FAD9C0" }} />
-          <stop offset="1" style={{ stopColor: "#E9B494" }} />
+          <stop offset="0" style={{ stopColor: "#F3CFB2" }} />
+          <stop offset="1" style={{ stopColor: "#D9A07E" }} />
         </radialGradient>
       </defs>
-      <ellipse cx="60" cy="249" rx="38" ry="6" fill="#3A2F7A" opacity=".22" />
-      <path d="M42 134 L35 238 L56 238 L60 162 L64 238 L85 238 L80 134 Z" fill="url(#sw-pants)" />
+
+      {/* Letters he writes on hover */}
       <path
-        d="M72 150 L76 234"
-        stroke="#fff"
-        strokeOpacity=".28"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-      <ellipse cx="45" cy="241" rx="12" ry="5" fill="#26224C" />
-      <ellipse cx="76" cy="241" rx="12" ry="5" fill="#26224C" />
-      <path
-        d="M45 76 Q33 106 39 132"
+        className="sw-letters"
+        d="M94 -10 C 96 -24, 98 -38, 100 -44 C 99 -32, 97 -20, 96 -10 C 98 -18, 102 -22, 104 -18 C 105 -15, 104 -12, 104 -10 C 106 -14, 108 -18, 109 -18 C 109 -15, 108 -12, 109 -10 C 111 -12, 113 -16, 114 -18 M110.2 -25.5 L110.6 -25.5 M119 -40 C 119 -32, 118.5 -24, 118 -18 M117.8 -11.5 L118.2 -11.5"
         fill="none"
-        stroke="#2A4FB8"
-        strokeWidth="13"
+        stroke="#F6F8FF"
+        strokeWidth="2.2"
         strokeLinecap="round"
-      />
-      <circle cx="39" cy="135" r="5.5" fill="url(#sw-skin)" />
-      <path d="M41 70 Q60 61 80 70 L84 138 Q60 147 39 138 Z" fill="url(#sw-sweater)" />
-      <path
-        d="M52 72 Q60 92 56 136"
-        fill="none"
-        stroke="#fff"
-        strokeOpacity=".18"
-        strokeWidth="3"
-      />
-      <rect x="55" y="53" width="10" height="13" rx="4" fill="url(#sw-skin)" />
-      <path d="M48 64 Q60 74 74 64 L76 70 Q60 82 46 70 Z" fill="#E7A63A" />
-      <path d="M66 72 L70 96 L62 94 Z" fill="#D18F25" />
-      <circle cx="61" cy="39" r="17" fill="url(#sw-skin)" />
-      <path d="M44 40 Q43 20 61 20 Q79 20 78 37 Q72 29 62 29 Q51 30 47 45 Z" fill="#3A2A2A" />
-      <path d="M45 42 Q33 54 38 72 Q45 61 49 48 Z" fill="#3A2A2A" />
-      <circle cx="60" cy="40" r="5" fill="none" stroke="#2B2F55" strokeWidth="1.6" />
-      <circle cx="72" cy="40" r="5" fill="none" stroke="#2B2F55" strokeWidth="1.6" />
-      <path d="M65 40 L67 40" stroke="#2B2F55" strokeWidth="1.6" />
-      <circle cx="70" cy="47" r="3" fill="#F09A87" opacity=".5" />
-      <path
-        d="M64 50 Q67 52 70 50"
-        fill="none"
-        stroke="#9A4B3A"
-        strokeWidth="1.3"
-        strokeLinecap="round"
-      />
-      <path
-        d="M78 76 Q96 84 100 64"
-        fill="none"
-        stroke="#2F59C8"
-        strokeWidth="13"
-        strokeLinecap="round"
-      />
-      <path
-        d="M100 64 L108 43"
-        fill="none"
-        stroke="#3D68D8"
-        strokeWidth="12"
-        strokeLinecap="round"
-      />
-      <circle cx="109" cy="40" r="5.5" fill="url(#sw-skin)" />
-      <path
-        d="M109 40 L118 25"
-        stroke="#BFD0FF"
-        strokeWidth="6"
-        strokeLinecap="round"
-        opacity=".6"
+        strokeLinejoin="round"
         filter="url(#softglow)"
       />
-      <path d="M109 40 L118 25" stroke="#F4F7FF" strokeWidth="2.4" strokeLinecap="round" />
-      <circle cx="118" cy="25" r="5" fill="#DCE6FF" filter="url(#softglow)" />
+      <path
+        className="sw-letters"
+        d="M94 -10 C 96 -24, 98 -38, 100 -44 C 99 -32, 97 -20, 96 -10 C 98 -18, 102 -22, 104 -18 C 105 -15, 104 -12, 104 -10 C 106 -14, 108 -18, 109 -18 C 109 -15, 108 -12, 109 -10 C 111 -12, 113 -16, 114 -18 M110.2 -25.5 L110.6 -25.5 M119 -40 C 119 -32, 118.5 -24, 118 -18 M117.8 -11.5 L118.2 -11.5"
+        fill="none"
+        stroke="#FFFFFF"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+
+      <ellipse cx="60" cy="249" rx="40" ry="6" fill="#3A2F7A" opacity=".22" />
+      {/* Legs and shoes */}
+      <path d="M41 134 L36 238 L57 238 L60 160 L63 238 L84 238 L80 134 Z" fill="url(#sw-pants)" />
+      <path
+        d="M71 150 L75 234"
+        stroke="#fff"
+        strokeOpacity=".18"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path d="M33 238 Q35 232 46 233 L58 236 L58 243 L33 243 Z" fill="#4A3428" />
+      <path d="M62 236 L74 233 Q86 232 88 238 L88 243 L62 243 Z" fill="#4A3428" />
+      {/* Back arm, hand in pocket */}
+      <path
+        d="M43 76 Q34 102 42 124"
+        fill="none"
+        stroke="#3E806C"
+        strokeWidth="13"
+        strokeLinecap="round"
+      />
+      {/* Torso: broad-shouldered crewneck sweater */}
+      <path d="M37 72 Q60 60 83 72 L85 138 Q60 147 37 138 Z" fill="url(#sw-sweater)" />
+      <path
+        d="M52 66 Q60 72 69 66"
+        fill="none"
+        stroke="#2C5E50"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <path
+        d="M50 76 Q57 104 54 136"
+        fill="none"
+        stroke="#fff"
+        strokeOpacity=".14"
+        strokeWidth="3"
+      />
+      {/* Neck and head */}
+      <rect x="55" y="52" width="11" height="14" rx="4" fill="url(#sw-skin)" />
+      <ellipse cx="45.5" cy="41" rx="3" ry="4.5" fill="#D9A07E" />
+      <circle cx="61" cy="39" r="16" fill="url(#sw-skin)" />
+      {/* Short hair with a small quiff, and stubble */}
+      <path
+        d="M45 38 Q43 20 59 18 Q74 15 78 30 Q75 26 68 26 Q57 25 51 30 Q48 33 47 41 Z"
+        fill="#2B211C"
+      />
+      <path d="M47 41 L46 33 L49 32 L49.5 41 Z" fill="#2B211C" />
+      <path
+        d="M49 45 Q51 56 61 57.5 Q71 56 76 45 Q72 52.5 61 53.5 Q52 52.5 49 45 Z"
+        fill="#2B211C"
+        opacity=".32"
+      />
+      {/* Glasses, brows, smile */}
+      <rect
+        x="54.5"
+        y="35.5"
+        width="9"
+        height="7"
+        rx="2.2"
+        fill="none"
+        stroke="#2B2F55"
+        strokeWidth="1.5"
+      />
+      <rect
+        x="66.5"
+        y="35.5"
+        width="9"
+        height="7"
+        rx="2.2"
+        fill="none"
+        stroke="#2B2F55"
+        strokeWidth="1.5"
+      />
+      <path d="M63.5 38.5 L66.5 38.5 M54.5 38 L48 37" stroke="#2B2F55" strokeWidth="1.5" />
+      <path
+        d="M55 32.5 L62 31.8 M67.5 31.8 L74.5 32.5"
+        stroke="#2B211C"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      <path
+        d="M63 48.5 Q67 51 71 48.5"
+        fill="none"
+        stroke="#8A4433"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+      {/* Writing arm: rotates from the shoulder on hover */}
+      <g className="sw-arm">
+        <path
+          d="M78 76 Q96 84 100 64"
+          fill="none"
+          stroke="#3B7C68"
+          strokeWidth="13"
+          strokeLinecap="round"
+        />
+        <path
+          d="M100 64 L108 43"
+          fill="none"
+          stroke="#4A8E78"
+          strokeWidth="12"
+          strokeLinecap="round"
+        />
+        <circle cx="109" cy="40" r="5.5" fill="url(#sw-skin)" />
+        <path
+          d="M109 40 L118 25"
+          stroke="#BFD0FF"
+          strokeWidth="6"
+          strokeLinecap="round"
+          opacity=".6"
+          filter="url(#softglow)"
+        />
+        <path d="M109 40 L118 25" stroke="#F4F7FF" strokeWidth="2.4" strokeLinecap="round" />
+        <circle className="sw-tip" cx="118" cy="25" r="5" fill="#DCE6FF" filter="url(#softglow)" />
+      </g>
     </svg>
   );
 }

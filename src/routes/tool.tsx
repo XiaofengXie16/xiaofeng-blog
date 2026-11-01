@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { TOOLS } from "~/constants/tool";
+import { CATEGORY } from "~/constants/name";
 import { pageMeta } from "~/constants/site";
 import { Cloud, Grain } from "~/components/design/Atmosphere";
 import { PageTitle } from "~/components/design/Section";
@@ -18,6 +19,19 @@ export const Route = createFileRoute("/tool")({
 });
 
 const ALL = "all";
+// Short chip labels so every filter fits on one row; cards keep the full name.
+const SHORT_LABELS: Record<string, string> = {
+  [ALL]: "All",
+  [CATEGORY.DEVELOPMENT_TOOL]: "Dev tools",
+  [CATEGORY.TERMINAL_UTILITY]: "Terminal",
+  [CATEGORY.TERMINAL_THEME]: "Themes",
+  [CATEGORY.CSS_FRAMEWORK]: "CSS",
+  [CATEGORY.JAVASCRIPT_FRAMEWORK]: "JS frameworks",
+  [CATEGORY.TEST_FRAMEWORK]: "Testing",
+  [CATEGORY.JAVASCRIPT_RUNTIME]: "Runtimes",
+  [CATEGORY.PRODUCTIVITY_TOOL]: "Productivity",
+};
+
 const TINTS = ["bg-cobalt/15", "bg-[#E88A4F]/20", "bg-[#7DA453]/25", "bg-[#9B8CDC]/25"];
 
 function Tool() {
@@ -69,7 +83,7 @@ function Tool() {
         <div
           role="group"
           aria-label="Filter by category"
-          className="glass flex flex-wrap gap-1.5 self-start rounded-[28px] p-1.5"
+          className="glass flex max-w-full flex-nowrap gap-1 self-start overflow-x-auto rounded-full p-1.5"
         >
           {[ALL, ...categories].map((c) => (
             <button
@@ -77,13 +91,13 @@ function Tool() {
               type="button"
               aria-pressed={category === c}
               onClick={() => setCategory(c)}
-              className={`min-h-11 cursor-pointer rounded-full border-0 px-[18px] font-sans text-sm font-medium ${
+              className={`min-h-11 shrink-0 cursor-pointer rounded-full border-0 px-4 font-sans text-sm font-medium whitespace-nowrap ${
                 category === c
                   ? "bg-ink text-white"
                   : "bg-transparent text-ink-soft hover:bg-white/40"
               }`}
             >
-              {c === ALL ? "Everything" : c}
+              {SHORT_LABELS[c] ?? c}
             </button>
           ))}
         </div>

@@ -214,7 +214,6 @@ export const CommandAgent = () => {
       { path: "/blog", label: "Writing", desc: "Browse all blog posts" },
       { path: "/reading-list", label: "Reading list", desc: "Books and reading recommendations" },
       { path: "/tool", label: "Toolkit", desc: "Developer tools and utilities" },
-      { path: "/services", label: "Services", desc: "Playwright speed and flake audit" },
     ];
     for (const page of pages) {
       items.push({
