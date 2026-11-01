@@ -3,7 +3,7 @@ import { pageMeta } from "~/constants/site";
 import { BOOKS, BOOK_TAGS } from "~/constants/book";
 import { fetchAllBlogPosts } from "~/server/blog.functions";
 import { Cloud, Grain } from "~/components/design/Atmosphere";
-import { ArrowRight, SectionHeading, Tag } from "~/components/design/Section";
+import { SectionHeading, Tag } from "~/components/design/Section";
 import { Bookshelf } from "~/components/design/Bookshelf";
 import { RibbonWalkers } from "~/components/design/RibbonWalkers";
 import { DeskWriter, SkyWriter } from "~/components/figures/Figures";
@@ -351,21 +351,6 @@ function Hero() {
           Software engineer crafting digital experiences. Notes on frontend architecture, developer
           tooling, and the books that shape how I build.
         </p>
-        <div className="mt-2 flex flex-wrap justify-center gap-3">
-          <Link
-            to="/blog"
-            className="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-ink px-[26px] text-base font-medium text-white no-underline hover:bg-indigo-deep"
-          >
-            Read the writing <ArrowRight />
-          </Link>
-          <button
-            type="button"
-            onClick={openCommandAgent}
-            className="glass inline-flex min-h-[52px] cursor-pointer items-center rounded-full px-6 font-sans text-base font-medium text-ink"
-          >
-            Ask the site anything
-          </button>
-        </div>
       </div>
     </WishSky>
   );
