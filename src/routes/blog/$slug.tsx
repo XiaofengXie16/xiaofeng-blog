@@ -3,6 +3,11 @@ import invariant from "tiny-invariant";
 
 import { fetchBlogPostBySlug } from "~/server/blog.functions";
 import { pageMeta } from "~/constants/site";
+import { Cloud, Grain } from "~/components/design/Atmosphere";
+import { ArrowRight } from "~/components/design/Section";
+import { CapsuleReader } from "~/components/figures/Figures";
+import { ReadingProgress } from "~/components/blog/ReadingProgress";
+import { formatPostDate } from "~/utils/format";
 
 type LoaderData = {
   title: string;
@@ -46,219 +51,131 @@ export const Route = createFileRoute("/blog/$slug")({
 
 function PostNotFound() {
   return (
-    <div className="max-w-4xl mx-auto px-6 py-24 text-center animate-fade-in">
-      <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 border border-secondary/30 bg-secondary/5">
-        <span className="w-2 h-2 bg-secondary animate-pulse" />
-        <span className="terminal-text text-xs text-secondary tracking-wider">ERROR_404</span>
+    <section className="relative overflow-hidden bg-linear-to-b from-[#A3ADEC] to-[#F5D2B5] px-5 pt-48 pb-32 text-center">
+      <Grain />
+      <div className="relative mx-auto flex max-w-xl flex-col items-center gap-6">
+        <p className="glow m-0 -rotate-2 font-hand text-4xl text-[#F4F7FF]">
+          this future wasn't written
+        </p>
+        <h1 className="m-0 text-5xl font-medium tracking-[-0.04em] text-olive sm:text-6xl">
+          Post not found
+        </h1>
+        <p className="m-0 text-lg text-ink-soft">
+          The post you're looking for doesn't exist, or it moved.
+        </p>
+        <Link
+          to="/blog"
+          className="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-ink px-[26px] font-medium text-white no-underline hover:bg-indigo-deep"
+        >
+          Back to all writing <ArrowRight />
+        </Link>
       </div>
-      <h1 className="text-3xl md:text-5xl font-bold text-text-main mb-4">
-        <span className="text-text-main">POST</span>
-        <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">
-          {" "}
-          NOT_FOUND
-        </span>
-      </h1>
-      <p className="text-lg text-text-muted mb-10 terminal-text">
-        <span className="text-primary">&gt;</span> This transmission does not exist in the data
-        stream.
-      </p>
-      <Link
-        to="/blog"
-        className="inline-flex items-center gap-2 px-6 py-3 cyber-card hover:border-primary/30 transition-all terminal-text text-sm text-text-muted hover:text-primary"
-      >
-        <span>&gt;</span> BACK_TO_ARCHIVE
-      </Link>
-    </div>
+    </section>
   );
 }
 
 function BlogPost() {
-  const { title, content, date, tags, slug } = Route.useLoaderData();
+  const { title, content, date, tags } = Route.useLoaderData();
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 animate-fade-in">
-      {/* Navigation Header */}
-      <nav className="mb-12">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 terminal-text text-sm text-text-muted">
-            <Link to="/" className="hover:text-primary transition-colors">
-              HOME
-            </Link>
-            <span className="text-primary">/</span>
-            <Link to="/blog" className="hover:text-primary transition-colors">
-              BLOG
-            </Link>
-            <span className="text-primary">/</span>
-            <span className="text-primary truncate max-w-37.5">
-              {slug.slice(0, 20).toUpperCase()}...
-            </span>
-          </div>
-
-          {/* All Posts Link */}
-          <Link
-            to="/blog"
-            className="group flex items-center gap-2 px-4 py-2 border border-white/10 hover:border-primary/30 hover:bg-primary/5 transition-all terminal-text text-sm text-text-muted hover:text-primary"
-          >
-            <svg
-              className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-            ALL_POSTS
-          </Link>
-        </div>
-      </nav>
-
-      {/* Article Container */}
-      <article className="relative">
-        {/* Article Header */}
-        <header className="mb-12 pb-8 border-b border-white/5">
-          {/* Category Tag */}
-          <div className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 border border-primary/30 bg-primary/5">
-            <span className="w-2 h-2 bg-primary animate-pulse" />
-            <span className="terminal-text text-xs text-primary tracking-wider">ARTICLE</span>
-          </div>
-
-          {/* Title */}
-          <h1 className="text-3xl md:text-5xl font-bold text-text-main leading-tight mb-6">
-            {title}
-          </h1>
-
-          {/* Meta Info */}
-          <div className="flex flex-wrap items-center gap-6 terminal-text text-xs text-text-muted">
-            <div className="flex items-center gap-2">
-              <span className="status-dot" />
-              <span>
-                AUTHOR: <span className="text-primary">XIAOFENG</span>
-              </span>
-            </div>
-            <span className="hidden sm:inline text-white/20">|</span>
-            <span>
-              ID: <span className="text-primary">{slug.slice(0, 8).toUpperCase()}</span>
-            </span>
-            {date && (
-              <>
-                <span className="hidden sm:inline text-white/20">|</span>
-                <span>
-                  DATE: <span className="text-primary">{date}</span>
-                </span>
-              </>
-            )}
-            <span className="hidden sm:inline text-white/20">|</span>
-            <span>
-              STATUS: <span className="text-neon-green">PUBLISHED</span>
-            </span>
-          </div>
-
-          {tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-6">
-              {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="terminal-text text-[10px] tracking-wider px-2 py-1 border border-secondary/20 text-secondary/80 bg-secondary/5"
-                >
-                  #{tag.toUpperCase()}
-                </span>
-              ))}
-            </div>
-          )}
-        </header>
-
-        {/* Article Content */}
-        <div
-          className="
-            prose prose-invert prose-lg max-w-none
-
-            /* Headings */
-            prose-h2:text-2xl prose-h2:md:text-3xl prose-h2:font-bold prose-h2:text-primary prose-h2:mt-16 prose-h2:mb-6
-            prose-h2:pl-4 prose-h2:border-l-2 prose-h2:border-primary
-            prose-h3:text-xl prose-h3:md:text-2xl prose-h3:font-semibold prose-h3:text-secondary prose-h3:mt-12 prose-h3:mb-4
-            prose-h4:text-lg prose-h4:md:text-xl prose-h4:font-medium prose-h4:text-accent prose-h4:mt-8 prose-h4:mb-3
-
-            /* Paragraphs */
-            prose-p:text-text-muted prose-p:leading-relaxed prose-p:mb-6 prose-p:text-base prose-p:md:text-lg
-
-            /* Lists */
-            prose-ul:text-text-muted prose-ul:my-6 prose-li:my-2 prose-li:text-base prose-li:md:text-lg
-            prose-ol:text-text-muted prose-ol:my-6
-            marker:text-primary
-
-            /* Links */
-            prose-a:text-primary prose-a:no-underline prose-a:border-b prose-a:border-primary/30
-            hover:prose-a:border-primary hover:prose-a:text-primary
-
-            /* Strong & Emphasis */
-            prose-strong:text-text-main prose-strong:font-semibold
-            prose-em:text-secondary
-
-            /* Code */
-            prose-code:text-primary prose-code:bg-surface prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm prose-code:border prose-code:border-primary/20
-            prose-code:before:content-none prose-code:after:content-none
-            prose-pre:bg-surface prose-pre:border prose-pre:border-white/5 prose-pre:p-6 prose-pre:rounded-none
-            prose-pre:shadow-[inset_0_0_30px_rgba(0,240,255,0.03)]
-
-            /* Blockquotes */
-            [&>blockquote]:border-l-2 [&>blockquote]:border-secondary [&>blockquote]:pl-6 [&>blockquote]:py-2
-            [&>blockquote]:italic [&>blockquote]:text-text-muted [&>blockquote]:bg-surface/30
-            [&>blockquote]:my-8
-
-            /* Images */
-            [&>img]:rounded-none [&>img]:border [&>img]:border-white/10 [&>img]:shadow-2xl [&>img]:my-12
-
-            /* HR */
-            [&>hr]:my-16 [&>hr]:border-white/10
-            [&>hr]:relative [&>hr]:overflow-visible
-
-            /* Spacing */
-            [&>h2+p]:mt-6 [&>h3+p]:mt-4 [&>h4+p]:mt-3
-            [&>p+ul]:mt-4 [&>p+ol]:mt-4
-            [&>*+h2]:mt-16 [&>*+h3]:mt-12 [&>*+h4]:mt-8
-          "
-          dangerouslySetInnerHTML={{ __html: content }}
+    <>
+      <ReadingProgress />
+      <section className="relative overflow-hidden bg-linear-to-b from-[#9AA6EA] via-[#CFC4E8] via-55% to-[#F5D6BC] pb-24">
+        <Cloud
+          style={{
+            width: 560,
+            height: 170,
+            left: -80,
+            top: 180,
+            background: "#FBDCC0",
+            opacity: 0.85,
+          }}
         />
-
-        {/* Article Footer */}
-        <footer className="mt-16 pt-8 border-t border-white/5">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="terminal-text text-xs text-text-muted">END_OF_TRANSMISSION</div>
-
+        <Cloud
+          style={{
+            width: 420,
+            height: 140,
+            right: 0,
+            top: 80,
+            background: "#FFE8D4",
+            opacity: 0.7,
+            animationDuration: "31s",
+          }}
+        />
+        <Grain />
+        <div className="relative z-[2] mx-auto flex max-w-[1240px] flex-wrap items-end gap-12 px-5 pt-40 sm:px-8">
+          <div className="flex min-w-0 flex-[999_1_560px] flex-col gap-[22px]">
             <Link
               to="/blog"
-              className="group flex items-center gap-3 px-6 py-3 cyber-card hover:border-primary/30 transition-all terminal-text text-sm"
+              className="self-start py-2.5 text-[15px] font-medium text-ink no-underline hover:text-indigo"
             >
-              <svg
-                className="w-4 h-4 text-primary transform group-hover:-translate-x-1 transition-transform"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              <span className="text-text-muted group-hover:text-primary transition-colors">
-                BACK_TO_ARCHIVE
-              </span>
+              ← All writing
             </Link>
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="glass rounded-full px-3 py-1.5 text-[13px] text-indigo"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            <h1 className="m-0 text-[44px] leading-[1.02] font-medium tracking-[-0.045em] text-olive sm:text-[76px]">
+              {title}
+            </h1>
+            <div className="flex flex-wrap items-center gap-3 text-[15px] text-ink-soft">
+              <span className="font-semibold">Xiaofeng Xie</span>
+              {date && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <time dateTime={date}>{formatPostDate(date)}</time>
+                </>
+              )}
+            </div>
           </div>
-        </footer>
+          <div className="pointer-events-none hidden flex-[1_1_260px] justify-center md:flex">
+            <CapsuleReader className="decor h-[330px] w-[300px]" />
+          </div>
+        </div>
+      </section>
 
-        {/* Decorative Corner Elements */}
-        <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-primary/20 -translate-x-4 -translate-y-4 pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-secondary/20 translate-x-4 translate-y-4 pointer-events-none" />
+      <article className="mx-auto max-w-[1240px] px-5 pt-20 pb-24 sm:px-8">
+        <div
+          className="
+            prose prose-lg mx-auto max-w-[720px] font-serif text-[#2A2E4D]
+            prose-p:text-[21px] prose-p:leading-[1.7] prose-li:text-[21px]
+            prose-headings:font-sans prose-headings:font-medium prose-headings:tracking-[-0.03em] prose-headings:text-ink
+            prose-h2:mt-14 prose-h2:text-[34px] prose-h3:text-[26px]
+            prose-a:text-indigo prose-a:decoration-indigo/30 prose-a:underline-offset-4 hover:prose-a:decoration-indigo
+            prose-strong:text-ink marker:text-rust
+            prose-code:rounded-md prose-code:bg-lilac/70 prose-code:px-1.5 prose-code:py-0.5 prose-code:font-mono prose-code:text-[0.85em] prose-code:text-indigo-deep
+            prose-code:before:content-none prose-code:after:content-none
+            prose-pre:rounded-[22px] prose-pre:bg-[#14152E] prose-pre:text-[#DCE2FF]
+            prose-blockquote:rounded-[28px] prose-blockquote:border-0 prose-blockquote:bg-linear-to-br prose-blockquote:from-[#9BA6EA]/20 prose-blockquote:to-[#F5D6BC]/35
+            prose-blockquote:px-8 prose-blockquote:py-6 prose-blockquote:font-hand prose-blockquote:text-[30px] prose-blockquote:leading-tight prose-blockquote:not-italic prose-blockquote:text-indigo
+            prose-img:rounded-[22px]
+            prose-pre:text-[15px] prose-pre:leading-[1.7] [&_pre_code]:bg-transparent [&_pre_code]:p-0 [&_pre_code]:text-[#DCE2FF]
+          "
+          // Rendered from the site's own markdown files at build time.
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
       </article>
-    </div>
+
+      <section className="mx-auto max-w-[1240px] px-5 pb-30 sm:px-8">
+        <Link
+          to="/blog"
+          className="glass flex flex-wrap items-center justify-between gap-5 rounded-[32px] bg-linear-to-r from-[#9BA6EA]/35 to-[#F5D6BC]/50 px-10 py-9 text-ink no-underline"
+        >
+          <span className="flex flex-col gap-2">
+            <span className="font-hand text-2xl text-rust">keep reading</span>
+            <span className="text-[28px] font-medium tracking-[-0.02em]">More writing</span>
+          </span>
+          <ArrowRight size={28} />
+        </Link>
+      </section>
+    </>
   );
 }

@@ -1,6 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
 import { TOOLS } from "~/constants/tool";
 import { pageMeta } from "~/constants/site";
+import { Cloud, Grain } from "~/components/design/Atmosphere";
+import { PageTitle } from "~/components/design/Section";
+import { BlockBuilder } from "~/components/figures/Figures";
 
 export const Route = createFileRoute("/tool")({
   head: () =>
@@ -13,155 +17,111 @@ export const Route = createFileRoute("/tool")({
   component: Tool,
 });
 
-function Tool() {
-  // Group tools by category
-  const toolsByCategory = TOOLS.reduce(
-    (acc, tool) => {
-      if (!acc[tool.category]) {
-        acc[tool.category] = [];
-      }
-      acc[tool.category].push(tool);
-      return acc;
-    },
-    {} as Record<string, typeof TOOLS>,
-  );
+const ALL = "all";
+const TINTS = ["bg-cobalt/15", "bg-[#E88A4F]/20", "bg-[#7DA453]/25", "bg-[#9B8CDC]/25"];
 
-  const categories = Object.keys(toolsByCategory);
+function Tool() {
+  const [category, setCategory] = useState<string>(ALL);
+  const categories = [...new Set(TOOLS.map((t) => t.category))];
+  const visible = category === ALL ? TOOLS : TOOLS.filter((t) => t.category === category);
 
   return (
-    <div className="relative max-w-7xl mx-auto px-6 py-12 animate-fade-in">
-      {/* Header Section */}
-      <div className="mb-16">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 mb-8 terminal-text text-sm text-text-muted">
-          <Link to="/" className="hover:text-primary transition-colors">
-            HOME
-          </Link>
-          <span className="text-accent">/</span>
-          <span className="text-accent">TOOLS</span>
-        </div>
-
-        {/* Title */}
-        <div className="relative inline-block">
-          <div className="absolute -left-4 top-0 w-1 h-full bg-linear-to-b from-accent to-transparent" />
-          <h1 className="text-4xl md:text-6xl font-bold">
-            <span className="text-text-main">Arsenal</span>
-            <span className="text-transparent bg-clip-text bg-linear-to-r from-accent to-primary">
-              {" "}
-              Matrix
-            </span>
-          </h1>
-        </div>
-
-        <p className="mt-6 text-lg text-text-muted max-w-2xl terminal-text">
-          <span className="text-accent">&gt;</span> The software and hardware that powers the
-          development workflow...
-        </p>
-
-        {/* Stats bar */}
-        <div className="mt-8 flex flex-wrap items-center gap-6 p-4 border border-white/5 bg-surface/30 backdrop-blur-sm">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-accent animate-pulse" />
-            <span className="terminal-text text-xs text-text-muted">ARSENAL_LOADED</span>
+    <>
+      <section className="relative overflow-hidden bg-linear-to-b from-[#F2B98F] via-[#F2CDB6] via-40% to-[#C7CDF2] pb-16">
+        <Cloud
+          style={{
+            width: 520,
+            height: 170,
+            left: -60,
+            top: 140,
+            background: "#FFE6CF",
+            opacity: 0.85,
+          }}
+        />
+        <Cloud
+          style={{
+            width: 460,
+            height: 160,
+            right: -60,
+            top: 260,
+            background: "#E6D7F4",
+            opacity: 0.7,
+            animationDuration: "34s",
+          }}
+        />
+        <Grain />
+        <div className="relative z-[2] mx-auto flex max-w-[1240px] flex-wrap items-end gap-8 px-5 pt-40 sm:px-8">
+          <div className="min-w-0 flex-[999_1_560px] pb-6">
+            <PageTitle
+              kicker="what's on the workbench"
+              kickerClass="text-indigo"
+              title="Toolkit"
+              intro="The editors, terminals, runtimes and small utilities I reach for every day."
+            />
           </div>
-          <div className="h-4 w-px bg-white/10" />
-          <div className="terminal-text text-xs text-text-muted">
-            TOTAL_UNITS: <span className="text-accent">{TOOLS.length}</span>
-          </div>
-          <div className="h-4 w-px bg-white/10" />
-          <div className="terminal-text text-xs text-text-muted">
-            CATEGORIES: <span className="text-accent">{categories.length}</span>
+          <div className="pointer-events-none hidden flex-[1_1_240px] justify-center md:flex">
+            <BlockBuilder className="decor h-[394px] w-[230px]" />
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Tools Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {TOOLS.map(({ description, icon, name, category, link }, index) => (
-          <a
-            key={name}
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative animate-slide-up"
-            style={{ animationDelay: `${index * 0.03}s` }}
-          >
-            <div className="relative h-full cyber-card p-6 transition-all duration-500 hover:-translate-y-1 hover:border-accent/30">
-              {/* Corner Accents */}
-              <div className="absolute top-0 left-0 w-4 h-4 border-l border-t border-accent/30 group-hover:border-accent/60 group-hover:w-6 group-hover:h-6 transition-all duration-300" />
-              <div className="absolute bottom-0 right-0 w-4 h-4 border-r border-b border-primary/30 group-hover:border-primary/60 group-hover:w-6 group-hover:h-6 transition-all duration-300" />
+      <section className="mx-auto flex max-w-[1240px] flex-col gap-9 px-5 pt-10 pb-30 sm:px-8">
+        <div
+          role="group"
+          aria-label="Filter by category"
+          className="glass flex flex-wrap gap-1.5 self-start rounded-[28px] p-1.5"
+        >
+          {[ALL, ...categories].map((c) => (
+            <button
+              key={c}
+              type="button"
+              aria-pressed={category === c}
+              onClick={() => setCategory(c)}
+              className={`min-h-11 cursor-pointer rounded-full border-0 px-[18px] font-sans text-sm font-medium ${
+                category === c
+                  ? "bg-ink text-white"
+                  : "bg-transparent text-ink-soft hover:bg-white/40"
+              }`}
+            >
+              {c === ALL ? "Everything" : c}
+            </button>
+          ))}
+        </div>
 
-              {/* Header */}
-              <div className="flex items-start justify-between mb-4">
-                <div className="relative p-3 border border-white/10 group-hover:border-accent/30 group-hover:bg-accent/5 transition-all duration-300">
-                  <img src={icon} alt={name} className="w-8 h-8" loading="lazy" decoding="async" />
-                  {/* Pulse effect on hover */}
-                  <div className="absolute inset-0 bg-accent/20 opacity-0 group-hover:opacity-100 group-hover:animate-pulse transition-opacity" />
+        <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(min(100%,270px),1fr))] gap-5 p-0">
+          {visible.map((tool) => (
+            <li key={tool.name}>
+              <a
+                href={tool.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="glass flex h-full min-h-[190px] flex-col gap-3 rounded-[28px] p-6 text-ink no-underline transition-transform duration-300 hover:-translate-y-1 hover:-rotate-[0.4deg]"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span
+                    className={`flex h-12 w-12 items-center justify-center rounded-[14px] ${TINTS[categories.indexOf(tool.category) % TINTS.length]}`}
+                  >
+                    <img
+                      src={tool.icon}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="h-7 w-7 object-contain"
+                    />
+                  </span>
+                  <span className="font-hand text-xl text-[#6A5B9A]">
+                    {tool.category.toLowerCase()}
+                  </span>
                 </div>
-
-                <span className="terminal-text text-xs px-3 py-1.5 border border-white/10 bg-surface/50 text-text-muted group-hover:border-accent/30 group-hover:text-accent transition-all">
-                  {category}
+                <span className="text-[22px] font-medium tracking-[-0.02em]">{tool.name}</span>
+                <span className="line-clamp-3 text-[15px] leading-normal text-ink-soft">
+                  {tool.description}
                 </span>
-              </div>
-
-              {/* Content */}
-              <h3 className="text-xl font-bold text-text-main mb-2 group-hover:text-accent transition-colors flex items-center gap-2">
-                {name}
-                <svg
-                  className="w-4 h-4 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                  />
-                </svg>
-              </h3>
-
-              <p className="text-text-muted text-sm leading-relaxed mb-4">{description}</p>
-
-              {/* Footer */}
-              <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                <span className="terminal-text text-xs text-text-muted">
-                  [{String(index + 1).padStart(2, "0")}]
-                </span>
-                <span className="terminal-text text-xs text-accent opacity-0 group-hover:opacity-100 transition-opacity">
-                  LAUNCH &gt;
-                </span>
-              </div>
-
-              {/* Bottom Glow */}
-              <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-linear-to-r from-accent to-primary group-hover:w-full transition-all duration-500" />
-            </div>
-          </a>
-        ))}
-      </div>
-
-      {/* Circuit Pattern Decoration */}
-      <div className="fixed bottom-0 right-0 w-64 h-64 pointer-events-none opacity-10">
-        <svg viewBox="0 0 100 100" className="w-full h-full">
-          <defs>
-            <linearGradient id="circuit-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="var(--color-accent)" />
-              <stop offset="100%" stopColor="var(--color-primary)" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M10 50 H30 V30 H50 M50 30 V10 M50 30 H70 V50 H90 M70 50 V70 H50 V90 M50 70 H30 V50"
-            fill="none"
-            stroke="url(#circuit-grad)"
-            strokeWidth="0.5"
-          />
-          <circle cx="30" cy="50" r="2" fill="var(--color-accent)" />
-          <circle cx="50" cy="30" r="2" fill="var(--color-primary)" />
-          <circle cx="70" cy="50" r="2" fill="var(--color-accent)" />
-          <circle cx="50" cy="70" r="2" fill="var(--color-primary)" />
-        </svg>
-      </div>
-    </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </>
   );
 }
