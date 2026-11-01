@@ -15,6 +15,23 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
+  build: {
+    rolldownOptions: {
+      output: {
+        // three.js only loads lazily for the 3D scenes, but as one chunk it is
+        // ~555 kB and trips Vite's 500 kB warning. Split it along three's own
+        // two files (the core library and the WebGL renderer) so each chunk
+        // stays under the limit, downloads in parallel, and stays cached when
+        // our scene code changes.
+        codeSplitting: {
+          groups: [
+            { name: "three-core", test: /node_modules[\\/]three[\\/]build[\\/]three\.core\.js/ },
+            { name: "three-webgl", test: /node_modules[\\/]three[\\/]build[\\/]three\.module\.js/ },
+          ],
+        },
+      },
+    },
+  },
   plugins: [
     tailwindcss(),
     tanstackStart({
