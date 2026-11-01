@@ -37,3 +37,6 @@ export const BOOKS = [
     link: "https://dataintensive.net/",
   },
 ];
+
+/** Handwritten labels shown under each book, in the same order as BOOKS. */
+export const BOOK_TAGS = ["history", "career", "leadership", "design", "craft", "systems"] as const;

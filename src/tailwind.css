@@ -553,11 +553,64 @@
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* Bookshelf: covers stand on a glass ledge; the picked one lifts      */
+/* ------------------------------------------------------------------ */
+
+.book-cover {
+  transform-origin: 50% 100%;
+  transform: rotate(var(--lean, 0deg));
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.5) inset,
+    6px 10px 18px -6px rgb(40 32 90 / 0.45),
+    1px 2px 3px rgb(40 32 90 / 0.25);
+}
+.book:hover .book-cover,
+.book:focus-visible .book-cover {
+  transform: translateY(-8px) rotate(0deg);
+}
+.book-cover.is-picked,
+.book:hover .book-cover.is-picked {
+  transform: translateY(-22px) rotate(0deg) scale(1.04);
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 44px 6px rgb(140 165 255 / 0.7),
+    10px 26px 34px -12px rgb(40 32 90 / 0.5);
+}
+.book:focus-visible {
+  outline: none;
+}
+.book:focus-visible .book-cover {
+  outline: 2px solid var(--color-cobalt);
+  outline-offset: 4px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Ribbon walkers: tiny people who stroll along a ribbon when hovered  */
+/* ------------------------------------------------------------------ */
+
+.ribbon-walker {
+  pointer-events: auto;
+  cursor: pointer;
+}
+.ribbon-walker.is-walking .walker-body {
+  animation: walker-step 0.3s ease-in-out infinite alternate;
+}
+@keyframes walker-step {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-2.5px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cloud,
   .animate-bob,
   .animate-shimmer,
   .maker .m-body,
+  .ribbon-walker.is-walking .walker-body,
   .sky-writer:hover .sw-arm,
   .sky-writer:hover .sw-tip {
     animation: none;
