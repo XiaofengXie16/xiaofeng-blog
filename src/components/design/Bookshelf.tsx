@@ -25,7 +25,7 @@ export function Bookshelf(props: Props) {
 
   return (
     // From md up the shelf never scrolls, so only the books take the pointer
-    // and decorations behind the shelf (ribbon walkers) stay hoverable.
+    // and decorations behind the shelf stay hoverable.
     <div className="-mx-5 overflow-x-auto px-5 pb-2 sm:mx-0 sm:px-0 md:pointer-events-none! md:[&_.book]:pointer-events-auto!">
       <ul
         className="relative m-0 flex w-max min-w-full list-none items-start justify-center gap-6 p-0 px-4 sm:gap-8"

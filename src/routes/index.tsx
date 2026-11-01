@@ -4,7 +4,6 @@ import { BOOKS, BOOK_TAGS } from "~/constants/book";
 import { fetchAllBlogPosts } from "~/server/blog.functions";
 import { Cloud, Grain } from "~/components/design/Atmosphere";
 import { SectionHeading, Tag } from "~/components/design/Section";
-import { RibbonWalkers } from "~/components/design/RibbonWalkers";
 import { DeskWriter, SkyWriter } from "~/components/figures/Figures";
 import { PlushFigure } from "~/components/three/PlushFigure";
 import { Shelf3D } from "~/components/three/Shelf3D";
@@ -260,18 +259,6 @@ function Hero() {
       </svg>
 
       <Grain opacity={0.22} />
-
-      {/* Above the hero copy (z-[3]) so they can be hovered; only the walkers take pointer events. */}
-      <RibbonWalkers
-        d={HERO_RIBBON}
-        viewBox="0 0 1440 820"
-        className="absolute inset-0 z-[3] hidden h-full w-full md:block"
-        walkers={[
-          { at: 0.66, color: "#E07A3F" },
-          { at: 0.68, color: "#7DA453" },
-          { at: 0.85, color: "#F4F7FF", size: 18, opacity: 0.6 },
-        ]}
-      />
 
       {/*
        * The writer sits on a centered 1440px stage so he lines up with the copy.

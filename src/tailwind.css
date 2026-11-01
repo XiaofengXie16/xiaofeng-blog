@@ -305,31 +305,10 @@
   outline-offset: 4px;
 }
 
-/* ------------------------------------------------------------------ */
-/* Ribbon walkers: tiny people who stroll along a ribbon when hovered  */
-/* ------------------------------------------------------------------ */
-
-.ribbon-walker {
-  pointer-events: auto;
-  cursor: pointer;
-}
-.ribbon-walker.is-walking .walker-body {
-  animation: walker-step 0.3s ease-in-out infinite alternate;
-}
-@keyframes walker-step {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-2.5px);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .cloud,
   .animate-bob,
   .animate-shimmer,
-  .ribbon-walker.is-walking .walker-body,
   .sky-writer:hover .sw-arm,
   .sky-writer:hover .sw-tip {
     animation: none;
