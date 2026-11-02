@@ -20,7 +20,14 @@ export type Palette = {
 
 export type Person = ReturnType<typeof buildPlushPerson>;
 
-export function buildPlushPerson(scene: THREE.Scene, palette: Palette, { glasses = false } = {}) {
+export function buildPlushPerson(
+  scene: THREE.Scene,
+  palette: Palette,
+  {
+    glasses = false,
+    pose = "standing",
+  }: { glasses?: boolean; pose?: "standing" | "crossLegged" } = {},
+) {
   const m = (pair: [string, string]) => plush(pair[0], pair[1]);
   const skin = m(palette.skin);
   const sweater = m(palette.sweater);
@@ -39,14 +46,30 @@ export function buildPlushPerson(scene: THREE.Scene, palette: Palette, { glasses
   root.add(squash);
   squash.add(body);
 
-  for (const x of [-0.24, 0.24]) {
-    const leg = mesh(new THREE.CapsuleGeometry(0.2, 0.28, 8, 20), pants);
-    leg.position.set(x, 0.5, 0);
-    body.add(leg);
-    const shoe = mesh(new THREE.SphereGeometry(0.26, 28, 18), shoeMat);
-    shoe.scale.set(1, 0.62, 1.3);
-    shoe.position.set(x, 0.17, 0.06);
-    body.add(shoe);
+  if (pose === "crossLegged") {
+    // Shins cross in front of the body; the shoes peek out at either side.
+    for (const side of [-1, 1] as const) {
+      const leg = mesh(new THREE.CapsuleGeometry(0.2, 0.28, 8, 20), pants);
+      leg.rotation.set(Math.PI / 2, 0, 0);
+      leg.rotation.order = "YXZ";
+      leg.rotation.y = -side * 0.83;
+      leg.position.set(side * 0.02, side > 0 ? 0.5 : 0.42, 0.35);
+      body.add(leg);
+      const shoe = mesh(new THREE.SphereGeometry(0.24, 28, 18), shoeMat);
+      shoe.scale.set(1.15, 0.62, 1);
+      shoe.position.set(-side * 0.34, side > 0 ? 0.5 : 0.42, 0.62);
+      body.add(shoe);
+    }
+  } else {
+    for (const x of [-0.24, 0.24]) {
+      const leg = mesh(new THREE.CapsuleGeometry(0.2, 0.28, 8, 20), pants);
+      leg.position.set(x, 0.5, 0);
+      body.add(leg);
+      const shoe = mesh(new THREE.SphereGeometry(0.26, 28, 18), shoeMat);
+      shoe.scale.set(1, 0.62, 1.3);
+      shoe.position.set(x, 0.17, 0.06);
+      body.add(shoe);
+    }
   }
 
   const torso = mesh(new THREE.SphereGeometry(0.62, 40, 28), sweater);

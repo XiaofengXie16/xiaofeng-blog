@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
-type Figure = "writer" | "builder";
+type Figure = "writer" | "builder" | "reader";
 
 const loaders: Record<Figure, () => Promise<(canvas: HTMLCanvasElement) => () => void>> = {
   writer: () => import("./plushWriter").then((m) => m.mountPlushWriter),
   builder: () => import("./plushBuilder").then((m) => m.mountPlushBuilder),
+  reader: () => import("./plushReader").then((m) => m.mountPlushReader),
 };
 
 /**
