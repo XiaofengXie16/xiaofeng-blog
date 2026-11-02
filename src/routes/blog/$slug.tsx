@@ -5,6 +5,7 @@ import { Cloud, Grain } from "~/components/design/Atmosphere";
 import { ArrowRight } from "~/components/design/Section";
 import { SkyMessage, pillButtonClass } from "~/components/design/SkyMessage";
 import { CapsuleReader } from "~/components/figures/Figures";
+import { PlushFigure } from "~/components/three/PlushFigure";
 import { ReadingProgress } from "~/components/blog/ReadingProgress";
 import { formatPostDate } from "~/utils/format";
 
@@ -116,8 +117,12 @@ function BlogPost() {
               )}
             </div>
           </div>
-          <div className="pointer-events-none hidden flex-[1_1_260px] justify-center md:flex">
-            <CapsuleReader className="decor h-[330px] w-[300px]" />
+          <div className="hidden flex-[1_1_260px] justify-center md:flex">
+            <PlushFigure
+              figure="reader"
+              className="h-[380px] w-[320px]"
+              fallback={<CapsuleReader className="decor h-[330px] w-[300px]" />}
+            />
           </div>
         </div>
       </section>
