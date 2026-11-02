@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Bookshelf } from "~/components/design/Bookshelf";
 import { shortTitle } from "~/utils/format";
-import type { ShelfHandle } from "./shelf3d";
+import type { ShelfHandle } from "./shelfScene";
 
 type Book = { name: string; icon: string; link: string };
 type Props = {
@@ -36,7 +36,7 @@ export function Shelf3D(props: Props) {
   const covers = books.map((b) => b.icon).join("|");
   useEffect(() => {
     let cancelled = false;
-    import("./shelf3d")
+    import("./shelfScene")
       .then(({ mountShelf3D }) => {
         const canvas = canvasRef.current;
         if (cancelled || !canvas) return;
