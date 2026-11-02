@@ -8,6 +8,7 @@ import { FilterPills } from "~/components/design/FilterPills";
 import { PageTitle } from "~/components/design/Section";
 import { BlockBuilder } from "~/components/figures/Figures";
 import { PlushFigure } from "~/components/three/PlushFigure";
+import { cycle } from "~/utils/array";
 
 export const Route = createFileRoute("/tool")({
   head: () =>
@@ -36,7 +37,7 @@ const SHORT_LABELS: Record<Filter, string> = {
   [CATEGORY.PRODUCTIVITY_TOOL]: "Productivity",
 };
 
-const TINTS = ["bg-cobalt/15", "bg-[#E88A4F]/20", "bg-[#7DA453]/25", "bg-[#9B8CDC]/25"];
+const TINTS = ["bg-cobalt/15", "bg-[#E88A4F]/20", "bg-[#7DA453]/25", "bg-[#9B8CDC]/25"] as const;
 
 function Tool() {
   const [category, setCategory] = useState<Filter>(ALL);
@@ -108,7 +109,7 @@ function Tool() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <span
-                    className={`flex h-12 w-12 items-center justify-center rounded-[14px] ${TINTS[categories.indexOf(tool.category) % TINTS.length]}`}
+                    className={`flex h-12 w-12 items-center justify-center rounded-[14px] ${cycle(TINTS, categories.indexOf(tool.category))}`}
                   >
                     <img
                       src={tool.icon}

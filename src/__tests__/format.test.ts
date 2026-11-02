@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { cycle } from "~/utils/array";
 import { formatPostDate, shortTitle } from "~/utils/format";
 
 describe("formatPostDate", () => {
@@ -19,5 +20,14 @@ describe("shortTitle", () => {
 
   test("keeps titles without a colon", () => {
     expect(shortTitle("The Staff Engineer's Path")).toBe("The Staff Engineer's Path");
+  });
+});
+
+describe("cycle", () => {
+  test("wraps around in both directions", () => {
+    const items = ["a", "b", "c"] as const;
+    expect(cycle(items, 0)).toBe("a");
+    expect(cycle(items, 4)).toBe("b");
+    expect(cycle(items, -1)).toBe("c");
   });
 });

@@ -15,7 +15,7 @@ import OrbStack from "~/assets/images/orbstack.png";
 import Oxc from "~/assets/images/oxc.png";
 import Obsidian from "~/assets/images/obsidian.png";
 import DSLR from "~/assets/images/dslr.png";
-import Windsurf from "~/assets/images/windsurf.svg";
+import Windsurf from "~/assets/images/windsurf.png";
 import { CATEGORY, type Category } from "~/constants/category";
 
 export type Tool = {

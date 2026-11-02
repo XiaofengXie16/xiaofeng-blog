@@ -56,7 +56,7 @@ describe("site assistant Groq adapter", () => {
 
     expect(output).toEqual(reply);
     expect(requests).toHaveLength(1);
-    const [{ url, body }] = requests;
+    const { url, body } = requests[0]!;
     expect(url).toBe("https://api.groq.com/openai/v1/chat/completions");
     // Groq rejects streaming together with structured outputs.
     expect(body.stream).toBe(false);

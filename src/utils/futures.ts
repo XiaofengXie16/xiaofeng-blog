@@ -20,5 +20,5 @@ export const FUTURES = [
  */
 export function pickFuture(previous?: string, random: () => number = Math.random): string {
   const options = previous ? FUTURES.filter((f) => f !== previous) : FUTURES;
-  return options[Math.floor(random() * options.length) % options.length];
+  return options[Math.floor(random() * options.length) % options.length] ?? FUTURES[0];
 }

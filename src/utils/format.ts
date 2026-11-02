@@ -14,5 +14,5 @@ export function formatPostDate(date: string): string {
 
 /** Drops a subtitle after a colon: "Why Nations Fail: The Origins…" → "Why Nations Fail". */
 export function shortTitle(title: string): string {
-  return title.split(":")[0].trim();
+  return (title.split(":")[0] ?? title).trim();
 }

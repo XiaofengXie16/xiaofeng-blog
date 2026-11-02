@@ -18,8 +18,7 @@
     "prepare": "git config core.hooksPath .githooks 2>/dev/null || true",
     "test": "bun test",
     "test:watch": "bun test --watch",
-    "test:coverage": "bun test --coverage",
-    "analyze": "vite-bundle-analyzer dist/"
+    "test:coverage": "bun test --coverage"
   },
   "dependencies": {
     "@tailwindcss/typography": "^0.5.20",
@@ -38,12 +37,10 @@
     "react-dom": "^19.3.1",
     "tailwindcss": "^4.3.3",
     "three": "^0.187.0",
-    "tiny-invariant": "^1.3.3",
     "zod": "^4.6.7"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
-    "@flydotio/dockerfile": "^0.7.15",
     "@tanstack/react-router-devtools": "^1.167.2",
     "@types/bun": "^1.4.4",
     "@types/node": "^26.6.6",
@@ -55,8 +52,7 @@
     "oxlint": "^1.90.0",
     "oxlint-tsgolint": "^7.0.2005",
     "typescript": "^7.0.2",
-    "vite": "^8.3.5",
-    "vite-bundle-analyzer": "^1.3.9"
+    "vite": "^8.3.5"
   },
   "engines": {
     "node": ">=24.0.0"

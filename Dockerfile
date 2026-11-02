@@ -26,24 +26,21 @@ COPY --link . .
 # bin's node shebang, so the build and prerender run under Node.
 RUN bun run build
 
-# Drop dev dependencies for the final image
-RUN rm -rf node_modules && bun install --frozen-lockfile --production
-
 
 # Final stage for app image
 FROM oven/bun:${BUN_VERSION}-slim
 
 LABEL fly_launch_runtime="TanStack Start"
 
-# App lives here
 WORKDIR /app
-
-# Set production environment
 ENV NODE_ENV="production"
 
-# Copy built application
-COPY --from=build /app /app
+# Nitro's output is self-contained: the server bundle inlines every dependency
+# (vite.config.ts sets ssr.noExternal) and traces the rest into .output, so the
+# runtime image needs neither node_modules nor the source.
+COPY --from=build /app/.output /app/.output
 
 # Start the Nitro node-server output under Bun
 EXPOSE 3000
+USER bun
 CMD [ "bun", "./.output/server/index.mjs" ]
