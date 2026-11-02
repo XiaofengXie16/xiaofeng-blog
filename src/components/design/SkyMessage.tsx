@@ -25,7 +25,7 @@ export function SkyMessage({
 }) {
   return (
     <section
-      className={`relative overflow-hidden bg-linear-to-b from-[#A3ADEC] to-[#F5D2B5] px-5 pt-48 pb-32 text-center ${className}`}
+      className={`relative min-h-[85vh] overflow-hidden bg-linear-to-b from-[#A3ADEC] to-[#F5D2B5] px-5 pt-48 pb-32 text-center ${className}`}
     >
       <Grain />
       <div className="relative mx-auto flex max-w-xl flex-col items-center gap-6">
