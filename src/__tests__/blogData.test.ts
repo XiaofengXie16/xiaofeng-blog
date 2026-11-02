@@ -29,8 +29,7 @@ describe("blogData", () => {
 
   it("should find posts by slug", () => {
     const [firstPost] = getAllBlogPosts();
-
-    expect(firstPost).toBeDefined();
+    if (!firstPost) throw new Error("expected at least one post");
     expect(getBlogPostBySlug(firstPost.slug)?.title).toBe(firstPost.title);
     expect(getBlogPostBySlug("missing-post")).toBeUndefined();
   });

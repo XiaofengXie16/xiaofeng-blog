@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { cycle } from "~/utils/array";
 import {
   bounceDrop,
   columnCenters,
@@ -40,7 +41,7 @@ type Book = {
 };
 
 // Real-ish proportions: [height, width, depth], before scaling to fit.
-const SIZES: [number, number, number][] = [
+const SIZES: readonly [[number, number, number], ...[number, number, number][]] = [
   [3.05, 2.05, 0.55],
   [2.8, 1.85, 0.42],
   [3.2, 2.1, 0.46],
@@ -48,7 +49,7 @@ const SIZES: [number, number, number][] = [
   [2.75, 1.8, 0.38],
   [3.1, 2.05, 0.6],
 ];
-const LEANS = [0.03, -0.04, 0, 0.05, -0.03, 0.02];
+const LEANS = [0.03, -0.04, 0, 0.05, -0.03, 0.02] as const;
 
 /**
  * Real books on a soft white ledge. They drop onto the shelf one by one, sway
@@ -92,7 +93,7 @@ export function mountShelf3D(
 
   const loader = new THREE.TextureLoader();
   const books: Book[] = covers.map((src, i) => {
-    const [h, w, d] = SIZES[i % SIZES.length] ?? [3, 2, 0.45];
+    const [h, w, d] = cycle(SIZES, i);
     const spineMat = clay("#D9D4CC", 0.6);
     const backMat = clay("#D9D4CC", 0.6);
     const coverMat = new THREE.MeshStandardMaterial({ roughness: 0.55, color: "#ffffff" });
@@ -133,7 +134,7 @@ export function mountShelf3D(
       hinge,
       hit: [pages, back, spine, cover],
       spineMats: [spineMat, backMat],
-      lean: LEANS[i % LEANS.length] ?? 0,
+      lean: cycle(LEANS, i),
       lift: { value: 0, velocity: 0 },
       open: { value: 0, velocity: 0 },
       spin: 1,

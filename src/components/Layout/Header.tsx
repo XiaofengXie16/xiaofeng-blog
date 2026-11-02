@@ -1,11 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import { NAV_LINKS } from "~/constants/pages";
 import { openCommandAgent } from "../CommandAgent/events";
-
-const NAV_LINKS = [
-  { to: "/blog", label: "Writing" },
-  { to: "/reading-list", label: "Reading" },
-  { to: "/tool", label: "Toolkit" },
-] as const;
 
 const linkClass =
   "rounded-full px-2.5 py-3 text-[15px] sm:px-4 font-medium text-ink no-underline transition-colors hover:bg-white/40";

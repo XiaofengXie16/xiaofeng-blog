@@ -2,7 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 /*
- * "Many futures" theme: painted dusk skies, glass capsules, flowing ribbons
+ * "Many futures" theme: painted dusk skies, glass panels, flowing ribbons
  * and handwritten neon. Colors are tokens so pages use bg-cream, text-ink...
  */
 @theme {
@@ -10,7 +10,6 @@
   --color-ink-soft: #2c3157;
   --color-muted: #4a4f78;
   --color-cream: #f7efe6;
-  --color-paper: #fbf6ef;
   --color-olive: #3f5418;
   --color-cobalt: #2f5bd3;
   --color-indigo: #2b3a8c;

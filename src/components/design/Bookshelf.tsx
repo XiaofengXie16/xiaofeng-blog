@@ -1,15 +1,18 @@
+import type { Book } from "~/constants/book";
+import { cycle } from "~/utils/array";
 import { shortTitle } from "~/utils/format";
 
-type Book = { name: string; icon: string; link: string };
-
 // Slightly uneven heights and leans so the row reads as a real shelf.
-const HEIGHTS = [214, 198, 226, 206, 192, 220];
-const LEANS = [-2, 0.5, -0.5, 1.5, -1, 1];
-const TAG_COLORS = ["text-moss", "text-rust", "text-violet"];
+const HEIGHTS = [214, 198, 226, 206, 192, 220] as const;
+const LEANS = [-2, 0.5, -0.5, 1.5, -1, 1] as const;
+const TAG_COLORS = ["text-moss", "text-rust", "text-violet"] as const;
+
+/** Colour class for the handwritten tag under book `index`. */
+export const tagColor = (index: number) => cycle(TAG_COLORS, index);
 const COVER_TOP = 40; // room above the tallest book for the picked one to lift
 const SHELF_TOP = COVER_TOP + Math.max(...HEIGHTS);
 
-type Props = {
+export type BookshelfProps = {
   books: readonly Book[];
   /** Handwritten label under each book. */
   tags?: readonly string[];
@@ -20,7 +23,7 @@ type Props = {
  * opens its page; in "select" mode each is a toggle and the picked one lifts
  * off the shelf. Scrolls sideways on narrow screens instead of wrapping.
  */
-export function Bookshelf(props: Props) {
+export function Bookshelf(props: BookshelfProps) {
   const { books, tags } = props;
 
   return (
@@ -39,7 +42,7 @@ export function Bookshelf(props: Props) {
         />
 
         {books.map((book, i) => {
-          const height = HEIGHTS[i % HEIGHTS.length];
+          const height = cycle(HEIGHTS, i);
           const picked = props.mode === "select" && props.picked === i;
           const tag = tags?.[i % tags.length];
           const cover = (
@@ -52,7 +55,7 @@ export function Bookshelf(props: Props) {
                   style={{
                     height,
                     width: Math.round(height * 0.66),
-                    ["--lean" as string]: `${LEANS[i % LEANS.length]}deg`,
+                    ["--lean" as string]: `${cycle(LEANS, i)}deg`,
                   }}
                 >
                   <img
@@ -75,11 +78,7 @@ export function Bookshelf(props: Props) {
               </span>
               <span className="mt-7 flex max-w-[150px] flex-col items-center gap-1 text-center">
                 {tag && (
-                  <span
-                    className={`font-hand text-lg leading-none ${TAG_COLORS[i % TAG_COLORS.length]}`}
-                  >
-                    {tag}
-                  </span>
+                  <span className={`font-hand text-lg leading-none ${tagColor(i)}`}>{tag}</span>
                 )}
                 <span className="text-[15px] leading-snug font-medium text-ink">
                   {shortTitle(book.name)}

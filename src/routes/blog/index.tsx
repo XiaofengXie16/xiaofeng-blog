@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { fetchAllBlogPosts } from "~/server/blog.functions";
 import { pageMeta } from "~/constants/site";
 import { Cloud, Grain } from "~/components/design/Atmosphere";
+import { FilterPills } from "~/components/design/FilterPills";
 import { PageTitle, Tag } from "~/components/design/Section";
 import { formatPostDate } from "~/utils/format";
 
@@ -85,27 +86,13 @@ function Posts() {
         </svg>
         <div className="relative mx-auto flex max-w-[1240px] flex-col gap-9 px-5 sm:px-8">
           {topics.length > 1 && (
-            <div
-              role="group"
-              aria-label="Filter by topic"
-              className="glass flex flex-wrap gap-2 self-start rounded-[30px] p-2"
-            >
-              {topics.map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  aria-pressed={topic === t}
-                  onClick={() => setTopic(t)}
-                  className={`min-h-11 cursor-pointer rounded-full border-0 px-[18px] font-sans text-sm font-medium ${
-                    topic === t
-                      ? "bg-ink text-white"
-                      : "bg-transparent text-ink-soft hover:bg-white/40"
-                  }`}
-                >
-                  {t === ALL ? "All posts" : t}
-                </button>
-              ))}
-            </div>
+            <FilterPills
+              label="Filter by topic"
+              options={topics}
+              value={topic}
+              onChange={setTopic}
+              optionLabel={(t) => (t === ALL ? "All posts" : t)}
+            />
           )}
 
           <ol className="m-0 flex list-none flex-col gap-5 p-0">

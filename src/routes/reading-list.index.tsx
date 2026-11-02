@@ -23,7 +23,7 @@ const LOWER_RIBBON = "M-80 1180 C 300 1040, 640 1300, 980 1120 S 1360 980, 1540 
 
 function ReadingList() {
   const [picked, setPicked] = useState(0);
-  const current = BOOKS[picked];
+  const current = BOOKS[picked] ?? BOOKS[0];
 
   return (
     <div className="relative overflow-hidden bg-linear-to-b from-[#F3D9C6] via-[#EADCEB] via-35% to-[#B9C0EE]">

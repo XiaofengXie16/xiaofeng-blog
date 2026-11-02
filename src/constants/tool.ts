@@ -15,10 +15,18 @@ import OrbStack from "~/assets/images/orbstack.png";
 import Oxc from "~/assets/images/oxc.png";
 import Obsidian from "~/assets/images/obsidian.png";
 import DSLR from "~/assets/images/dslr.png";
-import Windsurf from "~/assets/images/windsurf.svg";
-import { CATEGORY } from "~/constants/name";
+import Windsurf from "~/assets/images/windsurf.png";
+import { CATEGORY, type Category } from "~/constants/category";
 
-export const TOOLS = [
+export type Tool = {
+  icon: string;
+  name: string;
+  description: string;
+  category: Category;
+  link: string;
+};
+
+export const TOOLS: readonly Tool[] = [
   {
     icon: Windsurf,
     name: "Windsurf",

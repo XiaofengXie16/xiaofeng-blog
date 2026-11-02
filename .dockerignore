@@ -5,3 +5,7 @@ node_modules
 /.output
 /public/build
 .env
+.git
+coverage
+.tanstack
+.dagger

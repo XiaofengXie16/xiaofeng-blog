@@ -1,9 +1,11 @@
 import EngineeringManagementForTheRestOfUs from "~/assets/images/engineering_management_for_the_rest_of_us.jpg";
 import TheStaffEngineerPath from "~/assets/images/the_staff_engineer_path.jpg";
 import APhilosophyOfSoftwareDesign from "~/assets/images/a_philosophy_of_software_design.jpg";
-import SimpliySaid from "~/assets/images/simply_said.png";
-import DesigningDataIntensiveApplications from "~/assets/images/designing_data_intensive_applications.png";
+import SimplySaid from "~/assets/images/simply_said.jpg";
+import DesigningDataIntensiveApplications from "~/assets/images/designing_data_intensive_applications.jpg";
 import WhyNationsFail from "~/assets/images/why_nations_fail.jpg";
+
+export type Book = { name: string; icon: string; link: string };
 
 export const BOOKS = [
   {
@@ -28,7 +30,7 @@ export const BOOKS = [
   },
   {
     name: "Simply Said: Communicating Better at Work and Beyond",
-    icon: SimpliySaid,
+    icon: SimplySaid,
     link: "https://www.exec-comm.com/product/simply-said/",
   },
   {
@@ -36,7 +38,7 @@ export const BOOKS = [
     icon: DesigningDataIntensiveApplications,
     link: "https://dataintensive.net/",
   },
-];
+] as const satisfies readonly Book[];
 
 /** Handwritten labels shown under each book, in the same order as BOOKS. */
 export const BOOK_TAGS = ["history", "career", "leadership", "design", "craft", "systems"] as const;

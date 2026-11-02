@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { TOOLS } from "~/constants/tool";
-import { CATEGORY } from "~/constants/name";
+import { CATEGORY, type Category } from "~/constants/category";
 import { pageMeta } from "~/constants/site";
 import { Cloud, Grain } from "~/components/design/Atmosphere";
+import { FilterPills } from "~/components/design/FilterPills";
 import { PageTitle } from "~/components/design/Section";
 import { BlockBuilder } from "~/components/figures/Figures";
 import { PlushFigure } from "~/components/three/PlushFigure";
+import { cycle } from "~/utils/array";
 
 export const Route = createFileRoute("/tool")({
   head: () =>
@@ -20,8 +22,10 @@ export const Route = createFileRoute("/tool")({
 });
 
 const ALL = "all";
+type Filter = Category | typeof ALL;
 // Short chip labels so every filter fits on one row; cards keep the full name.
-const SHORT_LABELS: Record<string, string> = {
+// Typed by Category, so a new category can't ship without a label.
+const SHORT_LABELS: Record<Filter, string> = {
   [ALL]: "All",
   [CATEGORY.DEVELOPMENT_TOOL]: "Dev tools",
   [CATEGORY.TERMINAL_UTILITY]: "Terminal",
@@ -33,10 +37,10 @@ const SHORT_LABELS: Record<string, string> = {
   [CATEGORY.PRODUCTIVITY_TOOL]: "Productivity",
 };
 
-const TINTS = ["bg-cobalt/15", "bg-[#E88A4F]/20", "bg-[#7DA453]/25", "bg-[#9B8CDC]/25"];
+const TINTS = ["bg-cobalt/15", "bg-[#E88A4F]/20", "bg-[#7DA453]/25", "bg-[#9B8CDC]/25"] as const;
 
 function Tool() {
-  const [category, setCategory] = useState<string>(ALL);
+  const [category, setCategory] = useState<Filter>(ALL);
   const categories = [...new Set(TOOLS.map((t) => t.category))];
   const visible = category === ALL ? TOOLS : TOOLS.filter((t) => t.category === category);
 
@@ -85,27 +89,14 @@ function Tool() {
       </section>
 
       <section className="mx-auto flex max-w-[1240px] flex-col gap-9 px-5 pt-10 pb-30 sm:px-8">
-        <div
-          role="group"
-          aria-label="Filter by category"
-          className="glass flex max-w-full flex-nowrap gap-1.5 self-start overflow-x-auto rounded-full p-2"
-        >
-          {[ALL, ...categories].map((c) => (
-            <button
-              key={c}
-              type="button"
-              aria-pressed={category === c}
-              onClick={() => setCategory(c)}
-              className={`min-h-11 shrink-0 cursor-pointer rounded-full border-0 px-4 font-sans text-sm font-medium whitespace-nowrap ${
-                category === c
-                  ? "bg-ink text-white"
-                  : "bg-transparent text-ink-soft hover:bg-white/40"
-              }`}
-            >
-              {SHORT_LABELS[c] ?? c}
-            </button>
-          ))}
-        </div>
+        <FilterPills
+          label="Filter by category"
+          options={[ALL, ...categories]}
+          value={category}
+          onChange={setCategory}
+          optionLabel={(c) => SHORT_LABELS[c]}
+          layout="scroll"
+        />
 
         <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(min(100%,270px),1fr))] gap-5 p-0">
           {visible.map((tool) => (
@@ -118,7 +109,7 @@ function Tool() {
               >
                 <div className="flex items-center justify-between gap-3">
                   <span
-                    className={`flex h-12 w-12 items-center justify-center rounded-[14px] ${TINTS[categories.indexOf(tool.category) % TINTS.length]}`}
+                    className={`flex h-12 w-12 items-center justify-center rounded-[14px] ${cycle(TINTS, categories.indexOf(tool.category))}`}
                   >
                     <img
                       src={tool.icon}

@@ -1,15 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { Bookshelf } from "~/components/design/Bookshelf";
+import { Bookshelf, tagColor, type BookshelfProps } from "~/components/design/Bookshelf";
 import { shortTitle } from "~/utils/format";
-import type { ShelfHandle } from "./shelf3d";
-
-type Book = { name: string; icon: string; link: string };
-type Props = {
-  books: readonly Book[];
-  tags?: readonly string[];
-} & ({ mode: "link" } | { mode: "select"; picked: number; onPick: (index: number) => void });
-
-const TAG_COLORS = ["text-moss", "text-rust", "text-violet"];
+import type { ShelfHandle } from "./shelfScene";
 
 /**
  * The bookshelf in 3D from md up: real books on a soft ledge, with a row of
@@ -17,7 +9,7 @@ const TAG_COLORS = ["text-moss", "text-rust", "text-violet"];
  * its book out). Narrow screens, and browsers without WebGL, get the flat
  * scrolling shelf instead.
  */
-export function Shelf3D(props: Props) {
+export function Shelf3D(props: BookshelfProps) {
   const { books, tags } = props;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const handleRef = useRef<ShelfHandle | null>(null);
@@ -36,7 +28,7 @@ export function Shelf3D(props: Props) {
   const covers = books.map((b) => b.icon).join("|");
   useEffect(() => {
     let cancelled = false;
-    import("./shelf3d")
+    import("./shelfScene")
       .then(({ mountShelf3D }) => {
         const canvas = canvasRef.current;
         if (cancelled || !canvas) return;
@@ -86,11 +78,7 @@ export function Shelf3D(props: Props) {
             const content = (
               <>
                 {tag && (
-                  <span
-                    className={`font-hand text-lg leading-none ${TAG_COLORS[i % TAG_COLORS.length]}`}
-                  >
-                    {tag}
-                  </span>
+                  <span className={`font-hand text-lg leading-none ${tagColor(i)}`}>{tag}</span>
                 )}
                 <span className="text-[15px] leading-snug font-medium group-aria-pressed:text-indigo-deep">
                   {shortTitle(book.name)}

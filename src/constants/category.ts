@@ -1,3 +1,4 @@
+/** Tool categories, as shown on the Toolkit cards. */
 export const CATEGORY = {
   TERMINAL_UTILITY: "Terminal utility",
   TERMINAL_THEME: "Terminal theme",
@@ -7,4 +8,6 @@ export const CATEGORY = {
   TEST_FRAMEWORK: "Test framework",
   JAVASCRIPT_RUNTIME: "JavaScript runtime",
   PRODUCTIVITY_TOOL: "Productivity tool",
-};
+} as const;
+
+export type Category = (typeof CATEGORY)[keyof typeof CATEGORY];
