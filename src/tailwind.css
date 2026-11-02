@@ -1,4 +1,15 @@
 @import "tailwindcss";
+/*
+ * Self-hosted variable fonts. Their @font-face rules ship inside this
+ * stylesheet, so there is no render-blocking third-party CSS and no
+ * page -> fonts.googleapis.com -> fonts.gstatic.com request chain. Each face
+ * covers its weights in one file, and unicode-range means only the subsets a
+ * page actually uses are downloaded.
+ */
+@import "@fontsource-variable/instrument-sans/wght.css";
+@import "@fontsource-variable/caveat/wght.css";
+@import "@fontsource-variable/newsreader/wght.css";
+@import "@fontsource-variable/newsreader/wght-italic.css";
 @plugin "@tailwindcss/typography";
 
 /*
@@ -23,9 +34,9 @@
   --color-moon: #e8ebff;
   --color-moon-muted: #c3c8ee;
 
-  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-hand: "Caveat", "Comic Sans MS", cursive;
-  --font-serif: "Newsreader", Georgia, serif;
+  --font-sans: "Instrument Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Caveat Variable", "Comic Sans MS", cursive;
+  --font-serif: "Newsreader Variable", Georgia, serif;
 
   --animate-drift: drift 26s ease-in-out infinite alternate;
   --animate-bob: bob 7s ease-in-out infinite alternate;

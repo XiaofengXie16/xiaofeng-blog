@@ -1,6 +1,8 @@
 import { Outlet, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import stylesheet from "~/tailwind.css?url";
+import sansFont from "@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url";
+import handFont from "@fontsource-variable/caveat/files/caveat-latin-wght-normal.woff2?url";
 import { getRouter } from "~/router";
 import { Layout } from "~/components/Layout/Layout";
 import { NotFound } from "~/components/NotFound";
@@ -26,12 +28,16 @@ export const Route = createRootRoute({
     links: [
       { rel: "stylesheet", href: stylesheet },
       { rel: "alternate", type: "application/rss+xml", title: SITE_TITLE, href: "/rss.xml" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        href: "https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap",
-        rel: "stylesheet",
-      },
+      // The hero's two faces are needed for the first paint on every page;
+      // preloading them starts the download alongside the stylesheet instead
+      // of after it. They resolve to the same hashed files the CSS uses.
+      ...[sansFont, handFont].map((href) => ({
+        rel: "preload",
+        href,
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous" as const,
+      })),
     ],
   }),
   errorComponent: ErrorBoundary,
