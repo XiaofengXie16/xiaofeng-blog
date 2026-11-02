@@ -1,76 +1,56 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import invariant from "tiny-invariant";
-
 import { fetchBlogPostBySlug } from "~/server/blog.functions";
-import { pageMeta } from "~/constants/site";
+import { articleJsonLd, pageMeta } from "~/constants/site";
 import { Cloud, Grain } from "~/components/design/Atmosphere";
 import { ArrowRight } from "~/components/design/Section";
+import { SkyMessage, pillButtonClass } from "~/components/design/SkyMessage";
 import { CapsuleReader } from "~/components/figures/Figures";
 import { ReadingProgress } from "~/components/blog/ReadingProgress";
 import { formatPostDate } from "~/utils/format";
 
-type LoaderData = {
-  title: string;
-  content: string;
-  description: string;
-  slug: string;
-  date?: string;
-  tags: string[];
-};
-
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
-    const { slug } = params;
-    invariant(slug, "Expected 'slug' parameter");
-
-    const post = await fetchBlogPostBySlug({ data: slug });
-
-    if (!post) {
-      throw notFound();
-    }
+    const post = await fetchBlogPostBySlug({ data: params.slug });
+    if (!post) throw notFound();
 
     return {
       title: post.title,
       content: post.html,
       description: post.description ?? post.preview,
-      slug,
+      slug: post.slug,
       date: post.date,
       tags: post.tags,
-    } satisfies LoaderData;
+    };
   },
-  head: ({ loaderData }) =>
-    pageMeta({
-      title: `${loaderData?.title ?? "Blog Post"} | Xiaofeng Xie`,
-      description: loaderData?.description ?? "Software engineering article by Xiaofeng Xie.",
-      path: `/blog/${loaderData?.slug ?? ""}`,
+  head: ({ loaderData: post }) => ({
+    ...pageMeta({
+      title: `${post?.title ?? "Blog Post"} | Xiaofeng Xie`,
+      description: post?.description ?? "Software engineering article by Xiaofeng Xie.",
+      path: `/blog/${post?.slug ?? ""}`,
       type: "article",
+      publishedTime: post?.date,
     }),
+    scripts: post ? [articleJsonLd(post)] : [],
+  }),
   component: BlogPost,
   notFoundComponent: PostNotFound,
 });
 
 function PostNotFound() {
   return (
-    <section className="relative overflow-hidden bg-linear-to-b from-[#A3ADEC] to-[#F5D2B5] px-5 pt-48 pb-32 text-center">
-      <Grain />
-      <div className="relative mx-auto flex max-w-xl flex-col items-center gap-6">
-        <p className="glow m-0 -rotate-2 font-hand text-4xl text-[#F4F7FF]">
-          this future wasn't written
-        </p>
-        <h1 className="m-0 text-5xl font-medium tracking-[-0.04em] text-olive sm:text-6xl">
-          Post not found
-        </h1>
-        <p className="m-0 text-lg text-ink-soft">
-          The post you're looking for doesn't exist, or it moved.
-        </p>
-        <Link
-          to="/blog"
-          className="inline-flex min-h-[52px] items-center gap-2.5 rounded-full bg-ink px-[26px] font-medium text-white no-underline hover:bg-indigo-deep"
-        >
+    <SkyMessage
+      kicker="this future wasn't written"
+      title="Post not found"
+      action={
+        <Link to="/blog" className={pillButtonClass}>
           Back to all writing <ArrowRight />
         </Link>
-      </div>
-    </section>
+      }
+    >
+      <p className="m-0 text-lg text-ink-soft">
+        The post you're looking for doesn't exist, or it moved.
+      </p>
+    </SkyMessage>
   );
 }
 
