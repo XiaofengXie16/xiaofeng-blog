@@ -6,12 +6,13 @@ export const prefersReducedMotion = () =>
   typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export function makeRenderer(canvas: HTMLCanvasElement) {
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  const mobile = matchMedia("(max-width: 767px)").matches;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.05;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = !mobile;
   renderer.shadowMap.type = THREE.PCFShadowMap;
   return renderer;
 }

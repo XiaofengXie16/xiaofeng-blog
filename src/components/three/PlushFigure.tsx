@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { whenNearViewport } from "./viewport";
 
 type Figure = "writer" | "builder" | "reader";
 
@@ -9,9 +10,8 @@ const loaders: Record<Figure, () => Promise<(canvas: HTMLCanvasElement) => () =>
 };
 
 /**
- * A cute plush 3D figure. three.js is loaded lazily after hydration so it
- * never blocks the first paint; until then (and if WebGL is unavailable)
- * `fallback` is shown.
+ * Load three.js only when the figure approaches the viewport. If WebGL
+ * is unavailable, show the static fallback.
  */
 export function PlushFigure({
   figure,
@@ -28,18 +28,23 @@ export function PlushFigure({
   useEffect(() => {
     let cancelled = false;
     let cleanup: (() => void) | undefined;
-    loaders[figure]()
-      .then((mount) => {
-        const canvas = canvasRef.current;
-        if (cancelled || !canvas) return;
-        cleanup = mount(canvas);
-        setState("ready");
-      })
-      .catch(() => {
-        if (!cancelled) setState("failed");
-      });
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const stopObserving = whenNearViewport(canvas, () => {
+      void loaders[figure]()
+        .then((mount) => {
+          const canvas = canvasRef.current;
+          if (cancelled || !canvas) return;
+          cleanup = mount(canvas);
+          setState("ready");
+        })
+        .catch(() => {
+          if (!cancelled) setState("failed");
+        });
+    });
     return () => {
       cancelled = true;
+      stopObserving();
       cleanup?.();
     };
   }, [figure]);

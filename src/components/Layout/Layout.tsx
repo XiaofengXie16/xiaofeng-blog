@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { CommandAgent } from "../CommandAgent/CommandAgent";
+import { CommandAgentLoader } from "../CommandAgent/CommandAgentLoader";
 import { SvgDefs } from "../design/Atmosphere";
 
 export const Layout = ({ children }: { children: ReactNode }) => (
@@ -10,6 +10,6 @@ export const Layout = ({ children }: { children: ReactNode }) => (
     <Header />
     <main className="flex-1">{children}</main>
     <Footer />
-    <CommandAgent />
+    <CommandAgentLoader />
   </div>
 );
