@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { useHotkey } from "@tanstack/react-hotkeys";
 import { useAsyncRateLimitedCallback } from "@tanstack/react-pacer";
 import { TOOLS } from "~/constants/tool";
 import { BOOKS } from "~/constants/book";
@@ -12,7 +11,6 @@ import { buildSearchIndex, searchItems, type SearchItem } from "~/utils/search";
 import { SearchIcon } from "~/components/Layout/Header";
 import { AskPanel, type ChatMessage } from "./AskPanel";
 import { SearchResults } from "./SearchResults";
-import { TOGGLE_COMMAND_AGENT } from "./events";
 
 const AI_RATE_LIMIT = 5;
 const AI_RATE_WINDOW_MS = 60_000;
@@ -28,8 +26,7 @@ const openExternal = (url: string) => window.open(url, "_blank", "noopener,noref
  * The ⌘K palette: fuzzy search over pages, tools and books, and an Ask AI
  * mode backed by the site assistant. Rendered once in the layout.
  */
-export const CommandAgent = () => {
-  const [isOpen, setIsOpen] = useState(false);
+export const CommandAgent = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [mode, setMode] = useState<"search" | "ai">("search");
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -41,7 +38,7 @@ export const CommandAgent = () => {
   const navigate = useNavigate();
 
   const results = searchItems(SEARCH_INDEX, query);
-  const close = () => setIsOpen(false);
+  const close = onClose;
 
   // Drive the native top-layer dialog from `isOpen`. showModal() gives us the
   // focus trap, inert background and ::backdrop for free. Each opening starts
@@ -74,31 +71,16 @@ export const CommandAgent = () => {
     if (!dialog) return;
     const handleCancel = (event: Event) => {
       event.preventDefault();
-      setIsOpen(false);
+      onClose();
     };
-    const handleClose = () => setIsOpen(false);
+    const handleClose = () => onClose();
     dialog.addEventListener("cancel", handleCancel);
     dialog.addEventListener("close", handleClose);
     return () => {
       dialog.removeEventListener("cancel", handleCancel);
       dialog.removeEventListener("close", handleClose);
     };
-  }, []);
-
-  // Cmd+K (Ctrl+K off macOS) toggles the palette. Mod chords still fire while
-  // typing in the query input, and the browser default is prevented.
-  // requireReset stops a held chord from flickering the dialog.
-  useHotkey("Mod+K", () => setIsOpen((prev) => !prev), {
-    requireReset: true,
-    meta: { name: "Toggle command agent" },
-  });
-
-  // The header's search button (and others) toggle the palette through a custom event.
-  useEffect(() => {
-    const handleToggle = () => setIsOpen((prev) => !prev);
-    window.addEventListener(TOGGLE_COMMAND_AGENT, handleToggle);
-    return () => window.removeEventListener(TOGGLE_COMMAND_AGENT, handleToggle);
-  }, []);
+  }, [onClose]);
 
   // A search with no results hands over to Ask AI after a short pause.
   const noResults = mode === "search" && query.trim() !== "" && results.length === 0;

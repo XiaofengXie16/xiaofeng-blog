@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Bookshelf, tagColor, type BookshelfProps } from "~/components/design/Bookshelf";
 import { shortTitle } from "~/utils/format";
 import type { ShelfHandle } from "./shelfScene";
+import { whenNearViewport } from "./viewport";
 
 /**
  * The bookshelf in 3D from md up: real books on a soft ledge, with a row of
@@ -28,28 +29,33 @@ export function Shelf3D(props: BookshelfProps) {
   const covers = books.map((b) => b.icon).join("|");
   useEffect(() => {
     let cancelled = false;
-    import("./shelfScene")
-      .then(({ mountShelf3D }) => {
-        const canvas = canvasRef.current;
-        if (cancelled || !canvas) return;
-        handleRef.current = mountShelf3D(canvas, {
-          covers: covers.split("|"),
-          onActivate: (i) => {
-            const p = propsRef.current;
-            if (p.mode === "select") p.onPick(i);
-            else {
-              const link = p.books[i]?.link;
-              if (link) window.open(link, "_blank", "noopener,noreferrer");
-            }
-          },
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const stopObserving = whenNearViewport(canvas, () => {
+      void import("./shelfScene")
+        .then(({ mountShelf3D }) => {
+          const canvas = canvasRef.current;
+          if (cancelled || !canvas) return;
+          handleRef.current = mountShelf3D(canvas, {
+            covers: covers.split("|"),
+            onActivate: (i) => {
+              const p = propsRef.current;
+              if (p.mode === "select") p.onPick(i);
+              else {
+                const link = p.books[i]?.link;
+                if (link) window.open(link, "_blank", "noopener,noreferrer");
+              }
+            },
+          });
+          setState("ready");
+        })
+        .catch(() => {
+          if (!cancelled) setState("failed");
         });
-        setState("ready");
-      })
-      .catch(() => {
-        if (!cancelled) setState("failed");
-      });
+    });
     return () => {
       cancelled = true;
+      stopObserving();
       handleRef.current?.dispose();
       handleRef.current = null;
     };
